@@ -5,6 +5,7 @@ telegram_api = None
 telegram_updater = None
 telegram_dispatcher = None
 
+# Initialize the Telegram API
 def initialize():
 	global telegram_updater, telegram_dispatcher
 	try:

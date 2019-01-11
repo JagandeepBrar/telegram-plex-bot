@@ -3,6 +3,7 @@ import sqlite3
 def initialize():
     initTables()
 
+# Initialize the tables in the database
 def initTables():
     db = sqlite3.connect('database.db')
     db_cursor = db.cursor()
@@ -13,6 +14,7 @@ def initTables():
     db.commit()
     db.close()
     
+# Insert a new user into the database
 def insertUser(telegram, ombi, name):
     db = sqlite3.connect('database.db')
     db_cursor = db.cursor()
@@ -20,6 +22,7 @@ def insertUser(telegram, ombi, name):
     db.commit()
     db.close()
 
+# Update a user's data already in the database
 def updateUser(telegram, ombi, name):
     db = sqlite3.connect('database.db')
     db_cursor = db.cursor()
@@ -27,6 +30,7 @@ def updateUser(telegram, ombi, name):
     db.commit()
     db.close()
 
+# Insert a new TV series
 def insertTV(tvdb, name):
     db = sqlite3.connect('database.db')
     db_cursor = db.cursor()
@@ -34,6 +38,7 @@ def insertTV(tvdb, name):
     db.commit()
     db.close()
 
+# Insert a new movie
 def insertMovie(tmdb, name):
     db = sqlite3.connect('database.db')
     db_cursor = db.cursor()
