@@ -50,7 +50,7 @@ def parseOmbi():
 def parseTelegram():
     try:
         if('TELEGRAM' in parser):
-            telegram.telegram_api = parser['TELEGRAM']['BOT_TOKEN']
+            telegram.api = parser['TELEGRAM']['BOT_TOKEN']
             telegram.initialize()
         else:
             raise Exception()
