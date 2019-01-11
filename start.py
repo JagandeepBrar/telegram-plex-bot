@@ -1,12 +1,13 @@
-from backend import config, database
-import api.telegram
+import backend.config as config
+import backend.database.table as db_table
+import backend.api.telegram as telegram
 
 def start():
     config.initialize()
-    database.initialize()
+    db_table.initialize()
     print("Download notifier has started!")
-    api.telegram.telegram_updater.start_polling()
-    api.telegram.telegram_updater.idle()
+    telegram.telegram_updater.start_polling()
+    telegram.telegram_updater.idle()
 
 if(__name__ == "__main__"):
     start()

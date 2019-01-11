@@ -1,4 +1,3 @@
-import backend.config
 from telegram.ext import Updater
 
 telegram_api = None

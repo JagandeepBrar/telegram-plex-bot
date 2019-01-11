@@ -2,7 +2,7 @@ import configparser
 import sys
 import logging
 
-import api.telegram
+import backend.api.telegram as telegram
 
 logger = None
 parser = None
@@ -50,8 +50,8 @@ def parseOmbi():
 def parseTelegram():
     try:
         if('TELEGRAM' in parser):
-            api.telegram.telegram_api = parser['TELEGRAM']['BOT_TOKEN']
-            api.telegram.initialize()
+            telegram.telegram_api = parser['TELEGRAM']['BOT_TOKEN']
+            telegram.initialize()
         else:
             raise Exception()
     except:
