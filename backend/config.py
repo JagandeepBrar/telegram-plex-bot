@@ -2,7 +2,8 @@ import configparser
 import sys
 import logging
 
-import backend.api.telegram as telegram
+from backend import constants
+from backend.api import telegram
 
 logger = None
 parser = None
@@ -15,24 +16,35 @@ def initialize():
 # Initialize the logger
 def initLogger():
     global logger
-    sys.excepthook = exceptionHandler
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
 
 # Initialize the configuration parser
 def initParser():
     global parser
     parser = configparser.ConfigParser()
-    parser.read("config.ini")
+    parser.read(constants.CONFIG_FILE)
     if not(len(parser) > 1):
         raise Exception()
 
 # Wrapper to parse all configuration data
 def parseConfig():
+    parseAdmins()
     parseOmbi()
     parseRadarr()
     parseSonarr()
     parseTelegram()
+
+# Admin list parsing
+def parseAdmins():
+    try:
+        if('TELEGRAM' in parser):
+            for admin in parser['TELEGRAM']['AUTO_ADMINS'].split(','):
+                telegram.addAdmin(int(admin.strip()))
+        else:
+            raise Exception()
+    except:
+        raise Exception("config::parseAdmins() - Failed to get the admin user list. Check your config.ini.")
 
 # Sonarr API parsing
 def parseSonarr():
@@ -56,7 +68,3 @@ def parseTelegram():
             raise Exception()
     except:
         raise Exception("config::parseTelegram() - Failed to initialize Telegram's API. Check your config.ini.")
-
-# Exception handler
-def exceptionHandler(exception_type, exception, traceback):
-	print("\nERROR: %s\n" % exception)

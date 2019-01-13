@@ -1,8 +1,9 @@
 import sqlite3
+from backend import constants
 
 # Insert a new user into the database
-def insertUser(telegram, name, verification=1):
-    db = sqlite3.connect('database.db')
+def insertUser(telegram, name, verification):
+    db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, ombi_id, status, name) VALUES (?, ?, ?, ?)', (telegram, None, verification, name))
     db.commit()
@@ -10,7 +11,7 @@ def insertUser(telegram, name, verification=1):
 
 # Insert a new TV series
 def insertTV(tvdb, name):
-    db = sqlite3.connect('database.db')
+    db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('INSERT OR IGNORE INTO shows(tvdb_id, name) VALUES (?, ?)', (tvdb, name))
     db.commit()
@@ -18,7 +19,7 @@ def insertTV(tvdb, name):
 
 # Insert a new movie
 def insertMovie(tmdb, name):
-    db = sqlite3.connect('database.db')
+    db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('INSERT OR IGNORE INTO movies(tmdb_id, name) VALUES (?, ?)', (tmdb, name))
     db.commit()

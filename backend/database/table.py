@@ -1,7 +1,8 @@
 import sqlite3
+from backend import constants
 
 def initialize():
-    db = sqlite3.connect('database.db')
+    db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('CREATE TABLE IF NOT EXISTS users(telegram_id INTEGER PRIMARY KEY, ombi_id TEXT, status INTEGER, name TEXT)')
     db_cursor.execute('CREATE TABLE IF NOT EXISTS shows(tvdb_id INTEGER PRIMARY KEY, name TEXT)')
