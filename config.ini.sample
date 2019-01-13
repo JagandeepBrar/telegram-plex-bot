@@ -1,2 +1,17 @@
 [TELEGRAM]
 BOT_TOKEN = 
+
+[SONARR]
+ENABLED = 
+HOST = 
+API = 
+
+[RADARR]
+ENABLED = 
+HOST = 
+API = 
+
+[OMBI]
+ENABLED = 
+HOST = 
+API = 

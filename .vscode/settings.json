@@ -10,5 +10,6 @@
         "**/__pycache__": true,
         "**/LICENSE": true,
         "**/database.db": true
-    }
+    },
+    "python.pythonPath": "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3"
 }

@@ -1,2 +1,2 @@
-START = "Started"
-REGISTER_SUCCESS = "*You have been registered!*\n\nType /help to see all available commands."
+REGISTER_PENDING = "*You have been registered!*\n\nYour account is pending verification. You will be notified when verified!"
+REGISTER_VERIFIED = "*You have been verified!*\n\nType /help to see all available commands."

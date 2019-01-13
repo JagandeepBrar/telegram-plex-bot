@@ -7,5 +7,5 @@ from backend.database.statement import insert
 @send_typing_action
 def register(bot, update):
     insert.insertUser(update.message.chat_id, update.message.from_user.full_name)
-    bot.send_message(chat_id=update.message.chat_id, text=messages.REGISTER_SUCCESS, parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.send_message(chat_id=update.message.chat_id, text=messages.REGISTER_PENDING, parse_mode=telegram.ParseMode.MARKDOWN)
 
