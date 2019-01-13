@@ -105,5 +105,6 @@ venv.bak/
 
 # my added things
 
+.DS_Store
 config.ini
 database.db
