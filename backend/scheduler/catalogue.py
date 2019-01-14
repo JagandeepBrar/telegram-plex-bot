@@ -1,5 +1,6 @@
 from backend.api import sonarr, radarr
 from backend.database.statement import insert, select, delete
+from backend import constants
 import logging
 
 # Fetch all shows from Sonarr and update local database accordingly
@@ -12,7 +13,7 @@ def updateTelevision(bot, job):
         for show in shows:
             insert.insertTV(show[0], show[1])
         # Compare and delete removed shows from database to Sonarr
-        shows_inactive = listDifference(shows, select.getDatabaseShows())
+        shows_inactive = constants.listDifference(shows, select.getDatabaseShows())
         if(len(shows_inactive) > 0):
             for show in shows_inactive:
                 delete.deleteTV(show[0])
@@ -31,7 +32,7 @@ def updateMovies(bot, job):
         for movie in movies:
             insert.insertMovie(movie[0], movie[1])
         # Compare and delete removed movies from database to Radarr
-        movies_inactive = listDifference(movies, select.getDatabaseMovies())
+        movies_inactive = constants.listDifference(movies, select.getDatabaseMovies())
         if(len(movies_inactive) > 0):
             for movie in movies_inactive:
                 delete.deleteMovie(movie[0])
@@ -39,8 +40,3 @@ def updateMovies(bot, job):
         logger.info("Finished updating movie database.")
     else:
         logger.error("Failed to update movie database. Will try again at next scheduled run.")
-
-# Taken from https://www.geeksforgeeks.org/python-difference-two-lists/
-def listDifference(li1, li2): 
-    li_dif = [i for i in li1 + li2 if i not in li1 or i not in li2] 
-    return li_dif

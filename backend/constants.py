@@ -1,9 +1,22 @@
+import datetime
+
+###########
+# GENERAL #
+###########
+
+HOUR_IN_SECONDS = 3600
+DAY_IN_SECONDS = HOUR_IN_SECONDS*24
+WEEK_IN_SECONDS = DAY_IN_SECONDS*7
+INSERT_DATE = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
+
+
 #################################
 # CONFIGURATION & API ENDPOINTS #
 #################################
 
 CONFIG_FILE = "config.ini"
 DB_FILE = "database.db"
+BOT_NAME = "Plex Assistant"
 
 SONARR_SYSTEM_STATUS = "system/status"
 SONARR_SERIES = "/series"
@@ -13,12 +26,19 @@ RADARR_SYSTEM_STATUS = "system/status"
 RADARR_MOVIES = "/movie"
 RADARR_MOVIES_LOOKUP = "/movie/lookup/tmdb?tmdbId="
 
-###################
-# ACCOUNT RELATED #
-###################
+############################
+# ACCOUNT COMMANDS RELATED #
+############################
 
 # ACCOUNT COMMAND MESSAGES
 ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by admins/owners._"
+
+# USER FREQUENCY LEVELS
+
+ACCOUNT_FREQUENCY_IMMEDIATE = 0
+ACCOUNT_FREQUENCY_DAILY = 1
+ACCOUNT_FREQUENCY_MONTHLY = 2
+ACCOUNT_FREQUENCY = ["immediate", "daily", "monthly"]
 
 # USER ACCESS LEVELS
 ACCOUNT_STATUS_ADMIN = 0
@@ -36,15 +56,15 @@ ACCOUNT_STATUS_RESTRICTED_MSG = "*You are registered and verified!*\n\nYour acco
 ACCOUNT_STATUS_BANNED_MSG = "*You are banned!*\n\nPlease inquire with the admins(s)."
 ACCOUNT_STATUS_MSG = [ACCOUNT_STATUS_ADMIN_MSG, ACCOUNT_STATUS_PENDING_MSG, ACCOUNT_STATUS_VERIFIED_MSG, ACCOUNT_STATUS_RESTRICTED_MSG, ACCOUNT_STATUS_BANNED_MSG]
 
-######################
-# TELEVISION RELATED #
-######################
+###############################
+# TELEVISION COMMANDS RELATED #
+###############################
 
 TELEVISION_FORCEUPDATE = "_Television database has been updated._"
 
-##################
-# MOVIES RELATED #
-##################
+###########################
+# MOVIES COMMANDS RELATED #
+###########################
 
 MOVIES_FORCEUPDATE = "_Movies database has been updated._"
 
@@ -57,7 +77,7 @@ ADMIN_GETACCESS_MSG ="Please select the user access level:"
 ADMIN_GETACCESS_HEADER = "_{} User(s)_:\n\n"
 ADMIN_GETACCESS_RESP = "`{}` - {}\n"
 
-ADMIN_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Ombi ID:* {}\n*Access:* {}\n*Name:* {}\n"
+ADMIN_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Ombi ID:* {}\n*Name:* {}\n"
 ADMIN_SETACCESS_SUCCESS_VERIFYALL = "_Successfully updated all unverified users to verified users._"
 ADMIN_SETACCESS_FAIL_ARGS = "_/setaccess usage:_\n\n/setaccess <Telegram ID (Integer)> <Status (String)>\n\n_To verify all unverified users:_\n\n/setaccess verifyall"
 ADMIN_SETACCESS_FAIL_TID = "_The supplied Telegram ID is not in the database of users._\n\nUse /getaccess to find a user's ID."
@@ -72,3 +92,21 @@ ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database.
 ####################
 
 ADMIN_GETACCESS_CALLBACK = "account_GETACCESS_"
+
+###########
+# METHODS #
+###########
+
+def hoursToSeconds(hours):
+    return hours*HOUR_IN_SECONDS
+
+def daysToSeconds(days):
+    return days*DAY_IN_SECONDS
+
+def weekInSeconds(week):
+    return week*WEEK_IN_SECONDS
+
+# Taken from https://www.geeksforgeeks.org/python-difference-two-lists/
+def listDifference(li1, li2): 
+    li_dif = [i for i in li1 + li2 if i not in li1 or i not in li2] 
+    return li_dif

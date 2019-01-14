@@ -8,8 +8,7 @@
         "**/.vscode": true,
         "**/__init__.py": true,
         "**/__pycache__": true,
-        "**/LICENSE": true,
-        "**/database.db": true
+        "**/LICENSE": true
     },
     "python.pythonPath": "/usr/bin/python3"
 }

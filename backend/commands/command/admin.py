@@ -26,7 +26,7 @@ def getAccessCallback(bot, update):
     users = select.getUsersWithStatus(status)
     resp = constants.ADMIN_GETACCESS_HEADER.format(constants.ACCOUNT_STATUS[status].capitalize())
     for user in users:
-        resp += constants.ADMIN_GETACCESS_RESP.format(user[0], user[3])
+        resp += constants.ADMIN_GETACCESS_RESP.format(user[0], user[4])
     bot.edit_message_text(text=resp,chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
 
 # [ADMIN ONLY] Set the user access status for a user
@@ -40,10 +40,10 @@ def setAccess(bot, update, args):
                     status = constants.ACCOUNT_STATUS.index(args[1].lower())
                     user = select.getUser(args[0])
                     if(user is not None):
-                        update_db.updateUser(user[0], user[1], status, user[3])
+                        update_db.updateUserStatus(user[0], status)
                         user = select.getUser(args[0])
-                        resp = constants.ADMIN_SETACCESS_SUCCESS.format(user[0], user[1], constants.ACCOUNT_STATUS[status].capitalize(), user[3])
-                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[3], constants.ACCOUNT_STATUS[status]))
+                        resp = constants.ADMIN_SETACCESS_SUCCESS.format(user[0], constants.ACCOUNT_STATUS[status].capitalize(), constants.ACCOUNT_FREQUENCY[int(user[2])].capitalize(), user[3], user[4])
+                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[4], constants.ACCOUNT_STATUS[status]))
                     else:
                         resp = constants.ADMIN_SETACCESS_FAIL_TID
                 except:
@@ -53,8 +53,8 @@ def setAccess(bot, update, args):
                 users = select.getUsersWithStatus(constants.ACCOUNT_STATUS_UNVERIFIED)
                 if(len(users) != 0):
                     for user in users:
-                        update_db.updateUser(user[0], user[1], constants.ACCOUNT_STATUS_VERIFIED, user[3])
-                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[3], constants.ACCOUNT_STATUS[constants.ACCOUNT_STATUS_VERIFIED]))
+                        update_db.updateUserStatus(user[0], constants.ACCOUNT_STATUS_VERIFIED)
+                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[4], constants.ACCOUNT_STATUS[constants.ACCOUNT_STATUS_VERIFIED]))
                     resp = constants.ADMIN_SETACCESS_SUCCESS_VERIFYALL
                 else:
                     resp = constants.ADMIN_SETACCESS_FAIL_VERIFYALL

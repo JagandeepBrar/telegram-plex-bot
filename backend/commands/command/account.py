@@ -10,14 +10,15 @@ from backend.database.statement import insert, select, update as update_db
 @send_typing_action
 def register(bot, update):
     if(backend.api.telegram.isAdmin(update.message.chat_id)):
-        insert.insertUser(update.message.chat_id, update.message.from_user.full_name, constants.ACCOUNT_STATUS_ADMIN)
+        insert.insertUser(update.message.chat_id, constants.ACCOUNT_STATUS_ADMIN, 0, None, update.message.from_user.full_name)
     else:
-        insert.insertUser(update.message.chat_id, update.message.from_user.full_name, constants.ACCOUNT_STATUS_UNVERIFIED)
-    user_status = select.getUser(update.message.chat_id)[2]
+        insert.insertUser(update.message.chat_id, constants.ACCOUNT_STATUS_UNVERIFIED, 0, None, update.message.from_user.full_name)
+    user_status = select.getUser(update.message.chat_id)[1]
     logging.getLogger(__name__).info("User registered - {}: {}".format(update.message.chat_id, update.message.from_user.full_name))
     bot.send_message(chat_id=update.message.chat_id, text=constants.ACCOUNT_STATUS_MSG[user_status], parse_mode=telegram.ParseMode.MARKDOWN)
 
 # Check the status of the asking user
 @send_typing_action
-def check(bot, update):
-    register(bot, update)
+def status(bot, update):
+    user_status = select.getUser(update.message.chat_id)[1]
+    bot.send_message(chat_id=update.message.chat_id, text=constants.ACCOUNT_STATUS_MSG[user_status], parse_mode=telegram.ParseMode.MARKDOWN)

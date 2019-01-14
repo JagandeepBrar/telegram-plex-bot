@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 from backend import constants
 
 ###############
@@ -21,18 +22,26 @@ def updateUserStatus(telegram, status):
     db.commit()
     db.close()
 
+###############
+# SHOWS TABLE #
+###############
+
 # Update a TV show's name that is already in the database
 def updateTV(tvdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('UPDATE shows SET name = ? WHERE tvdb_id = ?', (name, tvdb))
+    db_cursor.execute('UPDATE shows SET name = ?, updated = ? WHERE tvdb_id = ?', (name, tvdb, datetime.datetime.now()))
     db.commit()
     db.close()
+
+################
+# MOVIES TABLE #
+################
 
 # Update a movie's name that is already in the database
 def updateMovie(tmdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('UPDATE movies SET name = ? WHERE tmdb_id = ?', (name, tmdb))
+    db_cursor.execute('UPDATE movies SET name = ?, updated = ? WHERE tmdb_id = ?', (name, tmdb, datetime.datetime.now()))
     db.commit()
     db.close()
