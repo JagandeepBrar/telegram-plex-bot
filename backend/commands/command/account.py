@@ -38,7 +38,7 @@ def getAccess(bot, update):
 def getAccessCallback(bot, update):
     status = constants.ACCOUNT_STATUS.index(update.callback_query.data[len(constants.ACCOUNT_GETACCESS_CALLBACK):])
     users = select.getUsersWithStatus(status)
-    resp = constants.ACCOUNT_GETACCESS_HEADER.format(constants.ACCOUNT_STATUS[status].upper())
+    resp = constants.ACCOUNT_GETACCESS_HEADER.format(constants.ACCOUNT_STATUS[status].capitalize())
     for user in users:
         resp += constants.ACCOUNT_GETACCESS_RESP.format(user[0], user[3])
     bot.edit_message_text(text=resp,chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)

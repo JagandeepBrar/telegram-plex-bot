@@ -1,9 +1,13 @@
-#################
-# CONFIGURATION #
-#################
+#################################
+# CONFIGURATION & API ENDPOINTS #
+#################################
 
 CONFIG_FILE = "config.ini"
 DB_FILE = "database.db"
+
+SONARR_SYSTEM_STATUS = "system/status"
+SONARR_SERIES = "/series"
+SONARR_SERIES_LOOKUP = "/series/lookup?term=tvdb:"
 
 ###################
 # ACCOUNT RELATED #
@@ -13,7 +17,7 @@ DB_FILE = "database.db"
 ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by admins/owners._"
 
 ACCOUNT_GETACCESS_MSG ="Please select the user access level:"
-ACCOUNT_GETACCESS_HEADER = "`{} USER(S)`:\n\n"
+ACCOUNT_GETACCESS_HEADER = "_{} User(s)_:\n\n"
 ACCOUNT_GETACCESS_RESP = "`{}` - {}\n"
 
 ACCOUNT_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Ombi ID:* {}\n*Access:* {}\n*Name:* {}\n"

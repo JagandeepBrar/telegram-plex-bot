@@ -3,7 +3,7 @@ import sys
 import logging
 
 from backend import constants
-from backend.api import telegram
+from backend.api import telegram, sonarr
 
 logger = None
 parser = None
@@ -47,11 +47,23 @@ def parseAdmins():
         else:
             raise Exception()
     except:
-        raise Exception("config::parseAdmins() - Failed to get the admin user list. Check your config.ini.")
+        logger.error("Failed to get the admin user list. Check your config.ini.")
+        exit()
 
 # Sonarr API parsing
 def parseSonarr():
-    pass
+    if('SONARR' in parser):
+        if(parser.getboolean('SONARR', 'ENABLED')):
+            sonarr.enabled = True
+            sonarr.api = parser['SONARR']['API']
+            sonarr.host = parser['SONARR']['HOST']
+            sonarr.path_start = sonarr.host+"api/"
+            sonarr_path_end = "?apikey="+sonarr.api
+            sonarr.initialize()
+            logger.info("Sonarr API parsed")
+    else:
+        logger.error("Could not read the Sonarr configuration values. Check your config.ini.")
+        exit()
 
 # Radarr API parsing
 def parseRadarr():
@@ -71,4 +83,5 @@ def parseTelegram():
         else:
             raise Exception()
     except:
-        raise Exception("config::parseTelegram() - Failed to initialize Telegram's API. Check your config.ini.")
+        logger.error("Failed to initialize Telegram's API. Check your config.ini.")
+        exit()

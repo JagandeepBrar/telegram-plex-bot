@@ -1,3 +1,4 @@
+import logging
 from telegram.ext import Updater
 
 admins = []
@@ -7,12 +8,13 @@ dispatcher = None
 
 # Initialize the Telegram API
 def initialize():
-	global updater, dispatcher
-	try:
-		updater = Updater(token=api)
-		dispatcher = updater.dispatcher
-	except:
-		raise Exception()
+    global updater, dispatcher
+    try:
+        updater = Updater(token=api)
+        dispatcher = updater.dispatcher
+    except:
+        logging.getLogger(__name__).error("Failed to initialize Telegram's API")
+        exit()
 
 # Adds a telegram ID to the list of admins
 def addAdmin(id):
