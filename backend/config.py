@@ -57,8 +57,7 @@ def parseSonarr():
             sonarr.enabled = True
             sonarr.api = parser['SONARR']['API']
             sonarr.host = parser['SONARR']['HOST']
-            sonarr.path_start = sonarr.host+"api/"
-            sonarr_path_end = "?apikey="+sonarr.api
+            sonarr.update_frequency = int(parser['SONARR']['UPDATE_FREQ'])
             sonarr.initialize()
             logger.info("Sonarr API parsed")
     else:

@@ -10,6 +10,7 @@ host = ""
 path_start = ""
 path_end_q = ""
 path_end_a = ""
+update_frequency = 0
 
 def initialize():
     global path_start, path_end_question, path_end_ampersand, logger

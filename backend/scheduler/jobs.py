@@ -1,4 +1,4 @@
-from backend.api import telegram
+from backend.api import telegram, sonarr
 from backend.scheduler import catalogue
 import time
 import logging
@@ -16,7 +16,8 @@ def initialize():
 # Adds the default repeating tasks to the queue
 def addDefaultJobs():
     logger.info("Adding default scheduler jobs")
-    addRepeatingJob(catalogue.updateTelevision, hoursToSeconds(12))
+    if(sonarr.enabled):
+        addRepeatingJob(catalogue.updateTelevision, hoursToSeconds(sonarr.update_frequency))
 
 # Creates a repeating job, which will call <func> every <delay> seconds, with the first execution happening after <first> seconds
 def addRepeatingJob(func, delay, first=0):

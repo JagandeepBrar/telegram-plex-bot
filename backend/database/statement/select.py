@@ -26,3 +26,12 @@ def getAdmins():
     for admin in db_cursor.execute('SELECT * FROM users WHERE status = 0'):
         admins.append(admin[0])
     return admins
+
+# Get the list of shows that are active in the database
+def getDatabaseShows():
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    shows = []
+    for show in db_cursor.execute('SELECT * FROM shows'):
+        shows.append([show[0], show[1]])
+    return shows
