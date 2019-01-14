@@ -1,4 +1,4 @@
-# Plex Integrations Bot
+# Plex Assistant Bot
 
 A bot to notify, control, manage (and more) Plex integration applications like Sonarr, Radarr, Ombi, etc.
 
