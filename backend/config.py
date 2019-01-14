@@ -3,7 +3,7 @@ import sys
 import logging
 
 from backend import constants
-from backend.api import telegram, sonarr
+from backend.api import telegram, sonarr, radarr
 
 logger = None
 parser = None
@@ -66,7 +66,17 @@ def parseSonarr():
 
 # Radarr API parsing
 def parseRadarr():
-    pass
+    if('RADARR' in parser):
+        if(parser.getboolean('RADARR', 'ENABLED')):
+            radarr.enabled = True
+            radarr.api = parser['RADARR']['API']
+            radarr.host = parser['RADARR']['HOST']
+            radarr.update_frequency = int(parser['RADARR']['UPDATE_FREQ'])
+            radarr.initialize()
+            logger.info("Radarr API parsed")
+    else:
+        logger.error("Could not read the Radarr configuration values. Check your config.ini.")
+        exit()
 
 # Ombi API parsing
 def parseOmbi():

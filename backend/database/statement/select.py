@@ -35,3 +35,12 @@ def getDatabaseShows():
     for show in db_cursor.execute('SELECT * FROM shows'):
         shows.append([show[0], show[1]])
     return shows
+
+# Get the list of movies taht are active in the database
+def getDatabaseMovies():
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    movies = []
+    for movie in db_cursor.execute('SELECT * FROM movies'):
+        movies.append([movie[0], movie[1]])
+    return movies
