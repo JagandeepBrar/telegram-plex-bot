@@ -11,7 +11,7 @@ def start():
     handlers.initialize()
     jobs.initialize()
     # If it got here, it means that everything has initialized correctly so the bot is about to start
-    print("Download notifier has started!")
+    print("Plex Assistant Bot has started!")
     telegram.updater.start_polling()
     telegram.updater.idle()
 

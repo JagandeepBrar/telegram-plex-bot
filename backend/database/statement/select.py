@@ -11,6 +11,13 @@ def getUser(id):
     db.close()
     return user
 
+# Get the 'users' table entries with the status code supplied
+def getUsersWithStatus(status):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM users WHERE status = ?', (str(status),))
+    return db_cursor.fetchall()
+
 # Get the admins from the 'users' table
 def getAdmins():
     db = sqlite3.connect(constants.DB_FILE)
