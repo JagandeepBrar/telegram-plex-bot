@@ -4,9 +4,24 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 *Implemention of more applications will occur overtime*
 
-## Users
+## Features
 
-### Status
+### Planned
+
+- Sonarr/Radarr notifications
+- Sonarr/Radarr calendars
+- Connect to Ombi for automatic notifications
+- Add new shows/movies to Sonarr/Radarr
+
+## Potential
+
+- SABnzbd/NZBget implementations
+
+## Implementation
+
+### Users
+
+#### Status
 
 | Status Code |  Type  |               Verification                |
 |:-----------:|:------:|:-----------------------------------------:|

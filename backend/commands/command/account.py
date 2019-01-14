@@ -1,4 +1,5 @@
 import telegram
+import logging
 import backend.api.telegram
 
 from backend import constants
@@ -13,6 +14,7 @@ def register(bot, update):
     else:
         insert.insertUser(update.message.chat_id, update.message.from_user.full_name, constants.ACCOUNT_STATUS_UNVERIFIED)
     user_status = select.getUser(update.message.chat_id)[2]
+    logging.getLogger(__name__).info("User registered - {}: {}".format(update.message.chat_id, update.message.from_user.full_name))
     bot.send_message(chat_id=update.message.chat_id, text=constants.ACCOUNT_STATUS_MSG[user_status], parse_mode=telegram.ParseMode.MARKDOWN)
 
 # Check the status of the asking user
@@ -55,6 +57,7 @@ def setAccess(bot, update, args):
                         update_db.updateUser(user[0], user[1], status, user[3])
                         user = select.getUser(args[0])
                         resp = constants.ACCOUNT_SETACCESS_SUCCESS.format(user[0], user[1], constants.ACCOUNT_STATUS[status].capitalize(), user[3])
+                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[3], constants.ACCOUNT_STATUS[status]))
                     else:
                         resp = constants.ACCOUNT_SETACCESS_FAIL_TID
                 except:
@@ -65,7 +68,8 @@ def setAccess(bot, update, args):
                 if(len(users) != 0):
                     for user in users:
                         update_db.updateUser(user[0], user[1], constants.ACCOUNT_STATUS_VERIFIED, user[3])
-                        resp = constants.ACCOUNT_SETACCESS_SUCCESS_VERIFYALL
+                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[3], constants.ACCOUNT_STATUS[constants.ACCOUNT_STATUS_VERIFIED]))
+                    resp = constants.ACCOUNT_SETACCESS_SUCCESS_VERIFYALL
                 else:
                     resp = constants.ACCOUNT_SETACCESS_FAIL_VERIFYALL
         bot.send_message(chat_id=update.message.chat_id, text=resp, parse_mode=telegram.ParseMode.MARKDOWN)

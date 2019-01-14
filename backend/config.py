@@ -17,7 +17,8 @@ def initialize():
 def initLogger():
     global logger
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
+    logger.info("Logger initialized")
 
 # Initialize the configuration parser
 def initParser():
@@ -26,14 +27,15 @@ def initParser():
     parser.read(constants.CONFIG_FILE)
     if not(len(parser) > 1):
         raise Exception()
+    logger.info("Configparser initialized")
 
 # Wrapper to parse all configuration data
 def parseConfig():
-    parseAdmins()
+    parseTelegram()
     parseOmbi()
     parseRadarr()
     parseSonarr()
-    parseTelegram()
+    parseAdmins()
 
 # Admin list parsing
 def parseAdmins():
@@ -41,6 +43,7 @@ def parseAdmins():
         if('TELEGRAM' in parser):
             for admin in parser['TELEGRAM']['AUTO_ADMINS'].split(','):
                 telegram.addAdmin(int(admin.strip()))
+                logger.info("Telegram admins parsed {}".format(telegram.admins))
         else:
             raise Exception()
     except:
@@ -64,6 +67,7 @@ def parseTelegram():
         if('TELEGRAM' in parser):
             telegram.api = parser['TELEGRAM']['BOT_TOKEN']
             telegram.initialize()
+            logger.info("Telegram API initialized")
         else:
             raise Exception()
     except:

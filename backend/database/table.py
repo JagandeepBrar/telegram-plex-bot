@@ -1,4 +1,5 @@
 import sqlite3
+import logging
 from backend import constants
 
 def initialize():
@@ -10,3 +11,4 @@ def initialize():
     db_cursor.execute('CREATE TABLE IF NOT EXISTS notifications(notification_id INTEGER PRIMARY KEY, telegram_id INTEGER, media_id INTEGER, media_type INTEGER, desc TEXT, FOREIGN KEY(telegram_id) REFERENCES users ON DELETE CASCADE)')
     db.commit()
     db.close()
+    logging.getLogger(__name__).info("Database tables created/loaded")
