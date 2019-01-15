@@ -3,7 +3,7 @@ import sys
 import logging
 
 from backend import constants
-from backend.api import telegram, sonarr, radarr
+from backend.api import telegram, sonarr, radarr, ombi
 
 logger = None
 parser = None
@@ -80,17 +80,22 @@ def parseRadarr():
 
 # Ombi API parsing
 def parseOmbi():
-    pass
+    if('OMBI' in parser):
+        if(parser.getboolean('OMBI', 'ENABLED')):
+            ombi.enabled = True
+            logger.info("Ombi API parsed")
+    else:
+        logger.error("Failed to initialize Ombi's API. Check your config.ini.")
+        exit()
+    
 
 # Telegram API parsing
 def parseTelegram():
-    try:
-        if('TELEGRAM' in parser):
-            telegram.api = parser['TELEGRAM']['BOT_TOKEN']
-            telegram.initialize()
-            logger.info("Telegram API initialized")
-        else:
-            raise Exception()
-    except:
+    if('TELEGRAM' in parser):
+        telegram.api = parser['TELEGRAM']['BOT_TOKEN']
+        telegram.auto_approve = parser.getboolean('TELEGRAM', 'AUTO_APPROVE')
+        telegram.initialize()
+        logger.info("Telegram API initialized")
+    else:
         logger.error("Failed to initialize Telegram's API. Check your config.ini.")
         exit()

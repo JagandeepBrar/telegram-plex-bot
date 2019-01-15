@@ -30,15 +30,23 @@ RADARR_MOVIES_LOOKUP = "/movie/lookup/tmdb?tmdbId="
 # ACCOUNT COMMANDS RELATED #
 ############################
 
-# ACCOUNT COMMAND MESSAGES
 ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by admins/owners._"
+ACCOUNT_UNREGISTERED = "_Sorry, you are not registered._\n\nUse /register to get started!"
+
+# ACCOUNT REGISTRATION 
+
+ACCOUNT_REGISTER_STATE_FREQ, ACCOUNT_REGISTER_STATE_OMBI = range(2)
+ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\nHow frequently do you want to be notified on your monitored shows and movies?".format(BOT_NAME)
+ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip.\n\nYou can add your Ombi ID later to your account by typing /account."
+ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account will tell you the current status of your account."
+ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
 
 # USER FREQUENCY LEVELS
 
-ACCOUNT_FREQUENCY_IMMEDIATE = 0
+ACCOUNT_FREQUENCY_IMMEDIATELY = 0
 ACCOUNT_FREQUENCY_DAILY = 1
-ACCOUNT_FREQUENCY_MONTHLY = 2
-ACCOUNT_FREQUENCY = ["immediate", "daily", "monthly"]
+ACCOUNT_FREQUENCY_WEEKLY = 2
+ACCOUNT_FREQUENCY = ["immediately", "daily", "weekly"]
 
 # USER ACCESS LEVELS
 ACCOUNT_STATUS_ADMIN = 0
@@ -49,9 +57,9 @@ ACCOUNT_STATUS_BANNED = 4
 ACCOUNT_STATUS = ["admin", "unverified", "verified", "restricted", "banned"]
 
 # USER STATUS MESSAGES
-ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin/owner!*\n\nYou have full access to all commands, type /help to see all available commands."
+ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin/owner!*\n\nYou have full access to all commands, use /help to see all available commands."
 ACCOUNT_STATUS_PENDING_MSG = "*You are registered!*\n\nYour account is pending verification, you will be notified when verification is complete."
-ACCOUNT_STATUS_VERIFIED_MSG = "*You are registered and verified!*\n\nType /help to see all available commands."
+ACCOUNT_STATUS_VERIFIED_MSG = "*You are registered and verified!*\n\nUse /help to see all available commands."
 ACCOUNT_STATUS_RESTRICTED_MSG = "*You are registered and verified!*\n\nYour account is active, but restricted. Please inquire with the admin(s)."
 ACCOUNT_STATUS_BANNED_MSG = "*You are banned!*\n\nPlease inquire with the admins(s)."
 ACCOUNT_STATUS_MSG = [ACCOUNT_STATUS_ADMIN_MSG, ACCOUNT_STATUS_PENDING_MSG, ACCOUNT_STATUS_VERIFIED_MSG, ACCOUNT_STATUS_RESTRICTED_MSG, ACCOUNT_STATUS_BANNED_MSG]

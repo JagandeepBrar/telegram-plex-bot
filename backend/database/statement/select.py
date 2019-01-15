@@ -31,6 +31,14 @@ def getAdmins():
         admins.append(admin[0])
     return admins
 
+def isRegistered(id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (str(id),))
+    if(db_cursor.fetchone() is not None):
+        return True
+    return False
+
 ###############
 # SHOWS TABLE #
 ###############

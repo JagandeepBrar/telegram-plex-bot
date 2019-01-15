@@ -9,4 +9,4 @@ from backend.commands.wrapper import send_typing_action, send_upload_photo_actio
 @send_typing_action
 def forceUpdate(bot, update):
     catalogue.updateMovies(None, None)
-    bot.send_message(chat_id=update.message.chat_id, text=constants.MOVIES_FORCEUPDATE, parse_mode=telegram.ParseMode.MARKDOWN)
+    update.message.reply_text(constants.MOVIES_FORCEUPDATE, parse_mode=telegram.ParseMode.MARKDOWN)

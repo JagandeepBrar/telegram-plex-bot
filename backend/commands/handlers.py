@@ -1,14 +1,29 @@
 import logging
 import backend.api.telegram as telegram
 from functools import wraps
-from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler
+from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, ConversationHandler, RegexHandler, Filters
 from backend.commands.command import account, admin
 from backend import constants
 
 def initialize():
     # Account-Related
-    telegram.dispatcher.add_handler(CommandHandler("start", account.register))
-    telegram.dispatcher.add_handler(CommandHandler("status", account.status))
+    telegram.dispatcher.add_handler(ConversationHandler(
+        entry_points = [
+            CommandHandler("start", account.register),
+            CommandHandler("register", account.register)
+        ],
+        fallbacks = [CommandHandler("cancel", account.register_cancel)],
+        states = {
+            constants.ACCOUNT_REGISTER_STATE_FREQ: [
+                RegexHandler('^(Immediately|Daily|Weekly)$', account.register_frequency)
+            ],
+            constants.ACCOUNT_REGISTER_STATE_OMBI: [
+                MessageHandler(Filters.text, account.register_ombi),
+                CommandHandler("skip", account.register_ombi_skip)
+            ]
+        }
+    ))
+    telegram.dispatcher.add_handler(CommandHandler("account", account.account))
     #Admin-Only
     telegram.dispatcher.add_handler(CommandHandler("getaccess", admin.getAccess))
     telegram.dispatcher.add_handler(CommandHandler("setaccess", admin.setAccess, pass_args=True))

@@ -7,10 +7,10 @@ from backend import constants
 ###############
 
 # Update a user's data already in the database
-def updateUser(telegram, ombi, status, name):
+def updateUser(telegram, status, frequency, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ? WHERE telegram_id = ?', (ombi, name, status, telegram))
+    db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ?, frequency = ? WHERE telegram_id = ?', (ombi, name, status, frequency, telegram))
     db.commit()
     db.close()
 
@@ -19,6 +19,22 @@ def updateUserStatus(telegram, status):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('UPDATE users SET status = ? WHERE telegram_id = ?', (status, telegram))
+    db.commit()
+    db.close()
+
+# Update a user's frequency
+def updateUserFrequency(telegram, frequency):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('UPDATE users SET frequency = ? WHERE telegram_id = ?', (frequency, telegram))
+    db.commit()
+    db.close()
+
+# Update a user's ombi ID
+def updateUserOmbi(telegram, ombi):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('UPDATE users SET ombi_id = ? WHERE telegram_id = ?', (ombi, telegram))
     db.commit()
     db.close()
 

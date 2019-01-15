@@ -2,6 +2,7 @@ import logging
 from telegram.ext import Updater
 
 admins = []
+auto_approve = False
 api = None
 updater = None
 dispatcher = None

@@ -2,6 +2,17 @@ import sqlite3
 from backend import constants
 
 ###############
+# USERS TABLE #
+###############
+
+def deleteUser(id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('DELETE FROM users WHERE telegram_id = ?', (id,))
+    db.commit()
+    db.close()
+
+###############
 # SHOWS TABLE #
 ###############
 
