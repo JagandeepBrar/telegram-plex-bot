@@ -1,22 +1,23 @@
 import datetime
 
-###########
-# GENERAL #
-###########
-
-HOUR_IN_SECONDS = 3600
-DAY_IN_SECONDS = HOUR_IN_SECONDS*24
-WEEK_IN_SECONDS = DAY_IN_SECONDS*7
-INSERT_DATE = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
-
-
-#################################
-# CONFIGURATION & API ENDPOINTS #
-#################################
+#############################
+# APPLICATION CONFIGURATION #
+#############################
 
 CONFIG_FILE = "config.ini"
 DB_FILE = "database.db"
 BOT_NAME = "Plex Assistant"
+
+################
+# RESTRICTIONS #
+################
+
+RESTRICTED_NOTIFYSHOW = True
+RESTRICTED_NOTIFYMOVIE = True
+
+#################
+# API ENDPOINTS #
+#################
 
 SONARR_SYSTEM_STATUS = "system/status"
 SONARR_SERIES = "/series"
@@ -26,19 +27,31 @@ RADARR_SYSTEM_STATUS = "system/status"
 RADARR_MOVIES = "/movie"
 RADARR_MOVIES_LOOKUP = "/movie/lookup/tmdb?tmdbId="
 
+###########
+# GENERAL #
+###########
+
+HOUR_IN_SECONDS = 3600
+DAY_IN_SECONDS = HOUR_IN_SECONDS*24
+WEEK_IN_SECONDS = DAY_IN_SECONDS*7
+INSERT_DATE = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
+
 ############################
 # ACCOUNT COMMANDS RELATED #
 ############################
 
 ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by admins/owners._"
 ACCOUNT_UNREGISTERED = "_Sorry, you are not registered._\n\nUse /register to get started!"
+ACCOUNT_UNVERIFIED = "_Sorry, you are unverified._\n\nPlease wait for an admin/owner to verify your account."
+ACCOUNT_RESTRICTED = "_Sorry, you are restricted._\n\nThis command can only be run by unrestricted accounts."
+ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by unbanned accounts."
 
 # ACCOUNT REGISTRATION 
 
 ACCOUNT_REGISTER_STATE_FREQ, ACCOUNT_REGISTER_STATE_OMBI = range(2)
 ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\nHow frequently do you want to be notified on your monitored shows and movies?".format(BOT_NAME)
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip.\n\nYou can add your Ombi ID later to your account by typing /account."
-ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account will tell you the current status of your account."
+ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
 
 # USER FREQUENCY LEVELS
@@ -60,7 +73,7 @@ ACCOUNT_STATUS = ["admin", "unverified", "verified", "restricted", "banned"]
 ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin/owner!*\n\nYou have full access to all commands, use /help to see all available commands."
 ACCOUNT_STATUS_PENDING_MSG = "*You are registered!*\n\nYour account is pending verification, you will be notified when verification is complete."
 ACCOUNT_STATUS_VERIFIED_MSG = "*You are registered and verified!*\n\nUse /help to see all available commands."
-ACCOUNT_STATUS_RESTRICTED_MSG = "*You are registered and verified!*\n\nYour account is active, but restricted. Please inquire with the admin(s)."
+ACCOUNT_STATUS_RESTRICTED_MSG = "*You are verifed but restricted!*\n\nYour account is active, but your access is restricted. Please inquire with the admin(s)."
 ACCOUNT_STATUS_BANNED_MSG = "*You are banned!*\n\nPlease inquire with the admins(s)."
 ACCOUNT_STATUS_MSG = [ACCOUNT_STATUS_ADMIN_MSG, ACCOUNT_STATUS_PENDING_MSG, ACCOUNT_STATUS_VERIFIED_MSG, ACCOUNT_STATUS_RESTRICTED_MSG, ACCOUNT_STATUS_BANNED_MSG]
 

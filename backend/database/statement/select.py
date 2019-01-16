@@ -31,10 +31,20 @@ def getAdmins():
         admins.append(admin[0])
     return admins
 
-def isRegistered(id):
+# Checks if the supplied user ID is registered
+def isUserRegistered(id):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (str(id),))
+    db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (id,))
+    if(db_cursor.fetchone() is not None):
+        return True
+    return False
+
+# Checks if the supplied user ID is <status>
+def isUserStatus(id, status):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM users WHERE telegram_id = ? AND status = ?', (id,status))
     if(db_cursor.fetchone() is not None):
         return True
     return False
@@ -59,6 +69,12 @@ def getShow(id):
     db_cursor.execute('SELECT * FROM shows WHERE tvdb_id = ?', (id,))
     return db_cursor.fetchone()
 
+def getShowsSearch(text):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM shows WHERE name LIKE ?', ("%"+text+"%",))
+    return db_cursor.fetchall()
+
 ################
 # MOVIES TABLE #
 ################
@@ -78,3 +94,9 @@ def getMovie(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM movies WHERE tmdb_id = ?', (id,))
     return db_cursor.fetchone()
+
+def getMovieSearch(text):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM movies WHERE name LIKE ?', ("%"+text+"%",))
+    return db_cursor.fetchall()

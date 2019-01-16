@@ -5,12 +5,13 @@ import backend.api.telegram
 from telegram.ext import ConversationHandler
 from backend import constants
 from backend.api import ombi
+from backend.commands import checker
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
 from backend.database.statement import insert, select, delete, update as update_db
 
 # Start the registration process
 def register(bot, update):
-    if(select.getUser(update.message.chat_id) is None):
+    if(not select.isUserRegistered(update.message.chat_id)):
         insert.insertUser(update.message.chat_id, None, None, None, update.message.from_user.full_name)
         reply_keyboard = [['Immediately'], ['Daily'], ['Weekly']]
         update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
@@ -62,8 +63,6 @@ def register_cancel(bot, update):
 # Check the status of the asking user, and allow them to add their ombi ID
 @send_typing_action
 def account(bot, update):
-    if(select.isRegistered(update.message.chat_id)):
+    if(checker.checkRegistered(update)):
         user_status = select.getUser(update.message.chat_id)[1]
         update.message.reply_text(constants.ACCOUNT_STATUS_MSG[user_status], parse_mode=telegram.ParseMode.MARKDOWN)
-    else:
-        update.message.reply_text(constants.ACCOUNT_UNREGISTERED, parse_mode=telegram.ParseMode.MARKDOWN)
