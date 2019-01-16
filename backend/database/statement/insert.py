@@ -37,3 +37,14 @@ def insertMovie(tmdb, name):
     db_cursor.execute('INSERT OR IGNORE INTO movies(tmdb_id, name, updated) VALUES (?, ?, ?)', (tmdb, name, constants.INSERT_DATE))
     db.commit()
     db.close()
+
+###################
+# NOTIFIERS TABLE #
+###################
+
+def insertNotifier(id, telegram, media_id, media_type, desc):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('INSERT OR IGNORE INTO notifiers(watch_id, telegram_id, media_id, media_type, desc) VALUES (?, ?, ?, ?, ?)', (id, telegram, media_id, media_type, desc))
+    db.commit()
+    db.close()

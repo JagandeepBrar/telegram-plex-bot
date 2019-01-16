@@ -12,8 +12,8 @@ BOT_NAME = "Plex Assistant"
 # RESTRICTIONS #
 ################
 
-RESTRICTED_NOTIFYSHOW = True
-RESTRICTED_NOTIFYMOVIE = True
+RESTRICTED_WATCHSHOW = True
+RESTRICTED_WATCHMOVIE = True
 
 #################
 # API ENDPOINTS #
@@ -111,11 +111,28 @@ ACCOUNT_STATUS_FOOTER_MSG = "\n\nTap \"Exit\" or type /exit to exit account sett
 
 TELEVISION_FORCEUPDATE = "_Television database has been updated._"
 
+TELEVISION_WATCH_EMPTY_ARGS = "_/watchshow usage:_\n\n/watchshow <name of show>"
+TELEVISION_WATCH_EMPTY_SEARCH = "_Sorry, no shows were found containing those words._"
+TELEVISION_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the show, try making your search more specific."
+TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show according to your notification frequency preference."
+
 ###########################
 # MOVIES COMMANDS RELATED #
 ###########################
 
 MOVIES_FORCEUPDATE = "_Movies database has been updated._"
+
+MOVIES_WATCH_EMPTY_ARGS = "_/watchmovie usage:_\n\n/watchmovie <name of movie>"
+MOVIES_WATCH_EMPTY_SEARCH = "_Sorry, no movies were found containing those words._"
+MOVIES_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the movie, try making your search more specific."
+MOVIES_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified when this movie is available according to your notification frequency preference."
+
+#############################
+# NOTIFIER COMMANDS RELATED #
+#############################
+
+NOTIFIER_MEDIA_TYPE_TELEVISION = 0
+NOTIFIER_MEDIA_TYPE_MOVIE = 1
 
 ##########################
 # ADMIN COMMANDS RELATED #
@@ -127,12 +144,12 @@ ADMIN_GETACCESS_RESP = "`{}` - {}\n"
 
 ADMIN_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
 ADMIN_SETACCESS_SUCCESS_VERIFYALL = "_Successfully updated all unverified users to verified users._"
-ADMIN_SETACCESS_FAIL_ARGS = "_/setaccess usage:_\n\n/setaccess <Telegram ID (Integer)> <Status (String)>\n\n_To verify all unverified users:_\n\n/setaccess verifyall"
+ADMIN_SETACCESS_FAIL_ARGS = "_/setaccess usage:_\n\n/setaccess <Telegram ID> <Status>\n\n_To verify all unverified users:_\n\n/setaccess verifyall"
 ADMIN_SETACCESS_FAIL_TID = "_The supplied Telegram ID is not in the database of users._\n\nUse /getaccess to find a user's ID."
 ADMIN_SETACCESS_FAIL_STATUS = "_The supplied status is not a valid status. Valid statuses include:_\n\n- `admin`\n- `unverified`\n- `verified`\n- `restricted`\n- `banned`"
 ADMIN_SETACCESS_FAIL_VERIFYALL = "_There are no unverified users._"
 
-ADMIN_FORCEUPDATE_FAILED_ARGS = "_/forceupdate usage:_\n\n/forceupdate <Database (String)>"
+ADMIN_FORCEUPDATE_FAILED_ARGS = "_/forceupdate usage:_\n\n/forceupdate <Database>"
 ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database. Valid databases include:_\n\n- `shows`\n- `movies`\n- `all`"
 
 ####################
@@ -140,6 +157,8 @@ ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database.
 ####################
 
 ADMIN_GETACCESS_CALLBACK = "account_GETACCESS_"
+TELEVISION_WATCH_CALLBACK = "television_WATCHSHOW_"
+MOVIES_WATCH_CALLBACK = "movie_WATCHMOVIE_"
 
 ###########
 # METHODS #

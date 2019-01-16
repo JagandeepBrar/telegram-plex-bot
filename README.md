@@ -21,7 +21,7 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 - SABnzbd/NZBget implementations
 
-## Implementation
+## Databases
 
 ### Users
 
@@ -49,3 +49,12 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 |:----:|:-------:|
 | 0    | Simple  |
 | 1    | Complex |
+
+### Notifiers
+
+#### Media Type
+
+| Code | Type       |
+|:----:|:----------:|
+| 0    | Television |
+| 1    | Movies     |

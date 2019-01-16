@@ -69,6 +69,12 @@ def getShow(id):
     db_cursor.execute('SELECT * FROM shows WHERE tvdb_id = ?', (id,))
     return db_cursor.fetchone()
 
+def getShowByName(name):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM shows WHERE name = ?', (name,))
+    return db_cursor.fetchone()
+
 def getShowsSearch(text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
@@ -95,7 +101,13 @@ def getMovie(id):
     db_cursor.execute('SELECT * FROM movies WHERE tmdb_id = ?', (id,))
     return db_cursor.fetchone()
 
-def getMovieSearch(text):
+def getMovieByName(name):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM movies WHERE name = ?', (name,))
+    return db_cursor.fetchone()
+
+def getMoviesSearch(text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM movies WHERE name LIKE ?', ("%"+text+"%",))
