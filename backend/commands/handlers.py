@@ -12,18 +12,35 @@ def initialize():
             CommandHandler("start", account.register),
             CommandHandler("register", account.register)
         ],
-        fallbacks = [CommandHandler("cancel", account.register_cancel)],
+        fallbacks = [CommandHandler("cancel", account.registerCancel)],
         states = {
             constants.ACCOUNT_REGISTER_STATE_FREQ: [
-                RegexHandler('^(Immediately|Daily|Weekly)$', account.register_frequency)
+                RegexHandler(constants.ACCOUNT_FREQUENCY_REGEX, account.registerFrequency)
             ],
             constants.ACCOUNT_REGISTER_STATE_OMBI: [
-                MessageHandler(Filters.text, account.register_ombi),
-                CommandHandler("skip", account.register_ombi_skip)
+                MessageHandler(Filters.text, account.registerOmbi),
+                CommandHandler("skip", account.registerOmbiSkip)
             ]
         }
     ))
-    telegram.dispatcher.add_handler(CommandHandler("account", account.account))
+    telegram.dispatcher.add_handler(ConversationHandler(
+        entry_points = [
+            CommandHandler("account", account.account)
+        ],
+        fallbacks = [CommandHandler("exit", account.accountExit)],
+        states = {
+            constants.ACCOUNT_STATE_OPTIONS: [
+                RegexHandler(constants.ACCOUNT_OPTIONS_REGEX, account.accountOptions)
+            ],
+            constants.ACCOUNT_STATE_OMBI: [
+                MessageHandler(Filters.text, account.accountUpdateOmbi),
+                CommandHandler("skip", account.accountUpdateOmbiSkip)
+            ],
+            constants.ACCOUNT_STATE_FREQ: [
+                RegexHandler(constants.ACCOUNT_FREQUENCY_REGEX, account.accountUpdateFrequency)
+            ]
+        }
+    ))
     # Notification related
     telegram.dispatcher.add_handler(CommandHandler("notifyshow", notify.notifyShow, pass_args=True))
     telegram.dispatcher.add_handler(CommandHandler("notifymovie", notify.notifyMovie, pass_args=True))

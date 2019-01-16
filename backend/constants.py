@@ -40,6 +40,20 @@ INSERT_DATE = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
 # ACCOUNT COMMANDS RELATED #
 ############################
 
+# ACCOUNT COMMAND OPTIONS
+
+ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_FREQ = range(3)
+ACCOUNT_OMBI = "Update Ombi ID"
+ACCOUNT_FREQ = "Update Notification Frequency"
+ACCOUNT_EXIT = "Exit"
+ACCOUNT_OPTIONS_REGEX = "^(Update Ombi ID|Update Notification Frequency|Exit)$"
+
+ACCOUNT_FREQ_UPDATED_MSG = "_Notification frequency has been updated._"
+ACCOUNT_OMBI_UPDATED_MSG = "_Ombi ID has been updated._"
+ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Ombi ID:* {}\n*Name:* {}\n"
+
+# ACCOUNT STATUS INCORRECT MESSAGES
+
 ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by admins/owners._"
 ACCOUNT_UNREGISTERED = "_Sorry, you are not registered._\n\nUse /register to get started!"
 ACCOUNT_UNVERIFIED = "_Sorry, you are unverified._\n\nPlease wait for an admin/owner to verify your account."
@@ -49,8 +63,9 @@ ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by un
 # ACCOUNT REGISTRATION 
 
 ACCOUNT_REGISTER_STATE_FREQ, ACCOUNT_REGISTER_STATE_OMBI = range(2)
-ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\nHow frequently do you want to be notified on your monitored shows and movies?".format(BOT_NAME)
-ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip.\n\nYou can add your Ombi ID later to your account by typing /account."
+ACCOUNT_REGISTER_FREQ = "How frequently do you want to be notified on your monitored shows and movies?"
+ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
+ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n".format(BOT_NAME)+ACCOUNT_REGISTER_FREQ
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
 
@@ -59,7 +74,8 @@ ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /re
 ACCOUNT_FREQUENCY_IMMEDIATELY = 0
 ACCOUNT_FREQUENCY_DAILY = 1
 ACCOUNT_FREQUENCY_WEEKLY = 2
-ACCOUNT_FREQUENCY = ["immediately", "daily", "weekly"]
+ACCOUNT_FREQUENCY = ["Immediately", "Daily", "Weekly"]
+ACCOUNT_FREQUENCY_REGEX = "^(Immediately|Daily|Weekly)$"
 
 # USER ACCESS LEVELS
 ACCOUNT_STATUS_ADMIN = 0
@@ -77,6 +93,8 @@ ACCOUNT_STATUS_RESTRICTED_MSG = "*You are verifed but restricted!*\n\nYour accou
 ACCOUNT_STATUS_BANNED_MSG = "*You are banned!*\n\nPlease inquire with the admins(s)."
 ACCOUNT_STATUS_MSG = [ACCOUNT_STATUS_ADMIN_MSG, ACCOUNT_STATUS_PENDING_MSG, ACCOUNT_STATUS_VERIFIED_MSG, ACCOUNT_STATUS_RESTRICTED_MSG, ACCOUNT_STATUS_BANNED_MSG]
 
+ACCOUNT_STATUS_FOOTER_MSG = "\n\nTap \"Exit\" or type /exit to exit account settings."
+
 ###############################
 # TELEVISION COMMANDS RELATED #
 ###############################
@@ -92,7 +110,6 @@ MOVIES_FORCEUPDATE = "_Movies database has been updated._"
 ##########################
 # ADMIN COMMANDS RELATED #
 ##########################
-
 
 ADMIN_GETACCESS_MSG ="Please select the user access level:"
 ADMIN_GETACCESS_HEADER = "_{} User(s)_:\n\n"
