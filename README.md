@@ -4,6 +4,10 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 *Implemention of more applications will occur overtime*
 
+## To-Do List
+
+- Comment code
+
 ## Features
 
 ### Planned
@@ -23,10 +27,25 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 #### Status
 
-| Status Code |  Type  |               Verification                |
-|:-----------:|:------:|:-----------------------------------------:|
-| 0           | Admin  | -                                         |
-| 1           | Normal | <b style="color: yellow;">Unverified</b>  |
-| 2           | Normal | <b style="color: lime;">Verified</b>      |
-| 3           | Normal | <b style="color: fuchsia;">Restricted</b> |
-| 4           | Normal | <b style="color: red;">Banned</b>         |
+| Code |  Type  | Verification |
+|:----:|:------:|:------------:|
+| 0    | Admin  | -            |
+| 1    | Normal | Unverified   |
+| 2    | Normal | Verified     |
+| 3    | Normal | Restricted   |
+| 4    | Normal | Banned       |
+
+#### Frequency
+
+| Code | Timeframe    |
+|:----:|:------------:|
+| 0    | Immediately  |
+| 1    | Daily        |
+| 2    | Weekly       |
+
+#### Detail
+
+| Code | Details |
+|:----:|:-------:|
+| 0    | Simple  |
+| 1    | Complex |
