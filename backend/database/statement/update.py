@@ -7,10 +7,10 @@ from backend import constants
 ###############
 
 # Update a user's data already in the database
-def updateUser(telegram, status, frequency, ombi, name):
+def updateUser(telegram, status, frequency, detail, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ?, frequency = ? WHERE telegram_id = ?', (ombi, name, status, frequency, telegram))
+    db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ?, frequency = ?, detail = ? WHERE telegram_id = ?', (ombi, name, status, frequency, detail, telegram))
     db.commit()
     db.close()
 
