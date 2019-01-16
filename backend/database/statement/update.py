@@ -22,6 +22,14 @@ def updateUserStatus(telegram, status):
     db.commit()
     db.close()
 
+# Update a user's detail preference
+def updateUserDetail(telegram, detail):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('UPDATE users SET detail = ? WHERE telegram_id = ?', (detail, telegram))
+    db.commit()
+    db.close()
+
 # Update a user's frequency
 def updateUserFrequency(telegram, frequency):
     db = sqlite3.connect(constants.DB_FILE)

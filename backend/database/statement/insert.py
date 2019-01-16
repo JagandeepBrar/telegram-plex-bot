@@ -7,10 +7,10 @@ from backend import constants
 ###############
 
 # Insert a new user into the database
-def insertUser(telegram, status, frequency, ombi, name):
+def insertUser(telegram, status, frequency, detail, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, frequency, ombi_id, name) VALUES (?, ?, ?, ?, ?)', (telegram, status, frequency, ombi, name))
+    db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, frequency, detail, ombi_id, name) VALUES (?, ?, ?, ?, ?, ?)', (telegram, status, frequency, detail, ombi, name))
     db.commit()
     db.close()
 

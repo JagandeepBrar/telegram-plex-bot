@@ -12,7 +12,7 @@ from backend.database.statement import insert, select, delete, update as update_
 # Start the registration process
 def register(bot, update):
     if(not select.isUserRegistered(update.message.chat_id)):
-        insert.insertUser(update.message.chat_id, None, None, None, update.message.from_user.full_name)
+        insert.insertUser(update.message.chat_id, None, None, None, None, update.message.from_user.full_name)
         reply_keyboard = [[constants.ACCOUNT_FREQUENCY[0]], [constants.ACCOUNT_FREQUENCY[1]], [constants.ACCOUNT_FREQUENCY[2]]]
         update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
         return constants.ACCOUNT_REGISTER_STATE_FREQ
@@ -23,6 +23,13 @@ def register(bot, update):
 # Register the user's frequency preference
 def registerFrequency(bot, update):
     update_db.updateUserFrequency(update.message.chat_id, constants.ACCOUNT_FREQUENCY.index(update.message.text))
+    reply_keyboard = [[constants.ACCOUNT_DETAIL[0]], [constants.ACCOUNT_DETAIL[1]]]
+    update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+    return constants.ACCOUNT_REGISTER_STATE_DETAIL
+
+# Register the user's detail notification preference
+def registerDetail(bot, update):
+    update_db.updateUserDetail(update.message.chat_id, constants.ACCOUNT_DETAIL.index(update.message.text))
     if(ombi.enabled):
         update.message.reply_text(constants.ACCOUNT_REGISTER_OMBI, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return constants.ACCOUNT_REGISTER_STATE_OMBI
@@ -62,7 +69,7 @@ def registerCancel(bot, update):
 def account(bot, update):
     if(checker.checkRegistered(update)):
         user_status = select.getUser(update.message.chat_id)[1]
-        reply_keyboard = [[constants.ACCOUNT_OMBI], [constants.ACCOUNT_FREQ], [constants.ACCOUNT_EXIT]]
+        reply_keyboard = [[constants.ACCOUNT_OMBI], [constants.ACCOUNT_FREQ], [constants.ACCOUNT_DEET], [constants.ACCOUNT_EXIT]]
         update.message.reply_text(constants.ACCOUNT_STATUS_MSG[user_status]+constants.ACCOUNT_STATUS_FOOTER_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
         return constants.ACCOUNT_STATE_OPTIONS
     else:
@@ -77,6 +84,10 @@ def accountOptions(bot, update):
     elif(option == constants.ACCOUNT_OMBI):
         update.message.reply_text(constants.ACCOUNT_REGISTER_OMBI, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return constants.ACCOUNT_STATE_OMBI
+    elif(option == constants.ACCOUNT_DEET):
+        reply_keyboard = [[constants.ACCOUNT_DETAIL[0]], [constants.ACCOUNT_DETAIL[1]]]
+        update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+        return constants.ACCOUNT_STATE_DETAIL
     else:
         return accountExit(bot, update)
 
@@ -93,8 +104,13 @@ def accountUpdateFrequency(bot, update):
     update.message.reply_text(constants.ACCOUNT_FREQ_UPDATED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return account(bot, update)
 
+def accountUpdateDetail(bot, update):
+    update_db.updateUserDetail(update.message.chat_id, constants.ACCOUNT_DETAIL.index(update.message.text))
+    update.message.reply_text(constants.ACCOUNT_DETAIL_UPDATED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+    return account(bot, update)
+
 def accountExit(bot, update):
     user = select.getUser(update.message.chat_id)
-    resp = constants.ACCOUNT_CLOSED_MSG.format(user[0], constants.ACCOUNT_STATUS[user[1]].capitalize(), constants.ACCOUNT_FREQUENCY[user[2]], user[3], user[4])
+    resp = constants.ACCOUNT_CLOSED_MSG.format(user[0], constants.ACCOUNT_STATUS[user[1]].capitalize(), constants.ACCOUNT_FREQUENCY[user[2]], constants.ACCOUNT_DETAIL[user[3]], user[4], user[5])
     update.message.reply_text(resp, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return ConversationHandler.END

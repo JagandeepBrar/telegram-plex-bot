@@ -42,15 +42,17 @@ INSERT_DATE = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
 
 # ACCOUNT COMMAND OPTIONS
 
-ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_FREQ = range(3)
+ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_FREQ, ACCOUNT_STATE_DETAIL = range(4)
 ACCOUNT_OMBI = "Update Ombi ID"
 ACCOUNT_FREQ = "Update Notification Frequency"
+ACCOUNT_DEET = "Update Notification Detail"
 ACCOUNT_EXIT = "Exit"
-ACCOUNT_OPTIONS_REGEX = "^(Update Ombi ID|Update Notification Frequency|Exit)$"
+ACCOUNT_OPTIONS_REGEX = "^(Update Ombi ID|Update Notification Frequency|Update Notification Detail|Exit)$"
 
 ACCOUNT_FREQ_UPDATED_MSG = "_Notification frequency has been updated._"
+ACCOUNT_DETAIL_UPDATED_MSG = "_Notification detail has been updated._"
 ACCOUNT_OMBI_UPDATED_MSG = "_Ombi ID has been updated._"
-ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Ombi ID:* {}\n*Name:* {}\n"
+ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
 
 # ACCOUNT STATUS INCORRECT MESSAGES
 
@@ -62,10 +64,11 @@ ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by un
 
 # ACCOUNT REGISTRATION 
 
-ACCOUNT_REGISTER_STATE_FREQ, ACCOUNT_REGISTER_STATE_OMBI = range(2)
+ACCOUNT_REGISTER_STATE_FREQ, ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL = range(3)
 ACCOUNT_REGISTER_FREQ = "How frequently do you want to be notified on your monitored shows and movies?"
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
 ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n".format(BOT_NAME)+ACCOUNT_REGISTER_FREQ
+ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your notifications?"
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
 
@@ -76,6 +79,13 @@ ACCOUNT_FREQUENCY_DAILY = 1
 ACCOUNT_FREQUENCY_WEEKLY = 2
 ACCOUNT_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 ACCOUNT_FREQUENCY_REGEX = "^(Immediately|Daily|Weekly)$"
+
+# USER DETAILED LEVELS
+
+ACCOUNT_DETAIL_SIMPLE = 0
+ACCOUNT_DETAIL_COMPLEX = 1
+ACCOUNT_DETAIL = ["Simple", "Complex"]
+ACCOUNT_DETAIL_REGEX = "^(Simple|Complex)$"
 
 # USER ACCESS LEVELS
 ACCOUNT_STATUS_ADMIN = 0
@@ -115,7 +125,7 @@ ADMIN_GETACCESS_MSG ="Please select the user access level:"
 ADMIN_GETACCESS_HEADER = "_{} User(s)_:\n\n"
 ADMIN_GETACCESS_RESP = "`{}` - {}\n"
 
-ADMIN_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Ombi ID:* {}\n*Name:* {}\n"
+ADMIN_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
 ADMIN_SETACCESS_SUCCESS_VERIFYALL = "_Successfully updated all unverified users to verified users._"
 ADMIN_SETACCESS_FAIL_ARGS = "_/setaccess usage:_\n\n/setaccess <Telegram ID (Integer)> <Status (String)>\n\n_To verify all unverified users:_\n\n/setaccess verifyall"
 ADMIN_SETACCESS_FAIL_TID = "_The supplied Telegram ID is not in the database of users._\n\nUse /getaccess to find a user's ID."

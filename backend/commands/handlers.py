@@ -6,7 +6,12 @@ from backend.commands.command import account, admin, notify
 from backend import constants
 
 def initialize():
-    # Account-Related
+    conversationHandlers()
+    commandHandlers()
+    callbackQueryHandlers()
+    logging.getLogger(__name__).info("Telegram command handlers initialized")
+
+def conversationHandlers():
     telegram.dispatcher.add_handler(ConversationHandler(
         entry_points = [
             CommandHandler("start", account.register),
@@ -16,6 +21,9 @@ def initialize():
         states = {
             constants.ACCOUNT_REGISTER_STATE_FREQ: [
                 RegexHandler(constants.ACCOUNT_FREQUENCY_REGEX, account.registerFrequency)
+            ],
+            constants.ACCOUNT_REGISTER_STATE_DETAIL: [
+                RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.registerDetail)
             ],
             constants.ACCOUNT_REGISTER_STATE_OMBI: [
                 MessageHandler(Filters.text, account.registerOmbi),
@@ -36,11 +44,16 @@ def initialize():
                 MessageHandler(Filters.text, account.accountUpdateOmbi),
                 CommandHandler("skip", account.accountUpdateOmbiSkip)
             ],
+            constants.ACCOUNT_STATE_DETAIL: [
+                RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.accountUpdateDetail)
+            ],
             constants.ACCOUNT_STATE_FREQ: [
                 RegexHandler(constants.ACCOUNT_FREQUENCY_REGEX, account.accountUpdateFrequency)
             ]
         }
     ))
+
+def commandHandlers():
     # Notification related
     telegram.dispatcher.add_handler(CommandHandler("notifyshow", notify.notifyShow, pass_args=True))
     telegram.dispatcher.add_handler(CommandHandler("notifymovie", notify.notifyMovie, pass_args=True))
@@ -48,7 +61,7 @@ def initialize():
     telegram.dispatcher.add_handler(CommandHandler("getaccess", admin.getAccess))
     telegram.dispatcher.add_handler(CommandHandler("setaccess", admin.setAccess, pass_args=True))
     telegram.dispatcher.add_handler(CommandHandler("forceupdate", admin.forceUpdate, pass_args=True))
-    #CallbackQuery Handlers
-    telegram.dispatcher.add_handler(CallbackQueryHandler(admin.getAccessCallback, pattern="^"+constants.ADMIN_GETACCESS_CALLBACK))
 
-    logging.getLogger(__name__).info("Telegram command handlers initialized")
+def callbackQueryHandlers():
+    telegram.dispatcher.add_handler(CallbackQueryHandler(admin.getAccessCallback, pattern="^"+constants.ADMIN_GETACCESS_CALLBACK))
+    

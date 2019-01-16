@@ -14,7 +14,7 @@ def start():
     handlers.initialize()
     jobs.initialize()
     # If it got here, it means that everything has initialized correctly so the bot is about to start
-    logging.getLogger("start.main").info("{} (@{}) has started!".format(constants.BOT_NAME, telegram.updater.bot.username))
+    logging.getLogger("start.main").info("{} ({}: @{}) has started!".format(constants.BOT_NAME, telegram.updater.bot.id, telegram.updater.bot.username))
     telegram.updater.start_polling()
     telegram.updater.idle()
 

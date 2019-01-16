@@ -1,5 +1,5 @@
 from backend.api import telegram, sonarr, radarr
-from backend.scheduler import catalogue
+from backend.scheduler import catalogue, notify
 from backend import constants
 import time
 import logging
@@ -21,14 +21,15 @@ def addDefaultJobs():
         addRepeatingJob(catalogue.updateTelevision, constants.hoursToSeconds(sonarr.update_frequency))
     if(radarr.enabled):
         addRepeatingJob(catalogue.updateMovies, constants.hoursToSeconds(radarr.update_frequency))
-
+    addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), constants.hoursToSeconds(24))
+    addRepeatingJob(notify.notifyWeekly, constants.daysToSeconds(7), constants.daysToSeconds(7))
 
 # Creates a repeating job, which will call <func> every <delay> seconds, with the first execution happening after <first> seconds
 def addRepeatingJob(func, delay, first=0):
     job_queue.run_repeating(func, interval=delay, first=0)
-    logger.info("Repeating job added to queue: {}, delay {}, first {}".format(func.__name__, delay, first))
+    logger.info("Repeating job added to queue: {}, repeat delay: {}s, start delay: {}s".format(func.__name__, delay, first))
 
 # Creates a single job, that will execute after <delay> seconds
 def addSingleJob(func, delay):
     job_queue.run_once(func, delay)
-    logger.info("Single job added to queue: {}, delay {}".format(func, delay))
+    logger.info("Single job added to queue: {}, start delay: {}s".format(func, delay))
