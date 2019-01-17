@@ -2,7 +2,7 @@ import logging
 import backend.api.telegram as telegram
 from functools import wraps
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, ConversationHandler, RegexHandler, Filters
-from backend.commands.command import account, admin, movies, television
+from backend.commands.command import account, admin, movies, television, watcher
 from backend import constants
 
 def initialize():
@@ -54,9 +54,8 @@ def conversationHandlers():
     ))
 
 def commandHandlers():
-    # Notification related
-    telegram.dispatcher.add_handler(CommandHandler("watchshow", television.watchShow, pass_args=True))
-    telegram.dispatcher.add_handler(CommandHandler("watchmovie", movies.watchMovie, pass_args=True))
+    # Watcher related
+    telegram.dispatcher.add_handler(CommandHandler("watch", watcher.watch, pass_args=True))
     #Admin-Only
     telegram.dispatcher.add_handler(CommandHandler("getaccess", admin.getAccess))
     telegram.dispatcher.add_handler(CommandHandler("setaccess", admin.setAccess, pass_args=True))

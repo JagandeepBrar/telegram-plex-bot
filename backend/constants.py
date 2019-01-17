@@ -12,8 +12,7 @@ BOT_NAME = "Plex Assistant"
 # RESTRICTIONS #
 ################
 
-RESTRICTED_WATCHSHOW = True
-RESTRICTED_WATCHMOVIE = True
+RESTRICTED_WATCHER_WATCH = True
 
 #################
 # API ENDPOINTS #
@@ -34,7 +33,6 @@ RADARR_MOVIES_LOOKUP = "/movie/lookup/tmdb?tmdbId="
 HOUR_IN_SECONDS = 3600
 DAY_IN_SECONDS = HOUR_IN_SECONDS*24
 WEEK_IN_SECONDS = DAY_IN_SECONDS*7
-INSERT_DATE = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
 
 ############################
 # ACCOUNT COMMANDS RELATED #
@@ -105,13 +103,21 @@ ACCOUNT_STATUS_MSG = [ACCOUNT_STATUS_ADMIN_MSG, ACCOUNT_STATUS_PENDING_MSG, ACCO
 
 ACCOUNT_STATUS_FOOTER_MSG = "\n\nTap \"Exit\" or type /exit to exit account settings."
 
+############################
+# WATCHER COMMANDS RELATED #
+############################
+
+WATCHER_WATCH_EMPTY_ARGS =  "_/watch usage:_\n\n/watch <type> <name>"
+WATCHER_WATCH_INCORRECT_TYPE = "_Sorry, that is not a valid type of media._"
+WATCHER_WATCH_MOVIE_SYNONYMS = ['movie', 'movies', 'film']
+WATCHER_WATCH_SHOW_SYNONYMS = ['show', 'television', 'series']
+
 ###############################
 # TELEVISION COMMANDS RELATED #
 ###############################
 
 TELEVISION_FORCEUPDATE = "_Television database has been updated._"
 
-TELEVISION_WATCH_EMPTY_ARGS = "_/watchshow usage:_\n\n/watchshow <name of show>"
 TELEVISION_WATCH_EMPTY_SEARCH = "_Sorry, no shows were found containing those words._"
 TELEVISION_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the show, try making your search more specific."
 TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show according to your notification frequency preference."
@@ -122,7 +128,6 @@ TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified
 
 MOVIES_FORCEUPDATE = "_Movies database has been updated._"
 
-MOVIES_WATCH_EMPTY_ARGS = "_/watchmovie usage:_\n\n/watchmovie <name of movie>"
 MOVIES_WATCH_EMPTY_SEARCH = "_Sorry, no movies were found containing those words._"
 MOVIES_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the movie, try making your search more specific."
 MOVIES_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified when this movie is available according to your notification frequency preference."

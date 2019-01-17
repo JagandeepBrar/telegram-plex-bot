@@ -13,21 +13,16 @@ def forceUpdate(bot, update):
     catalogue.updateTelevision(None, None)
     update.message.reply_text(constants.TELEVISION_FORCEUPDATE, parse_mode=telegram.ParseMode.MARKDOWN)
 
-@send_typing_action
 def watchShow(bot, update, args):
-    if(checker.checkAllowed(update, constants.RESTRICTED_WATCHSHOW)):
-        if((len(args) == 0)):
-            update.message.reply_text(constants.TELEVISION_WATCH_EMPTY_ARGS, parse_mode=telegram.ParseMode.MARKDOWN)
-            return False
-        show_search = select.getShowsSearch(" ".join(args))
-        if(len(show_search) == 0):
-            update.message.reply_text(constants.TELEVISION_WATCH_EMPTY_SEARCH, parse_mode=telegram.ParseMode.MARKDOWN)
-            return False
-        keyboard = []
-        for show in range(min(10, len(show_search))):
-            keyboard.append([telegram.InlineKeyboardButton(show_search[show][1], callback_data=constants.TELEVISION_WATCH_CALLBACK+show_search[show][1])])
-        reply_markup = telegram.InlineKeyboardMarkup(keyboard)
-        update.message.reply_text(constants.TELEVISION_WATCH_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
+    show_search = select.getShowsSearch(" ".join(args))
+    if(len(show_search) == 0):
+        update.message.reply_text(constants.TELEVISION_WATCH_EMPTY_SEARCH, parse_mode=telegram.ParseMode.MARKDOWN)
+        return False
+    keyboard = []
+    for show in range(min(10, len(show_search))):
+        keyboard.append([telegram.InlineKeyboardButton(show_search[show][1], callback_data=constants.TELEVISION_WATCH_CALLBACK+show_search[show][1])])
+    reply_markup = telegram.InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(constants.TELEVISION_WATCH_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
 
 def watchShowCallback(bot, update):
     show_name = update.callback_query.data[len(constants.TELEVISION_WATCH_CALLBACK):]
@@ -35,8 +30,8 @@ def watchShowCallback(bot, update):
     telegram_id = update.callback_query.message.chat_id
     telegram_name = update._effective_user.full_name
     watch_id = str(telegram_id)+str(constants.NOTIFIER_MEDIA_TYPE_TELEVISION)+str(show_id)
-    desc = telegram_name + " monitoring " + show_name
+    desc = telegram_name + " watching " + show_name
 
     insert.insertNotifier(watch_id, telegram_id, show_id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, desc)
-    logging.getLogger(__name__).info("{} started monitoring a show: {}".format(telegram_name, show_name))
+    logging.getLogger(__name__).info("{} started watching a show: {}".format(telegram_name, show_name))
     bot.edit_message_text(text=constants.TELEVISION_WATCH_SUCCESS.format(show_name),chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
