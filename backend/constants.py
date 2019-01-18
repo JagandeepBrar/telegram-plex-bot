@@ -13,6 +13,7 @@ BOT_NAME = "Plex Assistant"
 ################
 
 RESTRICTED_WATCHER_WATCH = True
+RESTRICTED_WATCHER_UNWATCH = True
 
 #################
 # API ENDPOINTS #
@@ -41,11 +42,12 @@ WEEK_IN_SECONDS = DAY_IN_SECONDS*7
 # ACCOUNT COMMAND OPTIONS
 
 ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_FREQ, ACCOUNT_STATE_DETAIL = range(4)
-ACCOUNT_OMBI = "Update Ombi ID"
-ACCOUNT_FREQ = "Update Notification Frequency"
-ACCOUNT_DEET = "Update Notification Detail"
-ACCOUNT_EXIT = "Exit"
-ACCOUNT_OPTIONS_REGEX = "^(Update Ombi ID|Update Notification Frequency|Update Notification Detail|Exit)$"
+ACCOUNT_OPTIONS = ["Update Ombi ID", "Update Notification Frequency", "Update Notification Detail", "Exit"]
+ACCOUNT_OPTIONS_REGEX = "^({}|{}|{}|{})$".format(ACCOUNT_OPTIONS[0], ACCOUNT_OPTIONS[1], ACCOUNT_OPTIONS[2], ACCOUNT_OPTIONS[3])
+
+ACCOUNT_OPTIONS_REPLY_MARKUP = []
+for opt in range(len(ACCOUNT_OPTIONS)):
+    ACCOUNT_OPTIONS_REPLY_MARKUP.append([ACCOUNT_OPTIONS[opt]])
 
 ACCOUNT_FREQ_UPDATED_MSG = "_Notification frequency has been updated._"
 ACCOUNT_DETAIL_UPDATED_MSG = "_Notification detail has been updated._"
@@ -76,14 +78,22 @@ ACCOUNT_FREQUENCY_IMMEDIATELY = 0
 ACCOUNT_FREQUENCY_DAILY = 1
 ACCOUNT_FREQUENCY_WEEKLY = 2
 ACCOUNT_FREQUENCY = ["Immediately", "Daily", "Weekly"]
-ACCOUNT_FREQUENCY_REGEX = "^(Immediately|Daily|Weekly)$"
+ACCOUNT_FREQUENCY_REGEX = "^({}|{}|{})$".format(ACCOUNT_FREQUENCY[0], ACCOUNT_FREQUENCY[1], ACCOUNT_FREQUENCY[2])
+
+ACCOUNT_FREQUENCY_REPLY_MARKUP = []
+for opt in range(len(ACCOUNT_FREQUENCY)):
+    ACCOUNT_FREQUENCY_REPLY_MARKUP.append([ACCOUNT_FREQUENCY[opt]])
 
 # USER DETAILED LEVELS
 
 ACCOUNT_DETAIL_SIMPLE = 0
 ACCOUNT_DETAIL_COMPLEX = 1
 ACCOUNT_DETAIL = ["Simple", "Complex"]
-ACCOUNT_DETAIL_REGEX = "^(Simple|Complex)$"
+ACCOUNT_DETAIL_REGEX = "^({}|{})$".format(ACCOUNT_DETAIL[0], ACCOUNT_DETAIL[1])
+
+ACCOUNT_DETAIL_REPLY_MARKUP = []
+for opt in range(len(ACCOUNT_DETAIL)):
+    ACCOUNT_DETAIL_REPLY_MARKUP.append([ACCOUNT_DETAIL[opt]])
 
 # USER ACCESS LEVELS
 ACCOUNT_STATUS_ADMIN = 0
@@ -112,6 +122,8 @@ WATCHER_WATCH_INCORRECT_TYPE = "_Sorry, that is not a valid type of media._"
 WATCHER_WATCH_MOVIE_SYNONYMS = ['movie', 'movies', 'film']
 WATCHER_WATCH_SHOW_SYNONYMS = ['show', 'television', 'series']
 
+WATCHER_UNWATCH_EMPTY_ARGS = "_/unwatch usage:_\n\n/unwatch <type> <name>"
+
 ###############################
 # TELEVISION COMMANDS RELATED #
 ###############################
@@ -122,6 +134,8 @@ TELEVISION_WATCH_EMPTY_SEARCH = "_Sorry, no shows were found containing those wo
 TELEVISION_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the show, try making your search more specific."
 TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show according to your notification frequency preference."
 
+TELEVISION_UNWATCH_SUCCESS = "_You have stopped watching *{}!*\n\nYou will no longer be notified for any new episodes."
+
 ###########################
 # MOVIES COMMANDS RELATED #
 ###########################
@@ -131,6 +145,8 @@ MOVIES_FORCEUPDATE = "_Movies database has been updated._"
 MOVIES_WATCH_EMPTY_SEARCH = "_Sorry, no movies were found containing those words._"
 MOVIES_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the movie, try making your search more specific."
 MOVIES_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified when this movie is available according to your notification frequency preference."
+
+MOVIES_UNWATCH_SUCCESS = "_You have stopped watching *{}!*\n\nYou will no longer be notified when this movie is available."
 
 #############################
 # NOTIFIER COMMANDS RELATED #
@@ -162,8 +178,12 @@ ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database.
 ####################
 
 ADMIN_GETACCESS_CALLBACK = "account_GETACCESS_"
+
 TELEVISION_WATCH_CALLBACK = "television_WATCHSHOW_"
+TELEVISION_UNWATCH_CALLBACK = "television_UNWATCHSHOW_"
+
 MOVIES_WATCH_CALLBACK = "movie_WATCHMOVIE_"
+MOVIES_UNWATCH_CALLBACK = "movie_UNWATCHMOVIE_"
 
 ###########
 # METHODS #

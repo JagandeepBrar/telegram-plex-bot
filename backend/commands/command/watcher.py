@@ -22,3 +22,18 @@ def watch(bot, update, args):
             print(args[1:])
             return movies.watchMovie(bot, update, args[1:])
         update.message.reply_text(constants.WATCHER_WATCH_INCORRECT_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)
+
+@send_typing_action
+def unwatch(bot, update, args):
+    if(checker.checkAllowed(update, constants.RESTRICTED_WATCHER_UNWATCH)):
+        if(len(args) < 2):
+            update.message.reply_text(constants.WATCHER_UNWATCH_EMPTY_ARGS, parse_mode=telegram.ParseMode.MARKDOWN)
+            return False
+        media_type = args[0].lower()
+        if(media_type in constants.WATCHER_WATCH_SHOW_SYNONYMS):
+            print(args[1:])
+            return television.unwatchShow(bot, update, args[1:])
+        if(media_type in constants.WATCHER_WATCH_MOVIE_SYNONYMS):
+            print(args[1:])
+            return movies.unwatchMovie(bot, update, args[1:])
+        update.message.reply_text(constants.WATCHER_WATCH_INCORRECT_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)

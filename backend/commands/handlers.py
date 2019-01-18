@@ -56,6 +56,7 @@ def conversationHandlers():
 def commandHandlers():
     # Watcher related
     telegram.dispatcher.add_handler(CommandHandler("watch", watcher.watch, pass_args=True))
+    telegram.dispatcher.add_handler(CommandHandler("unwatch", watcher.watch, pass_args=True))
     #Admin-Only
     telegram.dispatcher.add_handler(CommandHandler("getaccess", admin.getAccess))
     telegram.dispatcher.add_handler(CommandHandler("setaccess", admin.setAccess, pass_args=True))
@@ -63,5 +64,9 @@ def commandHandlers():
 
 def callbackQueryHandlers():
     telegram.dispatcher.add_handler(CallbackQueryHandler(admin.getAccessCallback, pattern="^"+constants.ADMIN_GETACCESS_CALLBACK))
+
     telegram.dispatcher.add_handler(CallbackQueryHandler(television.watchShowCallback, pattern="^"+constants.TELEVISION_WATCH_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(television.unwatchShowCallback, pattern="^"+constants.TELEVISION_UNWATCH_CALLBACK))
+    
     telegram.dispatcher.add_handler(CallbackQueryHandler(movies.watchMovieCallback, pattern="^"+constants.MOVIES_WATCH_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(movies.unwatchMovieCallback, pattern="^"+constants.MOVIES_UNWATCH_CALLBACK))

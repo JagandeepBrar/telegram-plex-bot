@@ -35,3 +35,9 @@ def watchShowCallback(bot, update):
     insert.insertNotifier(watch_id, telegram_id, show_id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, desc)
     logging.getLogger(__name__).info("{} started watching a show: {}".format(telegram_name, show_name))
     bot.edit_message_text(text=constants.TELEVISION_WATCH_SUCCESS.format(show_name),chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+
+def unwatchShow(bot, update, args):
+    pass
+
+def unwatchShowCallback(bot, update):
+    pass

@@ -35,3 +35,9 @@ def watchMovieCallback(bot, update):
     insert.insertNotifier(watch_id, telegram_id, movie_id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, desc)
     logging.getLogger(__name__).info("{} started watching a movie: {}".format(telegram_name, movie_name))
     bot.edit_message_text(text=constants.MOVIES_WATCH_SUCCESS.format(movie_name),chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+
+def unwatchMovie(bot, update, args):
+    pass
+
+def unwatchMovieCallback(bot, update):
+    pass

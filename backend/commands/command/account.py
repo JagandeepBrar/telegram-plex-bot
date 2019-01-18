@@ -13,8 +13,7 @@ from backend.database.statement import insert, select, delete, update as update_
 def register(bot, update):
     if(not select.isUserRegistered(update.message.chat_id)):
         insert.insertUser(update.message.chat_id, None, None, None, None, update.message.from_user.full_name)
-        reply_keyboard = [[constants.ACCOUNT_FREQUENCY[0]], [constants.ACCOUNT_FREQUENCY[1]], [constants.ACCOUNT_FREQUENCY[2]]]
-        update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+        update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_FREQUENCY_REPLY_MARKUP, resize_keyboard=True))
         return constants.ACCOUNT_REGISTER_STATE_FREQ
     else:
         update.message.reply_text(constants.ACCOUNT_REGISTER_FAIL_REGISTERED, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -23,8 +22,7 @@ def register(bot, update):
 # Register the user's frequency preference
 def registerFrequency(bot, update):
     update_db.updateUserFrequency(update.message.chat_id, constants.ACCOUNT_FREQUENCY.index(update.message.text))
-    reply_keyboard = [[constants.ACCOUNT_DETAIL[0]], [constants.ACCOUNT_DETAIL[1]]]
-    update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+    update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
     return constants.ACCOUNT_REGISTER_STATE_DETAIL
 
 # Register the user's detail notification preference
@@ -69,24 +67,21 @@ def registerCancel(bot, update):
 def account(bot, update):
     if(checker.checkRegistered(update)):
         user_status = select.getUser(update.message.chat_id)[1]
-        reply_keyboard = [[constants.ACCOUNT_OMBI], [constants.ACCOUNT_FREQ], [constants.ACCOUNT_DEET], [constants.ACCOUNT_EXIT]]
-        update.message.reply_text(constants.ACCOUNT_STATUS_MSG[user_status]+constants.ACCOUNT_STATUS_FOOTER_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+        update.message.reply_text(constants.ACCOUNT_STATUS_MSG[user_status]+constants.ACCOUNT_STATUS_FOOTER_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_OPTIONS_REPLY_MARKUP, resize_keyboard=True))
         return constants.ACCOUNT_STATE_OPTIONS
     else:
         return ConversationHandler.END
 
 def accountOptions(bot, update):
     option = update.message.text
-    if(option == constants.ACCOUNT_FREQ):
-        reply_keyboard = [[constants.ACCOUNT_FREQUENCY[0]], [constants.ACCOUNT_FREQUENCY[1]], [constants.ACCOUNT_FREQUENCY[2]]]
-        update.message.reply_text(constants.ACCOUNT_REGISTER_FREQ, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+    if(option == constants.ACCOUNT_OPTIONS[1]):
+        update.message.reply_text(constants.ACCOUNT_REGISTER_FREQ, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_FREQUENCY_REPLY_MARKUP, resize_keyboard=True))
         return constants.ACCOUNT_STATE_FREQ
-    elif(option == constants.ACCOUNT_OMBI):
+    elif(option == constants.ACCOUNT_OPTIONS[0]):
         update.message.reply_text(constants.ACCOUNT_REGISTER_OMBI, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return constants.ACCOUNT_STATE_OMBI
-    elif(option == constants.ACCOUNT_DEET):
-        reply_keyboard = [[constants.ACCOUNT_DETAIL[0]], [constants.ACCOUNT_DETAIL[1]]]
-        update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True))
+    elif(option == constants.ACCOUNT_OPTIONS[2]):
+        update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
         return constants.ACCOUNT_STATE_DETAIL
     else:
         return accountExit(bot, update)
