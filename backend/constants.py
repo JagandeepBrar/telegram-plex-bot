@@ -101,7 +101,11 @@ ACCOUNT_STATUS_UNVERIFIED = 1
 ACCOUNT_STATUS_VERIFIED = 2
 ACCOUNT_STATUS_RESTRICTED = 3
 ACCOUNT_STATUS_BANNED = 4
-ACCOUNT_STATUS = ["admin", "unverified", "verified", "restricted", "banned"]
+ACCOUNT_STATUS = ["Admin", "Unverified", "Verified", "Restricted", "Banned"]
+
+ACCOUNT_STATUS_REPLY_MARKUP = []
+for opt in range(len(ACCOUNT_STATUS)):
+    ACCOUNT_STATUS_REPLY_MARKUP.append([ACCOUNT_STATUS[opt]])
 
 # USER STATUS MESSAGES
 ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin/owner!*\n\nYou have full access to all commands, use /help to see all available commands."
@@ -154,21 +158,16 @@ MOVIES_UNWATCH_SUCCESS = "_You have stopped watching *{}!*\n\nYou will no longer
 
 NOTIFIER_MEDIA_TYPE_TELEVISION = 0
 NOTIFIER_MEDIA_TYPE_MOVIE = 1
+NOTIFIER_MEDIA_TYPE_MUSIC = 2
 
 ##########################
 # ADMIN COMMANDS RELATED #
 ##########################
 
-ADMIN_GETACCESS_MSG ="Please select the user access level:"
-ADMIN_GETACCESS_HEADER = "_{} User(s)_:\n\n"
-ADMIN_GETACCESS_RESP = "`{}` - {}\n"
-
-ADMIN_SETACCESS_SUCCESS = "_Successfully updated the user status. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
-ADMIN_SETACCESS_SUCCESS_VERIFYALL = "_Successfully updated all unverified users to verified users._"
-ADMIN_SETACCESS_FAIL_ARGS = "_/setaccess usage:_\n\n/setaccess <Telegram ID> <Status>\n\n_To verify all unverified users:_\n\n/setaccess verifyall"
-ADMIN_SETACCESS_FAIL_TID = "_The supplied Telegram ID is not in the database of users._\n\nUse /getaccess to find a user's ID."
-ADMIN_SETACCESS_FAIL_STATUS = "_The supplied status is not a valid status. Valid statuses include:_\n\n- `admin`\n- `unverified`\n- `verified`\n- `restricted`\n- `banned`"
-ADMIN_SETACCESS_FAIL_VERIFYALL = "_There are no unverified users._"
+ADMIN_ACCESS_START_MSG = "_Please select the user access level:_"
+ADMIN_ACCESS_USERS_MSG = "_Here is a list of users that are {}(s):_"
+ADMIN_ACCESS_SET_MSG = "_What would you like to set this user's access level to?_"
+ADMIN_ACCESS_SUCCESS = "_{}: {}'s access level has been updated to {}._"
 
 ADMIN_FORCEUPDATE_FAILED_ARGS = "_/forceupdate usage:_\n\n/forceupdate <Database>"
 ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database. Valid databases include:_\n\n- `shows`\n- `movies`\n- `all`"
@@ -177,7 +176,9 @@ ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database.
 # HANDLER PREFIXES #
 ####################
 
-ADMIN_GETACCESS_CALLBACK = "account_GETACCESS_"
+ADMIN_ACCESS_TYPE_CALLBACK = "account_ACCESS_TYPE_"
+ADMIN_ACCESS_USER_CALLBACK = "account_ACCESS_USER_"
+ADMIN_ACCESS_SET_CALLBACK = "account_ACCESS_SET_"
 
 TELEVISION_WATCH_CALLBACK = "television_WATCHSHOW_"
 TELEVISION_UNWATCH_CALLBACK = "television_UNWATCHSHOW_"

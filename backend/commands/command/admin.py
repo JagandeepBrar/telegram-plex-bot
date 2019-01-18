@@ -9,59 +9,45 @@ from backend.database.statement import insert, select, update as update_db
 from backend.commands.command import television, movies
 from backend.commands import checker
 
-# [ADMIN ONLY] Gets a list of users with access status (selected through inline keyboard)
 @send_typing_action
-def getAccess(bot, update):
+def access(bot, update):
     if(checker.checkAdminAllowed(update)):
         keyboard = []
-        for status in range(0, len(constants.ACCOUNT_STATUS)):
-            keyboard.append([telegram.InlineKeyboardButton(constants.ACCOUNT_STATUS[status].capitalize(), callback_data=constants.ADMIN_GETACCESS_CALLBACK+constants.ACCOUNT_STATUS[status])])
+        for status in range(len(constants.ACCOUNT_STATUS)):
+            keyboard.append([telegram.InlineKeyboardButton(constants.ACCOUNT_STATUS[status], callback_data=constants.ADMIN_ACCESS_TYPE_CALLBACK+constants.ACCOUNT_STATUS[status])])
         reply_markup = telegram.InlineKeyboardMarkup(keyboard)
-        update.message.reply_text(constants.ADMIN_GETACCESS_MSG, reply_markup=reply_markup, parse_mode=telegram.ParseMode.MARKDOWN)
+        update.message.reply_text(constants.ADMIN_ACCESS_START_MSG, reply_markup=reply_markup, parse_mode=telegram.ParseMode.MARKDOWN)
 
-# [ADMIN ONLY] CallbackQueryHandler for getAccess()
-def getAccessCallback(bot, update):
-    status = constants.ACCOUNT_STATUS.index(update.callback_query.data[len(constants.ADMIN_GETACCESS_CALLBACK):])
-    users = select.getUsersWithStatus(status)
-    resp = constants.ADMIN_GETACCESS_HEADER.format(constants.ACCOUNT_STATUS[status].capitalize())
+def accessTypeCallback(bot, update):
+    status = update.callback_query.data[len(constants.ADMIN_ACCESS_TYPE_CALLBACK):]
+    status_code = constants.ACCOUNT_STATUS.index(status)
+    users = select.getUsersWithStatus(status_code)
+    keyboard = []
     for user in users:
-        resp += constants.ADMIN_GETACCESS_RESP.format(user[0], user[5])
-    bot.edit_message_text(text=resp,chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+        text = str(user[0])+": "+user[5]
+        keyboard.append([telegram.InlineKeyboardButton(text, callback_data=constants.ADMIN_ACCESS_USER_CALLBACK+str(user[0]))])
+    reply_markup = telegram.InlineKeyboardMarkup(keyboard)
+    bot.edit_message_text(text=constants.ADMIN_ACCESS_USERS_MSG.format(status.lower()), reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+    
+def accessUserCallback(bot, update):
+    telegram_id = update.callback_query.data[len(constants.ADMIN_ACCESS_TYPE_CALLBACK):]
+    keyboard = []
+    for status in constants.ACCOUNT_STATUS:
+        keyboard.append([telegram.InlineKeyboardButton(status, callback_data=constants.ADMIN_ACCESS_SET_CALLBACK+str(telegram_id)+","+status)])
+    reply_markup = telegram.InlineKeyboardMarkup(keyboard)
+    bot.edit_message_text(text=constants.ADMIN_ACCESS_SET_MSG, reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+    
+def accessSetCallback(bot, update):
+    results =  update.callback_query.data[len(constants.ADMIN_ACCESS_SET_CALLBACK):].split(",")
+    status_code = constants.ACCOUNT_STATUS.index(results[1])
+    user = select.getUser(results[0])
+    msg = constants.ADMIN_ACCESS_SUCCESS.format(user[0], user[5], results[1].lower())
+    update_db.updateUserStatus(user[0], status_code)
+    bot.edit_message_text(text=msg, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+    logging.getLogger(__name__).info(msg[1:-1])
+    bot.send_message(chat_id=user[0], text=constants.ACCOUNT_STATUS_MSG[status_code], parse_mode=telegram.ParseMode.MARKDOWN)
 
-# [ADMIN ONLY] Set the user access status for a user
-@send_typing_action
-def setAccess(bot, update, args):
-    if(checker.checkAdminAllowed(update)):
-        resp = constants.ADMIN_SETACCESS_FAIL_ARGS
-        if(len(args) == 2):
-            if(args[0].isdigit()):
-                try:
-                    status = constants.ACCOUNT_STATUS.index(args[1].lower())
-                    user = select.getUser(args[0])
-                    if(user is not None):
-                        update_db.updateUserStatus(user[0], status)
-                        user = select.getUser(args[0])
-                        resp = constants.ADMIN_SETACCESS_SUCCESS.format(user[0], constants.ACCOUNT_STATUS[status].capitalize(), constants.ACCOUNT_FREQUENCY[int(user[2])].capitalize(), constants.ACCOUNT_DETAIL[user[3]], user[4], user[5])
-                        bot.send_message(chat_id=user[0], text=constants.ACCOUNT_STATUS_MSG[status], parse_mode=telegram.ParseMode.MARKDOWN)
-                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[5], constants.ACCOUNT_STATUS[status]))
-                    else:
-                        resp = constants.ADMIN_SETACCESS_FAIL_TID
-                except:
-                    resp = constants.ADMIN_SETACCESS_FAIL_STATUS
-        elif(len(args) == 1):
-            if(args[0] == "verifyall"):
-                users = select.getUsersWithStatus(constants.ACCOUNT_STATUS_UNVERIFIED)
-                if(len(users) != 0):
-                    for user in users:
-                        update_db.updateUserStatus(user[0], constants.ACCOUNT_STATUS_VERIFIED)
-                        bot.send_message(chat_id=user[0], text=constants.ACCOUNT_STATUS_VERIFIED_MSG, parse_mode=telegram.ParseMode.MARKDOWN)
-                        logging.getLogger(__name__).info("{}: {} access status has been updated to {}".format(user[0], user[4], constants.ACCOUNT_STATUS[constants.ACCOUNT_STATUS_VERIFIED]))
-                    resp = constants.ADMIN_SETACCESS_SUCCESS_VERIFYALL
-                else:
-                    resp = constants.ADMIN_SETACCESS_FAIL_VERIFYALL
-        update.message.reply_text(resp, parse_mode=telegram.ParseMode.MARKDOWN)
-
-# [ADMIN ONLY] Force update the database(s)
+# Force update the database(s)
 @send_typing_action
 def forceUpdate(bot, update, args):
     if(checker.checkAdminAllowed(update)):

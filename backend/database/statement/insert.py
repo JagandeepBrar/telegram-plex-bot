@@ -22,7 +22,7 @@ def insertUser(telegram, status, frequency, detail, ombi, name):
 def insertTV(tvdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('INSERT OR IGNORE INTO shows(tvdb_id, name) VALUES (?, ?)', (tvdb, name))
+    db_cursor.execute('INSERT OR IGNORE INTO television(tvdb_id, name) VALUES (?, ?)', (tvdb, name))
     db.commit()
     db.close()
 

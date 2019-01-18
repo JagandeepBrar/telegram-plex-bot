@@ -81,7 +81,7 @@ def getDatabaseShows():
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     shows = []
-    for show in db_cursor.execute('SELECT * FROM shows'):
+    for show in db_cursor.execute('SELECT * FROM television'):
         shows.append([show[0], show[1]])
     return shows
 
@@ -89,19 +89,19 @@ def getDatabaseShows():
 def getShow(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
-    db_cursor.execute('SELECT * FROM shows WHERE tvdb_id = ?', (id,))
+    db_cursor.execute('SELECT * FROM television WHERE tvdb_id = ?', (id,))
     return db_cursor.fetchone()
 
 def getShowByName(name):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
-    db_cursor.execute('SELECT * FROM shows WHERE name = ?', (name,))
+    db_cursor.execute('SELECT * FROM television WHERE name = ?', (name,))
     return db_cursor.fetchone()
 
 def getShowsSearch(text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('SELECT * FROM shows WHERE name LIKE ?', ("%"+text+"%",))
+    db_cursor.execute('SELECT * FROM television WHERE name LIKE ?', ("%"+text+"%",))
     return db_cursor.fetchall()
 
 ################

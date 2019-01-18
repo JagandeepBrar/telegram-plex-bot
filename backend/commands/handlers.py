@@ -58,12 +58,13 @@ def commandHandlers():
     telegram.dispatcher.add_handler(CommandHandler("watch", watcher.watch, pass_args=True))
     telegram.dispatcher.add_handler(CommandHandler("unwatch", watcher.watch, pass_args=True))
     #Admin-Only
-    telegram.dispatcher.add_handler(CommandHandler("getaccess", admin.getAccess))
-    telegram.dispatcher.add_handler(CommandHandler("setaccess", admin.setAccess, pass_args=True))
+    telegram.dispatcher.add_handler(CommandHandler("access", admin.access))
     telegram.dispatcher.add_handler(CommandHandler("forceupdate", admin.forceUpdate, pass_args=True))
 
 def callbackQueryHandlers():
-    telegram.dispatcher.add_handler(CallbackQueryHandler(admin.getAccessCallback, pattern="^"+constants.ADMIN_GETACCESS_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(admin.accessTypeCallback, pattern="^"+constants.ADMIN_ACCESS_TYPE_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(admin.accessUserCallback, pattern="^"+constants.ADMIN_ACCESS_USER_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(admin.accessSetCallback, pattern="^"+constants.ADMIN_ACCESS_SET_CALLBACK))
 
     telegram.dispatcher.add_handler(CallbackQueryHandler(television.watchShowCallback, pattern="^"+constants.TELEVISION_WATCH_CALLBACK))
     telegram.dispatcher.add_handler(CallbackQueryHandler(television.unwatchShowCallback, pattern="^"+constants.TELEVISION_UNWATCH_CALLBACK))

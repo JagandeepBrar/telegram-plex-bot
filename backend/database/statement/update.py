@@ -54,7 +54,7 @@ def updateUserOmbi(telegram, ombi):
 def updateTV(tvdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('UPDATE shows SET name = ? WHERE tvdb_id = ?', (name, tvdb))
+    db_cursor.execute('UPDATE television SET name = ? WHERE tvdb_id = ?', (name, tvdb))
     db.commit()
     db.close()
 
