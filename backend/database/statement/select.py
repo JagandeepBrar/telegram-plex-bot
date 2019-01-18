@@ -191,8 +191,8 @@ def getMoviesWatchedSearch(id, text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute("""SELECT * FROM movies WHERE 
-        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
-        AND name LIKE = ?
+        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?) AND
+        name LIKE ?
     """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, "%"+text+"%"))
     movies = db_cursor.fetchall()
     db.commit()

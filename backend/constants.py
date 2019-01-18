@@ -150,7 +150,7 @@ MOVIES_WATCH_EMPTY_SEARCH = "_Sorry, no movies were found containing those words
 MOVIES_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the movie, try making your search more specific."
 MOVIES_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified when this movie is available according to your notification frequency preference."
 
-MOVIES_UNWATCH_SUCCESS = "_You have stopped watching *{}!*\n\nYou will no longer be notified when this movie is available."
+MOVIES_UNWATCH_SUCCESS = "_You have stopped watching_ *{}!*\n\nYou will no longer be notified when this movie is available."
 
 #############################
 # NOTIFIER COMMANDS RELATED #
