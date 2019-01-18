@@ -40,6 +40,19 @@ def getAllShows():
     except:
         logger.error("Could not fetch series list from Sonarr (status code {}).".format(request.status_code))
 
+def getAllShowIDs():
+    try:
+        request = requests.get(path_start+constants.SONARR_SERIES+path_end_question)
+        if(request.status_code is not 200):
+            raise Exception()
+        shows = []
+        for show in request.json():
+            shows.append(show['tvdbId'])
+        return shows
+    except:
+        logger.error("Could not fetch series list from Sonarr (status code {}).".format(request.status_code))
+
+
 # Returns a JSON object with the series information
 def getShowInfo(id):
     try:

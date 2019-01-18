@@ -16,10 +16,8 @@ def watch(bot, update, args):
             return False
         media_type = args[0].lower()
         if(media_type in constants.WATCHER_WATCH_SHOW_SYNONYMS):
-            print(args[1:])
             return television.watchShow(bot, update, args[1:])
         if(media_type in constants.WATCHER_WATCH_MOVIE_SYNONYMS):
-            print(args[1:])
             return movies.watchMovie(bot, update, args[1:])
         update.message.reply_text(constants.WATCHER_WATCH_INCORRECT_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)
 
@@ -31,9 +29,7 @@ def unwatch(bot, update, args):
             return False
         media_type = args[0].lower()
         if(media_type in constants.WATCHER_WATCH_SHOW_SYNONYMS):
-            print(args[1:])
             return television.unwatchShow(bot, update, args[1:])
         if(media_type in constants.WATCHER_WATCH_MOVIE_SYNONYMS):
-            print(args[1:])
             return movies.unwatchMovie(bot, update, args[1:])
         update.message.reply_text(constants.WATCHER_WATCH_INCORRECT_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)

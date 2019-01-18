@@ -33,3 +33,14 @@ def deleteMovie(id):
     db_cursor.execute('DELETE FROM movies WHERE tmdb_id = ?', (id,))
     db.commit()
     db.close()
+
+###################
+# NOTIFIERS TABLE #
+###################
+
+def deleteNotifier(id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('DELETE FROM notifiers WHERE watch_id = ?', (id,))
+    db.commit()
+    db.close()

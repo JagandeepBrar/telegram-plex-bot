@@ -175,3 +175,49 @@ def getMoviesNotifiersForUser(id):
     db.commit()
     db.close()
     return notifiers
+
+def getMoviesWatchedByUser(id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT * FROM movies WHERE 
+        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE))
+    movies = db_cursor.fetchall()
+    db.commit()
+    db.close()
+    return movies
+
+def getMoviesWatchedSearch(id, text):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT * FROM movies WHERE 
+        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
+        AND name LIKE = ?
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, "%"+text+"%"))
+    movies = db_cursor.fetchall()
+    db.commit()
+    db.close()
+    return movies
+
+def getShowsWatchedByUser(id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT * FROM television WHERE 
+        tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?)
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION))
+    shows = db_cursor.fetchall()
+    db.commit()
+    db.close()
+    return shows
+
+def getShowsWatchedSearch(id, text):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT * FROM television WHERE 
+        tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?) AND
+        name LIKE ?
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, "%"+text+"%"))
+    shows = db_cursor.fetchall()
+    db.commit()
+    db.close()
+    return shows

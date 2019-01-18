@@ -1,5 +1,5 @@
 from backend.api import sonarr, radarr
-from backend.database.statement import insert, select, delete
+from backend.database.statement import insert, select, delete, update
 from backend import constants
 import logging
 
@@ -13,11 +13,15 @@ def updateTelevision(bot, job):
         for show in shows:
             insert.insertTV(show[0], show[1])
         # Compare and delete removed shows from database to Sonarr
-        shows_inactive = constants.listDifference(shows, select.getDatabaseShows())
+        shows_inactive = constants.listDifference(select.getDatabaseShows(), shows)
         if(len(shows_inactive) > 0):
+            show_ids = sonarr.getAllShowIDs()
             for show in shows_inactive:
-                delete.deleteTV(show[0])
-                logger.warning("Television series '{}' has been removed from the database.".format(show[1]))
+                if(show[0] in show_ids):
+                    update.updateTV(show[0], show[1])
+                else:
+                    delete.deleteTV(show[0])
+                logger.warning("Television series '{}' has been modified in the database.".format(show[1]))
         logger.info("Finished updating television database.")
     else:
         logger.error("Failed to update television database. Will try again at next scheduled run.")
@@ -32,11 +36,15 @@ def updateMovies(bot, job):
         for movie in movies:
             insert.insertMovie(movie[0], movie[1])
         # Compare and delete removed movies from database to Radarr
-        movies_inactive = constants.listDifference(movies, select.getDatabaseMovies())
+        movies_inactive = constants.listDifference(select.getDatabaseMovies(), movies)
         if(len(movies_inactive) > 0):
+            movie_ids = radarr.getAllMovieIDs()
             for movie in movies_inactive:
-                delete.deleteMovie(movie[0])
-                logger.warning("Movie '{}' has been removed from the database.".format(movie[1]))
+                if(movie[0] in movie_ids):
+                    update.updateMovie(movie[0], movie[1])
+                else:
+                    delete.deleteMovie(movie[0])
+                logger.warning("Movie '{}' has been modified the database.".format(movie[1]))
         logger.info("Finished updating movie database.")
     else:
         logger.error("Failed to update movie database. Will try again at next scheduled run.")

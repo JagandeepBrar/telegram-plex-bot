@@ -138,7 +138,7 @@ TELEVISION_WATCH_EMPTY_SEARCH = "_Sorry, no shows were found containing those wo
 TELEVISION_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the show, try making your search more specific."
 TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show according to your notification frequency preference."
 
-TELEVISION_UNWATCH_SUCCESS = "_You have stopped watching *{}!*\n\nYou will no longer be notified for any new episodes."
+TELEVISION_UNWATCH_SUCCESS = "_You have stopped watching_ *{}!*\n\nYou will no longer be notified for any new episodes."
 
 ###########################
 # MOVIES COMMANDS RELATED #

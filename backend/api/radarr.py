@@ -41,6 +41,20 @@ def getAllMovies():
     except:
         logger.error("Could not fetch series list from Radarr (status code {}).".format(request.status_code))
 
+# Gets all movies tmdb_ids from Radarr as a list
+def getAllMovieIDs():
+    try:
+        request = requests.get(path_start+constants.RADARR_MOVIES+path_end_question)
+        if(request.status_code is not 200):
+            raise Exception()
+        movies = []
+        for movie in request.json():
+            movies.append(movie['tmdbId'])
+        return movies
+    except:
+        logger.error("Could not fetch series list from Radarr (status code {}).".format(request.status_code))
+
+
 # Returns a JSON object with the series information
 def getMovieInfo(id):
     try:
