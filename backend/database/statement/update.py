@@ -7,10 +7,10 @@ from backend import constants
 ###############
 
 # Update a user's data already in the database
-def updateUser(telegram, status, frequency, detail, ombi, name):
+def updateUser(telegram, status, detail, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ?, frequency = ?, detail = ? WHERE telegram_id = ?', (ombi, name, status, frequency, detail, telegram))
+    db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ?, detail = ? WHERE telegram_id = ?', (ombi, name, status, detail, telegram))
     db.commit()
     db.close()
 
@@ -27,14 +27,6 @@ def updateUserDetail(telegram, detail):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('UPDATE users SET detail = ? WHERE telegram_id = ?', (detail, telegram))
-    db.commit()
-    db.close()
-
-# Update a user's frequency
-def updateUserFrequency(telegram, frequency):
-    db = sqlite3.connect(constants.DB_FILE)
-    db_cursor = db.cursor()
-    db_cursor.execute('UPDATE users SET frequency = ? WHERE telegram_id = ?', (frequency, telegram))
     db.commit()
     db.close()
 
@@ -67,5 +59,16 @@ def updateMovie(tmdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('UPDATE movies SET name = ? WHERE tmdb_id = ?', (name, tmdb))
+    db.commit()
+    db.close()
+
+##################
+# NOTIFIER TABLE #
+##################
+
+def updateNotifierFrequency(watch_id, freq):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('UPDATE notifiers SET frequency = ? WHERE watch_id = ?', (freq, watch_id))
     db.commit()
     db.close()

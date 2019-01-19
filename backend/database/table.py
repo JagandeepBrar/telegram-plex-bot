@@ -8,7 +8,6 @@ def initialize():
     db_cursor.execute("""CREATE TABLE IF NOT EXISTS users(
             telegram_id INTEGER PRIMARY KEY,
             status INTEGER,
-            frequency INTEGER,
             detail INTEGER,
             ombi_id TEXT,
             name TEXT
@@ -29,6 +28,7 @@ def initialize():
             telegram_id INTEGER,
             media_id INTEGER,
             media_type INTEGER,
+            frequency INTEGER,
             desc TEXT,
             FOREIGN KEY(telegram_id) REFERENCES users ON DELETE CASCADE
         )"""

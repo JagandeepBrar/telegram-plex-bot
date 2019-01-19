@@ -19,9 +19,6 @@ def conversationHandlers():
         ],
         fallbacks = [CommandHandler("cancel", account.registerCancel)],
         states = {
-            constants.ACCOUNT_REGISTER_STATE_FREQ: [
-                RegexHandler(constants.ACCOUNT_FREQUENCY_REGEX, account.registerFrequency)
-            ],
             constants.ACCOUNT_REGISTER_STATE_DETAIL: [
                 RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.registerDetail)
             ],
@@ -46,9 +43,6 @@ def conversationHandlers():
             ],
             constants.ACCOUNT_STATE_DETAIL: [
                 RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.accountUpdateDetail)
-            ],
-            constants.ACCOUNT_STATE_FREQ: [
-                RegexHandler(constants.ACCOUNT_FREQUENCY_REGEX, account.accountUpdateFrequency)
             ]
         }
     ))
@@ -67,6 +61,7 @@ def callbackQueryHandlers():
     telegram.dispatcher.add_handler(CallbackQueryHandler(admin.accessSetCallback, pattern="^"+constants.ADMIN_ACCESS_SET_CALLBACK))
 
     telegram.dispatcher.add_handler(CallbackQueryHandler(television.watchShowCallback, pattern="^"+constants.TELEVISION_WATCH_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(television.watchShowFreqCallback, pattern="^"+constants.TELEVISION_WATCH_FREQ_CALLBACK))
     telegram.dispatcher.add_handler(CallbackQueryHandler(television.unwatchShowCallback, pattern="^"+constants.TELEVISION_UNWATCH_CALLBACK))
     
     telegram.dispatcher.add_handler(CallbackQueryHandler(movies.watchMovieCallback, pattern="^"+constants.MOVIES_WATCH_CALLBACK))

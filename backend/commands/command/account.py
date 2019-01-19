@@ -12,18 +12,12 @@ from backend.database.statement import insert, select, delete, update as update_
 # Start the registration process
 def register(bot, update):
     if(not select.isUserRegistered(update.message.chat_id)):
-        insert.insertUser(update.message.chat_id, None, None, None, None, update.message.from_user.full_name)
-        update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_FREQUENCY_REPLY_MARKUP, resize_keyboard=True))
-        return constants.ACCOUNT_REGISTER_STATE_FREQ
+        insert.insertUser(update.message.chat_id, None, None, None, update.message.from_user.full_name)
+        update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
+        return constants.ACCOUNT_REGISTER_STATE_DETAIL
     else:
         update.message.reply_text(constants.ACCOUNT_REGISTER_FAIL_REGISTERED, parse_mode=telegram.ParseMode.MARKDOWN)
         return ConversationHandler.END
-
-# Register the user's frequency preference
-def registerFrequency(bot, update):
-    update_db.updateUserFrequency(update.message.chat_id, constants.ACCOUNT_FREQUENCY.index(update.message.text))
-    update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
-    return constants.ACCOUNT_REGISTER_STATE_DETAIL
 
 # Register the user's detail notification preference
 def registerDetail(bot, update):
@@ -63,7 +57,7 @@ def registerCancel(bot, update):
     update.message.reply_text(constants.ACCOUNT_REGISTER_FAIL_CANCELLED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return ConversationHandler.END
 
-# Check the status of the asking user, and allow them to add their ombi ID or update frequency
+# Check the status of the asking user, and allow them to update settings
 def account(bot, update):
     if(checker.checkRegistered(update)):
         user_status = select.getUser(update.message.chat_id)[1]
@@ -74,13 +68,10 @@ def account(bot, update):
 
 def accountOptions(bot, update):
     option = update.message.text
-    if(option == constants.ACCOUNT_OPTIONS[1]):
-        update.message.reply_text(constants.ACCOUNT_REGISTER_FREQ, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_FREQUENCY_REPLY_MARKUP, resize_keyboard=True))
-        return constants.ACCOUNT_STATE_FREQ
-    elif(option == constants.ACCOUNT_OPTIONS[0]):
+    if(option == constants.ACCOUNT_OPTIONS[0]):
         update.message.reply_text(constants.ACCOUNT_REGISTER_OMBI, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return constants.ACCOUNT_STATE_OMBI
-    elif(option == constants.ACCOUNT_OPTIONS[2]):
+    elif(option == constants.ACCOUNT_OPTIONS[1]):
         update.message.reply_text(constants.ACCOUNT_REGISTER_DETAIL, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
         return constants.ACCOUNT_STATE_DETAIL
     else:
@@ -94,11 +85,6 @@ def accountUpdateOmbi(bot, update):
 def accountUpdateOmbiSkip(bot, update):
     return account(bot, update)
 
-def accountUpdateFrequency(bot, update):
-    update_db.updateUserFrequency(update.message.chat_id, constants.ACCOUNT_FREQUENCY.index(update.message.text))
-    update.message.reply_text(constants.ACCOUNT_FREQ_UPDATED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
-    return account(bot, update)
-
 def accountUpdateDetail(bot, update):
     update_db.updateUserDetail(update.message.chat_id, constants.ACCOUNT_DETAIL.index(update.message.text))
     update.message.reply_text(constants.ACCOUNT_DETAIL_UPDATED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
@@ -106,6 +92,6 @@ def accountUpdateDetail(bot, update):
 
 def accountExit(bot, update):
     user = select.getUser(update.message.chat_id)
-    resp = constants.ACCOUNT_CLOSED_MSG.format(user[0], constants.ACCOUNT_STATUS[user[1]].capitalize(), constants.ACCOUNT_FREQUENCY[user[2]], constants.ACCOUNT_DETAIL[user[3]], user[4], user[5])
+    resp = constants.ACCOUNT_CLOSED_MSG.format(user[0], constants.ACCOUNT_STATUS[user[1]].capitalize(), constants.ACCOUNT_DETAIL[user[2]], user[3], user[4])
     update.message.reply_text(resp, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return ConversationHandler.END

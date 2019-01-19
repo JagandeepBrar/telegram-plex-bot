@@ -41,18 +41,17 @@ WEEK_IN_SECONDS = DAY_IN_SECONDS*7
 
 # ACCOUNT COMMAND OPTIONS
 
-ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_FREQ, ACCOUNT_STATE_DETAIL = range(4)
-ACCOUNT_OPTIONS = ["Update Ombi ID", "Update Notification Frequency", "Update Notification Detail", "Exit"]
-ACCOUNT_OPTIONS_REGEX = "^({}|{}|{}|{})$".format(ACCOUNT_OPTIONS[0], ACCOUNT_OPTIONS[1], ACCOUNT_OPTIONS[2], ACCOUNT_OPTIONS[3])
+ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_DETAIL = range(3)
+ACCOUNT_OPTIONS = ["Update Ombi ID", "Update Notification Detail", "Exit"]
+ACCOUNT_OPTIONS_REGEX = "^({}|{}|{})$".format(ACCOUNT_OPTIONS[0], ACCOUNT_OPTIONS[1], ACCOUNT_OPTIONS[2])
 
 ACCOUNT_OPTIONS_REPLY_MARKUP = []
 for opt in range(len(ACCOUNT_OPTIONS)):
     ACCOUNT_OPTIONS_REPLY_MARKUP.append([ACCOUNT_OPTIONS[opt]])
 
-ACCOUNT_FREQ_UPDATED_MSG = "_Notification frequency has been updated._"
 ACCOUNT_DETAIL_UPDATED_MSG = "_Notification detail has been updated._"
 ACCOUNT_OMBI_UPDATED_MSG = "_Ombi ID has been updated._"
-ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Frequency:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
+ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
 
 # ACCOUNT STATUS INCORRECT MESSAGES
 
@@ -64,25 +63,12 @@ ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by un
 
 # ACCOUNT REGISTRATION 
 
-ACCOUNT_REGISTER_STATE_FREQ, ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL = range(3)
-ACCOUNT_REGISTER_FREQ = "How frequently do you want to be notified on your monitored shows and movies?"
+ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL = range(2)
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
-ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n".format(BOT_NAME)+ACCOUNT_REGISTER_FREQ
 ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your notifications?"
+ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n".format(BOT_NAME)+ACCOUNT_REGISTER_DETAIL
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
-
-# USER FREQUENCY LEVELS
-
-ACCOUNT_FREQUENCY_IMMEDIATELY = 0
-ACCOUNT_FREQUENCY_DAILY = 1
-ACCOUNT_FREQUENCY_WEEKLY = 2
-ACCOUNT_FREQUENCY = ["Immediately", "Daily", "Weekly"]
-ACCOUNT_FREQUENCY_REGEX = "^({}|{}|{})$".format(ACCOUNT_FREQUENCY[0], ACCOUNT_FREQUENCY[1], ACCOUNT_FREQUENCY[2])
-
-ACCOUNT_FREQUENCY_REPLY_MARKUP = []
-for opt in range(len(ACCOUNT_FREQUENCY)):
-    ACCOUNT_FREQUENCY_REPLY_MARKUP.append([ACCOUNT_FREQUENCY[opt]])
 
 # USER DETAILED LEVELS
 
@@ -123,8 +109,8 @@ ACCOUNT_STATUS_FOOTER_MSG = "\n\nTap \"Exit\" or type /exit to exit account sett
 
 WATCHER_WATCH_EMPTY_ARGS =  "_/watch usage:_\n\n/watch <type> <name>"
 WATCHER_WATCH_INCORRECT_TYPE = "_Sorry, that is not a valid type of media._"
-WATCHER_WATCH_MOVIE_SYNONYMS = ['movie', 'movies', 'film']
-WATCHER_WATCH_SHOW_SYNONYMS = ['show', 'television', 'series']
+WATCHER_WATCH_MOVIE_SYNONYMS = ['movie', 'movies', 'film', 'cinema', 'short']
+WATCHER_WATCH_SHOW_SYNONYMS = ['show', 'shows', 'tv', 'television', 'series']
 
 WATCHER_UNWATCH_EMPTY_ARGS = "_/unwatch usage:_\n\n/unwatch <type> <name>"
 
@@ -136,7 +122,8 @@ TELEVISION_FORCEUPDATE = "_Television database has been updated._"
 
 TELEVISION_WATCH_EMPTY_SEARCH = "_Sorry, no shows were found containing those words._"
 TELEVISION_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the show, try making your search more specific."
-TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show according to your notification frequency preference."
+TELEVISION_WATCH_FREQUENCY = "_How often do you want to be notified about new episodes?_\n\nIf you do not select an option, you will automatically set to be notified immediately."
+TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show {}."
 
 TELEVISION_UNWATCH_SUCCESS = "_You have stopped watching_ *{}!*\n\nYou will no longer be notified for any new episodes."
 
@@ -148,7 +135,7 @@ MOVIES_FORCEUPDATE = "_Movies database has been updated._"
 
 MOVIES_WATCH_EMPTY_SEARCH = "_Sorry, no movies were found containing those words._"
 MOVIES_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the movie, try making your search more specific."
-MOVIES_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified when this movie is available according to your notification frequency preference."
+MOVIES_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified when this movie is available."
 
 MOVIES_UNWATCH_SUCCESS = "_You have stopped watching_ *{}!*\n\nYou will no longer be notified when this movie is available."
 
@@ -160,6 +147,11 @@ NOTIFIER_MEDIA_TYPE_TELEVISION = 0
 NOTIFIER_MEDIA_TYPE_MOVIE = 1
 NOTIFIER_MEDIA_TYPE_MUSIC = 2
 
+NOTIFIER_FREQUENCY_IMMEDIATELY = 0
+NOTIFIER_FREQUENCY_DAILY = 1
+NOTIFIER_FREQUENCY_WEEKLY = 2
+NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
+
 ##########################
 # ADMIN COMMANDS RELATED #
 ##########################
@@ -170,7 +162,7 @@ ADMIN_ACCESS_SET_MSG = "_What would you like to set this user's access level to?
 ADMIN_ACCESS_SUCCESS = "_{}: {}'s access level has been updated to {}._"
 
 ADMIN_FORCEUPDATE_FAILED_ARGS = "_/forceupdate usage:_\n\n/forceupdate <Database>"
-ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database. Valid databases include:_\n\n- `shows`\n- `movies`\n- `all`"
+ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database._"
 
 ####################
 # HANDLER PREFIXES #
@@ -181,6 +173,7 @@ ADMIN_ACCESS_USER_CALLBACK = "account_ACCESS_USER_"
 ADMIN_ACCESS_SET_CALLBACK = "account_ACCESS_SET_"
 
 TELEVISION_WATCH_CALLBACK = "television_WATCHSHOW_"
+TELEVISION_WATCH_FREQ_CALLBACK = "television_FREQ_WATCHSHOW_"
 TELEVISION_UNWATCH_CALLBACK = "television_UNWATCHSHOW_"
 
 MOVIES_WATCH_CALLBACK = "movie_WATCHMOVIE_"

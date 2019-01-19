@@ -140,6 +140,15 @@ def getMoviesSearch(text):
 # NOTIFIER TABLE #
 ##################
 
+def getNotifier(id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute('SELECT * FROM notifiers WHERE watch_id = ?', (id,))
+    notifier = db_cursor.fetchone()
+    db.commit()
+    db.close()
+    return notifier
+
 def getNotifiers():
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()

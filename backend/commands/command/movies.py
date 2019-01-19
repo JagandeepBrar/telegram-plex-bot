@@ -32,7 +32,7 @@ def watchMovieCallback(bot, update):
     watch_id = str(telegram_id)+str(constants.NOTIFIER_MEDIA_TYPE_MOVIE)+str(movie_id)
     desc = telegram_name + " watching " + movie_name
 
-    insert.insertNotifier(watch_id, telegram_id, movie_id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, desc)
+    insert.insertNotifier(watch_id, telegram_id, movie_id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, constants.NOTIFIER_FREQUENCY_IMMEDIATELY, desc)
     logging.getLogger(__name__).info("{} started watching a movie: {}".format(telegram_name, movie_name))
     bot.edit_message_text(text=constants.MOVIES_WATCH_SUCCESS.format(movie_name),chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
 
@@ -46,7 +46,6 @@ def unwatchMovie(bot, update, args):
         keyboard.append([telegram.InlineKeyboardButton(movie_search[movie][1], callback_data=constants.MOVIES_UNWATCH_CALLBACK+movie_search[movie][1])])
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     update.message.reply_text(constants.MOVIES_WATCH_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
-
 
 def unwatchMovieCallback(bot, update):
     movie_name = update.callback_query.data[len(constants.MOVIES_UNWATCH_CALLBACK):]

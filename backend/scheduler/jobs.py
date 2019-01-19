@@ -1,5 +1,5 @@
 from backend.api import telegram, sonarr, radarr
-from backend.scheduler import catalogue, notify
+from backend.scheduler.tasks import catalogue, notify
 from backend import constants
 import time
 import logging
@@ -21,6 +21,7 @@ def addDefaultJobs():
         addRepeatingJob(catalogue.updateTelevision, constants.hoursToSeconds(sonarr.update_frequency))
     if(radarr.enabled):
         addRepeatingJob(catalogue.updateMovies, constants.hoursToSeconds(radarr.update_frequency))
+    addRepeatingJob(notify.notifyImmediately, 60)
     addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), constants.hoursToSeconds(24))
     addRepeatingJob(notify.notifyWeekly, constants.daysToSeconds(7), constants.daysToSeconds(7))
 

@@ -24,7 +24,7 @@ def accessTypeCallback(bot, update):
     users = select.getUsersWithStatus(status_code)
     keyboard = []
     for user in users:
-        text = str(user[0])+": "+user[5]
+        text = str(user[0])+": "+user[4]
         keyboard.append([telegram.InlineKeyboardButton(text, callback_data=constants.ADMIN_ACCESS_USER_CALLBACK+str(user[0]))])
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     bot.edit_message_text(text=constants.ADMIN_ACCESS_USERS_MSG.format(status.lower()), reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -41,10 +41,10 @@ def accessSetCallback(bot, update):
     results =  update.callback_query.data[len(constants.ADMIN_ACCESS_SET_CALLBACK):].split(",")
     status_code = constants.ACCOUNT_STATUS.index(results[1])
     user = select.getUser(results[0])
-    msg = constants.ADMIN_ACCESS_SUCCESS.format(user[0], user[5], results[1].lower())
+    msg = constants.ADMIN_ACCESS_SUCCESS.format(user[0], user[4], results[1].lower())
     update_db.updateUserStatus(user[0], status_code)
     bot.edit_message_text(text=msg, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
-    logging.getLogger(__name__).info(msg[1:-1])
+    logging.getLogger(__name__).info(msg[1:-2])
     bot.send_message(chat_id=user[0], text=constants.ACCOUNT_STATUS_MSG[status_code], parse_mode=telegram.ParseMode.MARKDOWN)
 
 # Force update the database(s)
@@ -52,11 +52,11 @@ def accessSetCallback(bot, update):
 def forceUpdate(bot, update, args):
     if(checker.checkAdminAllowed(update)):
         if(len(args) == 1):
-            if(args[0] == "shows"):
+            if(args[0].lower() in constants.WATCHER_WATCH_SHOW_SYNONYMS):
                 television.forceUpdate(bot, update)
-            elif(args[0] == "movies"):
+            elif(args[0].lower() in constants.WATCHER_WATCH_MOVIE_SYNONYMS):
                 movies.forceUpdate(bot, update)
-            elif(args[0] == "all"):
+            elif(args[0].lower() == "all"):
                 television.forceUpdate(bot, update)
                 movies.forceUpdate(bot, update)
             else:

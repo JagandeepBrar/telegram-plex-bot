@@ -7,10 +7,10 @@ from backend import constants
 ###############
 
 # Insert a new user into the database
-def insertUser(telegram, status, frequency, detail, ombi, name):
+def insertUser(telegram, status, detail, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, frequency, detail, ombi_id, name) VALUES (?, ?, ?, ?, ?, ?)', (telegram, status, frequency, detail, ombi, name))
+    db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, detail, ombi_id, name) VALUES (?, ?, ?, ?, ?)', (telegram, status, detail, ombi, name))
     db.commit()
     db.close()
 
@@ -42,9 +42,9 @@ def insertMovie(tmdb, name):
 # NOTIFIERS TABLE #
 ###################
 
-def insertNotifier(id, telegram, media_id, media_type, desc):
+def insertNotifier(id, telegram, media_id, media_type, frequency, desc):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
-    db_cursor.execute('INSERT OR IGNORE INTO notifiers(watch_id, telegram_id, media_id, media_type, desc) VALUES (?, ?, ?, ?, ?)', (id, telegram, media_id, media_type, desc))
+    db_cursor.execute('INSERT OR IGNORE INTO notifiers(watch_id, telegram_id, media_id, media_type, frequency, desc) VALUES (?, ?, ?, ?, ?, ?)', (id, telegram, media_id, media_type, frequency, desc))
     db.commit()
     db.close()
