@@ -21,7 +21,6 @@ def addDefaultJobs():
         addRepeatingJob(catalogue.updateTelevision, constants.hoursToSeconds(sonarr.update_frequency))
     if(radarr.enabled):
         addRepeatingJob(catalogue.updateMovies, constants.hoursToSeconds(radarr.update_frequency))
-    addRepeatingJob(notify.notifyImmediately, 60)
     addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), notify.secondsToDaily())
     addRepeatingJob(notify.notifyWeekly, constants.daysToSeconds(7), notify.secondsToWeekly())
 
@@ -31,6 +30,6 @@ def addRepeatingJob(func, delay, first=0):
     logger.info("Repeating job added to queue: {}, repeat delay: {}s, start delay: {}s".format(func.__name__, delay, first))
 
 # Creates a single job, that will execute after <delay> seconds
-def addSingleJob(func, delay):
-    job_queue.run_once(func, delay)
-    logger.info("Single job added to queue: {}, start delay: {}s".format(func, delay))
+def addSingleJob(func, delay, args):
+    job_queue.run_once(func, delay, context=args)
+    logger.info("Single job added to queue: {}, start delay: {}s".format(func.__name__, delay))

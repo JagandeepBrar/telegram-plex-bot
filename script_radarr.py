@@ -2,6 +2,7 @@ from os import environ, path
 from backend import constants
 import sqlite3
 import datetime
+import socket
 
 # Path to the database
 db_path = path.realpath(path.dirname(path.realpath(__file__)))+"/"+constants.DB_FILE
@@ -28,3 +29,9 @@ db_cursor.execute("""INSERT OR IGNORE INTO metadata_movies
 # Commit the changes and close the database
 db.commit()
 db.close()
+
+# Send the metadata_id to the bot so it can send out notifications
+client_socket = socket.socket()
+client_socket.connect((constants.SOCKET_HOST, int(constants.SOCKET_PORT)))
+client_socket.send(metadata_id.encode('utf-8'))
+client_socket.close()

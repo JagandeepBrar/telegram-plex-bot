@@ -154,6 +154,14 @@ NOTIFIER_FREQUENCY_DAILY = 1
 NOTIFIER_FREQUENCY_WEEKLY = 2
 NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 
+##################
+# SOCKET RELATED #
+##################
+
+SOCKET_MAX_MSG_LENGTH = 256
+SOCKET_HOST = "0.0.0.0"
+SOCKET_PORT = "25535"
+
 ##########################
 # ADMIN COMMANDS RELATED #
 ##########################

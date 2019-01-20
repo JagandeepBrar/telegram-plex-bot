@@ -3,8 +3,10 @@ import logging
 import datetime
 
 def notifyImmediately(bot, job):
-    pass
-
+    # Pulls the data, and decodes the bytes back to the metadata_id
+    metadata_id = job.context.decode('utf-8')
+    print(metadata_id)
+    
 def notifyDaily(bot, job):
     pass
 
