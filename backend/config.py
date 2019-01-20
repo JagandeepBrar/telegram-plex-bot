@@ -23,11 +23,15 @@ def initLogger():
 # Initialize the configuration parser
 def initParser():
     global parser
-    parser = configparser.ConfigParser()
-    parser.read(constants.CONFIG_FILE)
-    if not(len(parser) > 1):
-        raise Exception()
-    logger.info("Configparser initialized")
+    try:
+        parser = configparser.ConfigParser()
+        parser.read(constants.CONFIG_FILE)
+        if not(len(parser) > 1):
+            raise Exception()
+        logger.info("Configparser initialized")
+    except:
+        logger.error("Failed to load config.ini. Please ensure that a valid config file is in the root directory.")
+        exit()
 
 # Wrapper to parse all configuration data
 def parseConfig():

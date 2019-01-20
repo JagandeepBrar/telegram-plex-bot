@@ -14,7 +14,7 @@ update_frequency = 0
 
 def initialize():
     global path_start, path_end_question, path_end_ampersand, logger
-    path_start = host+"api"
+    path_start = host+"/api"
     path_end_question = "?apikey="+api
     path_end_ampersand = "&apikey="+api
     logger = logging.getLogger(__name__)

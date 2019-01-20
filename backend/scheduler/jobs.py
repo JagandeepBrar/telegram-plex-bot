@@ -22,8 +22,8 @@ def addDefaultJobs():
     if(radarr.enabled):
         addRepeatingJob(catalogue.updateMovies, constants.hoursToSeconds(radarr.update_frequency))
     addRepeatingJob(notify.notifyImmediately, 60)
-    addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), constants.hoursToSeconds(24))
-    addRepeatingJob(notify.notifyWeekly, constants.daysToSeconds(7), constants.daysToSeconds(7))
+    addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), notify.secondsToDaily())
+    addRepeatingJob(notify.notifyWeekly, constants.daysToSeconds(7), notify.secondsToWeekly())
 
 # Creates a repeating job, which will call <func> every <delay> seconds, with the first execution happening after <first> seconds
 def addRepeatingJob(func, delay, first=0):
