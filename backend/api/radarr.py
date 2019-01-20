@@ -23,7 +23,6 @@ def initialize():
         request = requests.get(path_start+constants.RADARR_SYSTEM_STATUS+path_end_question)
         if(request.status_code is not 200):
             raise Exception()
-        getAllMovies()
     except:
         logger.error("Could not create a connection to Radarr (status code {}). Please check config.ini.".format(request.status_code))
         exit()

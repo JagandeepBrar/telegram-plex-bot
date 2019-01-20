@@ -36,22 +36,24 @@ def initialize():
     db_cursor.execute("""CREATE TABLE IF NOT EXISTS metadata_television(
             metadata_id TEXT PRIMARY KEY,
             tvdb_id INTEGER,
-            type TEXT,
-            title TEXT,
-            episode_desc TEXT,
+            show_type TEXT,
+            show_title TEXT,
+            episode_title TEXT,
             season TEXT,
             episode TEXT,
-            download_time TEXT,
             quality TEXT,
+            quality_version TEXT,
+            download_time TEXT,
             FOREIGN KEY(tvdb_id) REFERENCES television ON DELETE CASCADE
         )"""
     )
     db_cursor.execute("""CREATE TABLE IF NOT EXISTS metadata_movies(
-            metadata_id TEXT PRIMARY KEY,
+            metadata_id INTEGER PRIMARY KEY,
             tmdb_id INTEGER,
-            title TEXT,
-            download_time TEXT,
+            movie_title TEXT,
             quality TEXT,
+            quality_version TEXT,
+            download_time TEXT,
             FOREIGN KEY(tmdb_id) REFERENCES movies ON DELETE CASCADE
         )"""
     )

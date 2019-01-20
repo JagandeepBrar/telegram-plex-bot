@@ -20,11 +20,11 @@ RESTRICTED_WATCHER_UNWATCH = True
 # API ENDPOINTS #
 #################
 
-SONARR_SYSTEM_STATUS = "system/status"
+SONARR_SYSTEM_STATUS = "/system/status"
 SONARR_SERIES = "/series"
 SONARR_SERIES_LOOKUP = "/series/lookup?term=tvdb:"
 
-RADARR_SYSTEM_STATUS = "system/status"
+RADARR_SYSTEM_STATUS = "/system/status"
 RADARR_MOVIES = "/movie"
 RADARR_MOVIES_LOOKUP = "/movie/lookup/tmdb?tmdbId="
 
