@@ -154,6 +154,8 @@ NOTIFIER_FREQUENCY_DAILY = 1
 NOTIFIER_FREQUENCY_WEEKLY = 2
 NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 
+NOTIFIER_QUALITY_VERSIONS = ["None", "Standard Release", "PROPER Release"]
+
 NOTIFIER_IMMEDIATELY_HEADER = "_New or Updated Content Available:_\n\n"
 
 ##################

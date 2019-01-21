@@ -1,5 +1,6 @@
 from backend import constants
 from backend.database.statement import select
+import telegram
 import logging
 import datetime
 
@@ -12,19 +13,50 @@ def notifyImmediately(bot, job):
     except:
         logger.error("notifyImmediately() failed to extract and process watch_id")
         return True
-    metadata = select.getMetadata(watch_id)
+    # Gets the metadata for the movie and the list of users who need notifications
+    metadata = select.getMetadata(watch_id, data[1])
     users = select.getUsersImmediateUpdate(data[0])
+    # If there are no users watching this show, print a log and return
     if(len(users) == 0):
-        logger.info("New content ({}) but no users need notifications".format(metadata[2]))
+        logger.info("New content ({}): Notified no users".format(metadata[2]))
         return True
-    print(metadata)
-    print(users)
+    # Build the messages
+    if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
+        msg_simple = constants.NOTIFIER_IMMEDIATELY_HEADER + buildSimpleTelevisionMessage(metadata)
+        msg_complex = constants.NOTIFIER_IMMEDIATELY_HEADER + buildComplexTelevisionMessage(metadata)
+    else:
+        msg_simple = constants.NOTIFIER_IMMEDIATELY_HEADER + buildSimpleMovieMessage(metadata)
+        msg_complex = constants.NOTIFIER_IMMEDIATELY_HEADER + buildComplexMovieMessage(metadata)
+    # Process user messages
+    for user in users:
+        user_data = select.getUser(user[0])
+        # Checks if the user is banned or restricted
+        if(user_data[1] != constants.ACCOUNT_BANNED or user_data[1] != constants.ACCOUNT_RESTRICTED):
+            # Gets the complexity and sends the appropriate message
+            if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
+                bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
+            else:
+                bot.send_message(chat_id=user_data[0], text=msg_complex, parse_mode=telegram.ParseMode.MARKDOWN)
+    logger.info("New content ({}): notified {} user(s)".format(metadata[2], len(users)))
 
 def notifyDaily(bot, job):
     pass
 
 def notifyWeekly(bot, job):
     pass
+
+def buildSimpleTelevisionMessage(metadata):
+    return "*{}*\nSeason {} Episode {}".format(metadata[2], metadata[5], metadata[6]) 
+
+def buildComplexTelevisionMessage(metadata):
+    return "*{}*\nSeason {} Episode {}\n\"_{}_\"\n\n*Type:* {}\n*Quality:* {}\n*Version:* {}".format(metadata[2], metadata[5], metadata[6], metadata[4], metadata[3], metadata[7], constants.NOTIFIER_QUALITY_VERSIONS[int(metadata[8])])
+
+def buildSimpleMovieMessage(metadata):
+    return "simple"
+
+def buildComplexMovieMessage(metadata):
+    return "complex"
+
 
 # Calculates the amount of seconds until the time to send the daily notification
 # Will be off by -1 to -5 seconds, but it's close enough that it's negligible
