@@ -7,20 +7,15 @@ logger = None
 enabled = False
 api = ""
 host = ""
-path_start = ""
-path_end_q = ""
-path_end_a = ""
 update_frequency = 0
 
 def initialize():
-    global path_start, path_end_question, path_end_ampersand, logger
-    path_start = host+"/api"
-    path_end_question = "?apikey="+api
-    path_end_ampersand = "&apikey="+api
+    global logger
     logger = logging.getLogger(__name__)
     #Creates a request for Radarr to check the system status
     try:
-        request = requests.get(path_start+constants.RADARR_SYSTEM_STATUS+path_end_question)
+        payload = {'apikey': api}
+        request = requests.get(host+constants.RADARR_SYSTEM_STATUS, params=payload)
         if(request.status_code is not 200):
             raise Exception()
     except:
@@ -30,7 +25,8 @@ def initialize():
 # Gets all movies from Radarr as a list of lists [tmdbId, movie name]
 def getAllMovies():
     try:
-        request = requests.get(path_start+constants.RADARR_MOVIES+path_end_question)
+        payload = {'apikey': api}
+        request = requests.get(host+constants.RADARR_MOVIES, params=payload)
         if(request.status_code is not 200):
             raise Exception()
         movies = []
@@ -43,7 +39,8 @@ def getAllMovies():
 # Gets all movies tmdb_ids from Radarr as a list
 def getAllMovieIDs():
     try:
-        request = requests.get(path_start+constants.RADARR_MOVIES+path_end_question)
+        payload = {'apikey': api}
+        request = requests.get(host+constants.RADARR_MOVIES, params=payload)
         if(request.status_code is not 200):
             raise Exception()
         movies = []
@@ -57,7 +54,8 @@ def getAllMovieIDs():
 # Returns a JSON object with the series information
 def getMovieInfo(id):
     try:
-        request = requests.get(path_start+constants.RADARR_MOVIES_LOOKUP+str(id)+path_end_ampersand)
+        payload = {'tmdbId': str(id), 'apikey': api}
+        request = requests.get(host+constants.RADARR_MOVIES_LOOKUP, params=payload)
         if(request.status_code is not 200):
             raise Exception()
         return(request.json())

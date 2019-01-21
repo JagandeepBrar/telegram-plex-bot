@@ -7,20 +7,15 @@ logger = None
 enabled = False
 api = ""
 host = ""
-path_start = ""
-path_end_q = ""
-path_end_a = ""
 update_frequency = 0
 
 def initialize():
-    global path_start, path_end_question, path_end_ampersand, logger
-    path_start = host+"/api"
-    path_end_question = "?apikey="+api
-    path_end_ampersand = "&apikey="+api
+    global logger
     logger = logging.getLogger(__name__)
     #Creates a request for Sonarr to check the system status
     try:
-        request = requests.get(path_start+constants.SONARR_SYSTEM_STATUS+path_end_question)
+        payload = {'apikey': api}
+        request = requests.get(host+constants.SONARR_SYSTEM_STATUS, params=payload)
         if(request.status_code is not 200):
             raise Exception()
     except:
@@ -30,7 +25,8 @@ def initialize():
 # Gets all shows from Sonarr as a list of lists [tvdb_id, show name]
 def getAllShows():
     try:
-        request = requests.get(path_start+constants.SONARR_SERIES+path_end_question)
+        payload = {'apikey': api}
+        request = requests.get(host+constants.SONARR_SERIES, params=payload)
         if(request.status_code is not 200):
             raise Exception()
         shows = []
@@ -42,7 +38,8 @@ def getAllShows():
 
 def getAllShowIDs():
     try:
-        request = requests.get(path_start+constants.SONARR_SERIES+path_end_question)
+        payload = {'apikey': api}
+        request = requests.get(host+constants.SONARR_SERIES, params=payload)
         if(request.status_code is not 200):
             raise Exception()
         shows = []
@@ -56,7 +53,8 @@ def getAllShowIDs():
 # Returns a JSON object with the series information
 def getShowInfo(id):
     try:
-        request = requests.get(path_start+constants.SONARR_SERIES_LOOKUP+str(id)+path_end_ampersand)
+        payload = {'term': 'tvdb:'+str(id),'apikey': api}
+        request = requests.get(host+constants.SONARR_SERIES_LOOKUP, params=payload)
         if(request.status_code is not 200):
             raise Exception()
         return(request.json())

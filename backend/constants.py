@@ -20,13 +20,13 @@ RESTRICTED_WATCHER_UNWATCH = True
 # API ENDPOINTS #
 #################
 
-SONARR_SYSTEM_STATUS = "/system/status"
-SONARR_SERIES = "/series"
-SONARR_SERIES_LOOKUP = "/series/lookup?term=tvdb:"
+SONARR_SYSTEM_STATUS = "/api/system/status"
+SONARR_SERIES = "/api/series"
+SONARR_SERIES_LOOKUP = "/api/series/lookup"
 
-RADARR_SYSTEM_STATUS = "/system/status"
-RADARR_MOVIES = "/movie"
-RADARR_MOVIES_LOOKUP = "/movie/lookup/tmdb?tmdbId="
+RADARR_SYSTEM_STATUS = "/api/system/status"
+RADARR_MOVIES = "/api/movie"
+RADARR_MOVIES_LOOKUP = "/api/movie/lookup/tmdb"
 
 ###########
 # GENERAL #
@@ -112,7 +112,7 @@ ACCOUNT_STATUS_FOOTER_MSG = "\n\nTap \"Exit\" or type /exit to exit account sett
 WATCHER_WATCH_EMPTY_ARGS =  "_/watch usage:_\n\n/watch <type> <name>"
 WATCHER_WATCH_INCORRECT_TYPE = "_Sorry, that is not a valid type of media._"
 WATCHER_WATCH_MOVIE_SYNONYMS = ['movie', 'movies', 'film', 'cinema', 'short']
-WATCHER_WATCH_SHOW_SYNONYMS = ['show', 'shows', 'tv', 'television', 'series']
+WATCHER_WATCH_SHOW_SYNONYMS = ['show', 'shows', 'tv', 'television', 'series', 'miniseries', 'cartoon', 'anime', 'ova']
 
 WATCHER_UNWATCH_EMPTY_ARGS = "_/unwatch usage:_\n\n/unwatch <type> <name>"
 
@@ -153,6 +153,8 @@ NOTIFIER_FREQUENCY_IMMEDIATELY = 0
 NOTIFIER_FREQUENCY_DAILY = 1
 NOTIFIER_FREQUENCY_WEEKLY = 2
 NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
+
+NOTIFIER_IMMEDIATELY_HEADER = "_New or Updated Content Available:_\n\n"
 
 ##################
 # SOCKET RELATED #
