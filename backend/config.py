@@ -40,6 +40,16 @@ def parseConfig():
     parseRadarr()
     parseSonarr()
     parseAdmins()
+    parseNotifications()
+
+def parseNotifications():
+    try:
+        if('NOTIFICATIONS' in parser):
+            constants.NOTIFICATION_TIME = parser['NOTIFICATIONS']['TIME']
+            constants.NOTIFICATION_DAY = parser['NOTIFICATIONS']['DAY']
+            logger.info("Notification times set: {} @ {}".format(constants.NOTIFICATION_DAY, constants.NOTIFICATION_TIME))
+    except:
+        logger.error("Failed to get notification times. Check your config.ini")
 
 # Admin list parsing
 def parseAdmins():
