@@ -21,14 +21,14 @@ episode = environ.get('sonarr_episodefile_episodenumbers')
 quality = environ.get('sonarr_episodefile_quality')
 quality_version = environ.get('sonarr_episodefile_qualityversion')
 download_time = datetime.datetime.now()
-metadata_id = str(tvdb_id)+str(download_time.time())
+metadata_id = str(tvdb_id)+";"+str(constants.NOTIFIER_MEDIA_TYPE_TELEVISION)+";"+str(download_time.time())
 
 # Insert the data into the metadata_television table in the database
 db_cursor.execute("""INSERT OR IGNORE INTO metadata_television
-    (metadata_id, tvdb_id, show_type, show_title, episode_title, season, episode, quality, quality_version, download_time)
+    (metadata_id, tvdb_id, show_title, show_type, episode_title, season, episode, quality, quality_version, download_time)
     VALUES
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-""", (metadata_id, tvdb_id, show_type, show_title, episode_title, season, episode, quality, quality_version, download_time))
+""", (metadata_id, tvdb_id, show_title, show_type, episode_title, season, episode, quality, quality_version, download_time))
 
 # Commit the changes and close the database
 db.commit()

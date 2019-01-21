@@ -36,8 +36,8 @@ def initialize():
     db_cursor.execute("""CREATE TABLE IF NOT EXISTS metadata_television(
             metadata_id TEXT PRIMARY KEY,
             tvdb_id INTEGER,
-            show_type TEXT,
             show_title TEXT,
+            show_type TEXT,
             episode_title TEXT,
             season TEXT,
             episode TEXT,

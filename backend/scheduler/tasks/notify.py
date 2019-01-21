@@ -1,12 +1,25 @@
 from backend import constants
+from backend.database.statement import select
 import logging
 import datetime
 
 def notifyImmediately(bot, job):
-    # Pulls the data, and decodes the bytes back to the metadata_id
-    metadata_id = job.context.decode('utf-8')
-    print(metadata_id)
-    
+    # Pulls the watch_id, and decodes the bytes back to the data
+    logger = logging.getLogger(__name__)
+    try:
+        watch_id = job.context.decode('utf-8')
+        data = watch_id.split(";")
+    except:
+        logger.error("notifyImmediately() failed to extract and process watch_id")
+        return True
+    metadata = select.getMetadata(watch_id)
+    users = select.getUsersImmediateUpdate(data[0])
+    if(len(users) == 0):
+        logger.info("New content ({}) but no users need notifications".format(metadata[2]))
+        return True
+    print(metadata)
+    print(users)
+
 def notifyDaily(bot, job):
     pass
 

@@ -11,7 +11,6 @@ def getUser(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (str(id),))
     user = db_cursor.fetchone()
-    db.commit()
     db.close()
     return user
 
@@ -21,7 +20,6 @@ def getUsers():
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM users')
     users = db_cursor.fetchall()
-    db.commit()
     db.close()
     return users
 
@@ -31,7 +29,6 @@ def getUsersWithStatus(status):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM users WHERE status = ?', (str(status),))
     users = db_cursor.fetchall()
-    db.commit()
     db.close()
     return users
 
@@ -42,7 +39,6 @@ def getAdmins():
     admins = []
     for admin in db_cursor.execute('SELECT * FROM users WHERE status = ?', (constants.ACCOUNT_STATUS_ADMIN,)):
         admins.append(admin[0])
-    db.commit()
     db.close()
     return admins
 
@@ -52,10 +48,8 @@ def isUserRegistered(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (id,))
     if(db_cursor.fetchone() is not None):
-        db.commit()
         db.close()
         return True
-    db.commit()
     db.close()
     return False
 
@@ -65,10 +59,8 @@ def isUserStatus(id, status):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM users WHERE telegram_id = ? AND status = ?', (id,status))
     if(db_cursor.fetchone() is not None):
-        db.commit()
         db.close()
         return True
-    db.commit()
     db.close()
     return False
 
@@ -90,19 +82,25 @@ def getShow(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM television WHERE tvdb_id = ?', (id,))
-    return db_cursor.fetchone()
+    show = db_cursor.fetchone()
+    db.close()
+    return show
 
 def getShowByName(name):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM television WHERE name = ?', (name,))
-    return db_cursor.fetchone()
+    show = db_cursor.fetchone()
+    db.close()
+    return show
 
 def getShowsSearch(text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM television WHERE name LIKE ?', ("%"+text+"%",))
-    return db_cursor.fetchall()
+    shows = db_cursor.fetchall()
+    db.close()
+    return shows
 
 ################
 # MOVIES TABLE #
@@ -122,19 +120,25 @@ def getMovie(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM movies WHERE tmdb_id = ?', (id,))
-    return db_cursor.fetchone()
+    movie = db_cursor.fetchone()
+    db.close()
+    return movie
 
 def getMovieByName(name):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM movies WHERE name = ?', (name,))
-    return db_cursor.fetchone()
+    movie = db_cursor.fetchone()
+    db.close()
+    return movie
 
 def getMoviesSearch(text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM movies WHERE name LIKE ?', ("%"+text+"%",))
-    return db_cursor.fetchall()
+    movies = db_cursor.fetchall()
+    db.close()
+    return movies
 
 ##################
 # NOTIFIER TABLE #
@@ -145,7 +149,6 @@ def getNotifier(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM notifiers WHERE watch_id = ?', (id,))
     notifier = db_cursor.fetchone()
-    db.commit()
     db.close()
     return notifier
 
@@ -154,7 +157,6 @@ def getNotifiers():
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM notifiers')
     notifiers = db_cursor.fetchall()
-    db.commit()
     db.close()
     return notifiers
     
@@ -163,7 +165,6 @@ def getNotifiersForUser(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM notifiers WHERE telegram_id = ?', (id,))
     notifiers = db_cursor.fetchall()
-    db.commit()
     db.close()
     return notifiers
 
@@ -172,7 +173,6 @@ def getTelevisionNotifiersForUser(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ?, telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_TELEVISION, id))
     notifiers = db_cursor.fetchall()
-    db.commit()
     db.close()
     return notifiers
 
@@ -181,7 +181,6 @@ def getMoviesNotifiersForUser(id):
     db_cursor = db.cursor()
     db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ?, telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_MOVIE, id))
     notifiers = db_cursor.fetchall()
-    db.commit()
     db.close()
     return notifiers
 
@@ -192,7 +191,6 @@ def getMoviesWatchedByUser(id):
         tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
     """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE))
     movies = db_cursor.fetchall()
-    db.commit()
     db.close()
     return movies
 
@@ -204,7 +202,6 @@ def getMoviesWatchedSearch(id, text):
         name LIKE ?
     """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, "%"+text+"%"))
     movies = db_cursor.fetchall()
-    db.commit()
     db.close()
     return movies
 
@@ -215,7 +212,6 @@ def getShowsWatchedByUser(id):
         tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?)
     """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION))
     shows = db_cursor.fetchall()
-    db.commit()
     db.close()
     return shows
 
@@ -227,6 +223,32 @@ def getShowsWatchedSearch(id, text):
         name LIKE ?
     """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, "%"+text+"%"))
     shows = db_cursor.fetchall()
-    db.commit()
     db.close()
     return shows
+
+def getUsersImmediateUpdate(media_id):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT telegram_id FROM notifiers WHERE
+        media_id = ? AND
+        media_type = ? AND
+        frequency = ?
+    """, (media_id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, constants.NOTIFIER_FREQUENCY_IMMEDIATELY))
+    users = db_cursor.fetchall()
+    db.close()
+    return users
+
+###################
+# METADATA TABLES #
+###################
+
+def getMetadata(id, media_type):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    if(media_type == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
+        db_cursor.execute("SELECT * FROM metadata_television WHERE metadata_id = ?", (id,))
+    else:
+        db_cursor.execute("SELECT * FROM metadata_movies WHERE metadata_id = ?", (id,))
+    metadata = db_cursor.fetchone()
+    db.close()
+    return metadata

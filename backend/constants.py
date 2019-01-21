@@ -124,7 +124,7 @@ TELEVISION_FORCEUPDATE = "_Television database has been updated._"
 
 TELEVISION_WATCH_EMPTY_SEARCH = "_Sorry, no shows were found containing those words._"
 TELEVISION_WATCH_FIRST_TEN = "_Here are the first ten results:_\n\nIf you cannot find the show, try making your search more specific."
-TELEVISION_WATCH_FREQUENCY = "_How often do you want to be notified about new episodes?_\n\nIf you do not select an option, you will automatically set to be notified immediately."
+TELEVISION_WATCH_FREQUENCY = "_How often do you want to be notified about new episodes for this show?_\n\nDaily means you won't be notified immediately, but rather in the daily update on new content for shows you watch.\n\nWeekly means you won't be notified immediately or daily, but rather in the weekly update on new content for shows you watch.\n\nIf you do not select an option, you will automatically set to be notified immediately on the release of a new episode."
 TELEVISION_WATCH_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified for any new episodes for this show {}."
 
 TELEVISION_UNWATCH_SUCCESS = "_You have stopped watching_ *{}!*\n\nYou will no longer be notified for any new episodes."
