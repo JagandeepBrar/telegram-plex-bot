@@ -1,6 +1,8 @@
 import logging
 import requests
 import json
+
+from colored import stylize
 from backend import constants
 
 logger = None
@@ -19,7 +21,7 @@ def initialize():
         if(request.status_code is not 200):
             raise Exception()
     except:
-        logger.error("Could not create a connection to Radarr (status code {}). Please check config.ini.".format(request.status_code))
+        logger.error(stylize("Could not create a connection to Radarr: Please check config.ini", constants.LOGGING_COLOUR_ERROR))
         exit()
 
 # Gets all movies from Radarr as a list of lists [tmdbId, movie name]
@@ -49,7 +51,6 @@ def getAllMovieIDs():
         return movies
     except:
         logger.error("Could not fetch series list from Radarr (status code {}).".format(request.status_code))
-
 
 # Returns a JSON object with the series information
 def getMovieInfo(id):

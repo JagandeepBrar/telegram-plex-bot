@@ -1,3 +1,5 @@
+import colored
+
 #############################
 # APPLICATION CONFIGURATION #
 #############################
@@ -9,12 +11,23 @@ BOT_NAME = "Plex Assistant"
 NOTIFICATION_TIME = "15:00"
 NOTIFICATION_DAY = "Friday"
 
+LOGGING_COLOUR_ERROR = colored.bg('red')+colored.fg('white')
+
 ################
 # RESTRICTIONS #
 ################
 
+RESTRICTED_NOTIFICATIONS = True
 RESTRICTED_WATCHER_WATCH = True
 RESTRICTED_WATCHER_UNWATCH = True
+
+##################
+# SOCKET RELATED #
+##################
+
+SOCKET_MAX_MSG_LENGTH = 256
+SOCKET_HOST = "0.0.0.0"
+SOCKET_PORT = "25535"
 
 #################
 # API ENDPOINTS #
@@ -156,15 +169,9 @@ NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 
 NOTIFIER_QUALITY_VERSIONS = ["None", "Standard Release", "PROPER Release"]
 
-NOTIFIER_IMMEDIATELY_HEADER = "_New or Updated Content Available:_\n\n"
-
-##################
-# SOCKET RELATED #
-##################
-
-SOCKET_MAX_MSG_LENGTH = 256
-SOCKET_HOST = "0.0.0.0"
-SOCKET_PORT = "25535"
+NOTIFIER_IMMEDIATELY_HEADER = "_New or Updated Content Available_\n\n"
+NOTIFIER_DAILY_HEADER = "_Daily Content Update_\n\n"
+NOTIFIER_WEEKLY_HEADER = "_Weekly Content Update_\n\n"
 
 ##########################
 # ADMIN COMMANDS RELATED #

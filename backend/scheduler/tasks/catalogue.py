@@ -24,7 +24,7 @@ def updateTelevision(bot, job):
                 logger.warning("Television series '{}' has been modified in the database.".format(show[1]))
         logger.info("Finished updating television database.")
     else:
-        logger.error("Failed to update television database. Will try again at next scheduled run.")
+        logger.warning("Failed to update television database. Will try again at next scheduled run.")
 
 # Fetch all movies from Radarr and update local database accordingly
 def updateMovies(bot, job):
@@ -47,4 +47,4 @@ def updateMovies(bot, job):
                 logger.warning("Movie '{}' has been modified the database.".format(movie[1]))
         logger.info("Finished updating movie database.")
     else:
-        logger.error("Failed to update movie database. Will try again at next scheduled run.")
+        logger.warning("Failed to update movie database. Will try again at next scheduled run.")

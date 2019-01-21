@@ -19,12 +19,12 @@ def startServer():
     # Starts the server on a seperate thread since it is an infinite loop waiting for connections
     server_thread = Thread(target=serverListen)
     server_thread.start()
-    logging.getLogger(__name__).info("Server socket thread is running")
+    logging.getLogger(__name__).info("Notification listener running")
 
 def stopServer():
     if(server_socket is not None):
         server_socket.close()
-        logging.getLogger(__name__).info("Server socket has been closed")
+        logging.getLogger(__name__).info("Notification listener stopped")
 
 def serverListen():
     while True:

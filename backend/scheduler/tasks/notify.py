@@ -1,5 +1,7 @@
 from backend import constants
 from backend.database.statement import select
+from colored import stylize
+
 import telegram
 import logging
 import datetime
@@ -31,7 +33,7 @@ def notifyImmediately(bot, job):
     for user in users:
         user_data = select.getUser(user[0])
         # Checks if the user is banned or restricted
-        if(user_data[1] != constants.ACCOUNT_BANNED or user_data[1] != constants.ACCOUNT_RESTRICTED):
+        if((not constants.RESTRICTED_NOTIFICATIONS or user_data[1] != constants.ACCOUNT_RESTRICTED) and user_data[1] != constants.ACCOUNT_BANNED):
             # Gets the complexity and sends the appropriate message
             if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
                 bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -46,10 +48,10 @@ def notifyWeekly(bot, job):
     pass
 
 def buildSimpleTelevisionMessage(metadata):
-    return "*{}*\nSeason {} Episode {}".format(metadata[2], metadata[5], metadata[6]) 
+    return "*{}*\nSeason {} Episode {}\n\n".format(metadata[2], metadata[5], metadata[6]) 
 
 def buildComplexTelevisionMessage(metadata):
-    return "*{}*\nSeason {} Episode {}\n\"_{}_\"\n\n*Type:* {}\n*Quality:* {}\n*Version:* {}".format(metadata[2], metadata[5], metadata[6], metadata[4], metadata[3], metadata[7], constants.NOTIFIER_QUALITY_VERSIONS[int(metadata[8])])
+    return "*{}*\nSeason {} Episode {}\n\"_{}_\"\n\n{} | {} | {}\n\n".format(metadata[2], metadata[5], metadata[6], metadata[4], metadata[3], metadata[7], constants.NOTIFIER_QUALITY_VERSIONS[int(metadata[8])])
 
 def buildSimpleMovieMessage(metadata):
     return "simple"
@@ -70,7 +72,7 @@ def secondsToDaily():
         else:
             notification_time = datetime.datetime(now.year, now.month, now.day, int(time[0]), int(time[1]))
     except:
-        logging.getLogger(__name__).error("Invalid NOTIFICATION_TIME in backend/constants.py")
+        logging.getLogger(__name__).error(stylize("Invalid NOTIFICATION_TIME in backend/constants.py", constants.LOGGING_COLOUR_ERROR))
         exit()
     # Returns the total amount of seconds until the notification time
     return int(abs((now-notification_time).total_seconds()))
@@ -91,7 +93,7 @@ def secondsToWeekly():
         while notification_time.weekday() != day:
             notification_time += datetime.timedelta(days=1)
     except:
-        logging.getLogger(__name__).error("Invalid NOTIFICATION_TIME or NOTIFICATION_DAY in backend/constants.py")
+        logging.getLogger(__name__).error(stylize("Invalid NOTIFICATION_TIME or NOTIFICATION_DAY in backend/constants.py", constants.LOGGING_COLOUR_ERROR))
         exit()
     # Returns the total amount of seconds until the notification time
     return int(abs((now-notification_time).total_seconds()))
