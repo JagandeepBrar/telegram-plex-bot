@@ -10,6 +10,7 @@ from backend import constants
 def updateUser(telegram, status, detail, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE users SET ombi_id = ?, name = ?, status = ?, detail = ? WHERE telegram_id = ?', (ombi, name, status, detail, telegram))
     db.commit()
     db.close()
@@ -18,6 +19,7 @@ def updateUser(telegram, status, detail, ombi, name):
 def updateUserStatus(telegram, status):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE users SET status = ? WHERE telegram_id = ?', (status, telegram))
     db.commit()
     db.close()
@@ -26,6 +28,7 @@ def updateUserStatus(telegram, status):
 def updateUserDetail(telegram, detail):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE users SET detail = ? WHERE telegram_id = ?', (detail, telegram))
     db.commit()
     db.close()
@@ -34,6 +37,7 @@ def updateUserDetail(telegram, detail):
 def updateUserOmbi(telegram, ombi):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE users SET ombi_id = ? WHERE telegram_id = ?', (ombi, telegram))
     db.commit()
     db.close()
@@ -46,6 +50,7 @@ def updateUserOmbi(telegram, ombi):
 def updateTV(tvdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE television SET name = ? WHERE tvdb_id = ?', (name, tvdb))
     db.commit()
     db.close()
@@ -58,6 +63,7 @@ def updateTV(tvdb, name):
 def updateMovie(tmdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE movies SET name = ? WHERE tmdb_id = ?', (name, tmdb))
     db.commit()
     db.close()
@@ -69,6 +75,7 @@ def updateMovie(tmdb, name):
 def updateNotifierFrequency(watch_id, freq):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('UPDATE notifiers SET frequency = ? WHERE watch_id = ?', (freq, watch_id))
     db.commit()
     db.close()

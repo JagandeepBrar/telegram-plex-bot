@@ -47,7 +47,7 @@ def initialize():
         )"""
     )
     db_cursor.execute("""CREATE TABLE IF NOT EXISTS metadata_movies(
-            metadata_id INTEGER PRIMARY KEY,
+            metadata_id TEXT PRIMARY KEY,
             tmdb_id INTEGER,
             movie_title TEXT,
             quality TEXT,

@@ -8,6 +8,7 @@ from backend import constants
 def deleteUser(id):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('DELETE FROM users WHERE telegram_id = ?', (id,))
     db.commit()
     db.close()
@@ -19,6 +20,7 @@ def deleteUser(id):
 def deleteTV(id):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('DELETE FROM television WHERE tvdb_id = ?', (id,))
     db.commit()
     db.close()
@@ -30,6 +32,7 @@ def deleteTV(id):
 def deleteMovie(id):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('DELETE FROM movies WHERE tmdb_id = ?', (id,))
     db.commit()
     db.close()
@@ -41,6 +44,7 @@ def deleteMovie(id):
 def deleteNotifier(id):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('DELETE FROM notifiers WHERE watch_id = ?', (id,))
     db.commit()
     db.close()

@@ -9,6 +9,7 @@ from backend import constants
 def getUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (str(id),))
     user = db_cursor.fetchone()
     db.close()
@@ -18,6 +19,7 @@ def getUser(id):
 def getUsers():
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM users')
     users = db_cursor.fetchall()
     db.close()
@@ -27,6 +29,7 @@ def getUsers():
 def getUsersWithStatus(status):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM users WHERE status = ?', (str(status),))
     users = db_cursor.fetchall()
     db.close()
@@ -36,6 +39,7 @@ def getUsersWithStatus(status):
 def getAdmins():
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     admins = []
     for admin in db_cursor.execute('SELECT * FROM users WHERE status = ?', (constants.ACCOUNT_STATUS_ADMIN,)):
         admins.append(admin[0])
@@ -46,6 +50,7 @@ def getAdmins():
 def isUserRegistered(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (id,))
     if(db_cursor.fetchone() is not None):
         db.close()
@@ -57,6 +62,7 @@ def isUserRegistered(id):
 def isUserStatus(id, status):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM users WHERE telegram_id = ? AND status = ?', (id,status))
     if(db_cursor.fetchone() is not None):
         db.close()
@@ -72,6 +78,7 @@ def isUserStatus(id, status):
 def getDatabaseShows():
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     shows = []
     for show in db_cursor.execute('SELECT * FROM television'):
         shows.append([show[0], show[1]])
@@ -81,6 +88,7 @@ def getDatabaseShows():
 def getShow(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM television WHERE tvdb_id = ?', (id,))
     show = db_cursor.fetchone()
     db.close()
@@ -89,6 +97,7 @@ def getShow(id):
 def getShowByName(name):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM television WHERE name = ?', (name,))
     show = db_cursor.fetchone()
     db.close()
@@ -97,6 +106,7 @@ def getShowByName(name):
 def getShowsSearch(text):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM television WHERE name LIKE ?', ("%"+text+"%",))
     shows = db_cursor.fetchall()
     db.close()
@@ -110,6 +120,7 @@ def getShowsSearch(text):
 def getDatabaseMovies():
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     movies = []
     for movie in db_cursor.execute('SELECT * FROM movies'):
         movies.append([movie[0], movie[1]])
@@ -119,6 +130,7 @@ def getDatabaseMovies():
 def getMovie(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM movies WHERE tmdb_id = ?', (id,))
     movie = db_cursor.fetchone()
     db.close()
@@ -127,6 +139,7 @@ def getMovie(id):
 def getMovieByName(name):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM movies WHERE name = ?', (name,))
     movie = db_cursor.fetchone()
     db.close()
@@ -135,6 +148,7 @@ def getMovieByName(name):
 def getMoviesSearch(text):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM movies WHERE name LIKE ?', ("%"+text+"%",))
     movies = db_cursor.fetchall()
     db.close()
@@ -147,6 +161,7 @@ def getMoviesSearch(text):
 def getNotifier(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM notifiers WHERE watch_id = ?', (id,))
     notifier = db_cursor.fetchone()
     db.close()
@@ -155,6 +170,7 @@ def getNotifier(id):
 def getNotifiers():
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM notifiers')
     notifiers = db_cursor.fetchall()
     db.close()
@@ -163,6 +179,7 @@ def getNotifiers():
 def getNotifierForUser(id, media_id, media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute("""SELECT * FROM notifiers WHERE
         telegram_id = ? AND
         media_id = ? AND
@@ -175,6 +192,7 @@ def getNotifierForUser(id, media_id, media_type):
 def getNotifiersForUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM notifiers WHERE telegram_id = ?', (id,))
     notifiers = db_cursor.fetchall()
     db.close()
@@ -183,6 +201,7 @@ def getNotifiersForUser(id):
 def getTelevisionNotifiersForUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ?, telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_TELEVISION, id))
     notifiers = db_cursor.fetchall()
     db.close()
@@ -191,6 +210,7 @@ def getTelevisionNotifiersForUser(id):
 def getMoviesNotifiersForUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ?, telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_MOVIE, id))
     notifiers = db_cursor.fetchall()
     db.close()
@@ -199,6 +219,7 @@ def getMoviesNotifiersForUser(id):
 def getMoviesWatchedByUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute("""SELECT * FROM movies WHERE 
         tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
     """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE))
@@ -209,6 +230,7 @@ def getMoviesWatchedByUser(id):
 def getMoviesWatchedSearch(id, text):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute("""SELECT * FROM movies WHERE 
         tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?) AND
         name LIKE ?
@@ -220,6 +242,7 @@ def getMoviesWatchedSearch(id, text):
 def getShowsWatchedByUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute("""SELECT * FROM television WHERE 
         tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?)
     """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION))
@@ -230,6 +253,7 @@ def getShowsWatchedByUser(id):
 def getShowsWatchedSearch(id, text):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute("""SELECT * FROM television WHERE 
         tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?) AND
         name LIKE ?
@@ -241,6 +265,7 @@ def getShowsWatchedSearch(id, text):
 def getUsersImmediateUpdate(media_id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute("""SELECT telegram_id FROM notifiers WHERE
         media_id = ? AND
         media_type = ? AND
@@ -257,6 +282,7 @@ def getUsersImmediateUpdate(media_id):
 def getMetadata(id, media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
         db_cursor.execute("SELECT * FROM metadata_television WHERE metadata_id = ?", (id,))
     else:

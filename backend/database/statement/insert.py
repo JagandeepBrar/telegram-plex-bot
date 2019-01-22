@@ -10,6 +10,7 @@ from backend import constants
 def insertUser(telegram, status, detail, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, detail, ombi_id, name) VALUES (?, ?, ?, ?, ?)', (telegram, status, detail, ombi, name))
     db.commit()
     db.close()
@@ -22,6 +23,7 @@ def insertUser(telegram, status, detail, ombi, name):
 def insertTV(tvdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('INSERT OR IGNORE INTO television(tvdb_id, name) VALUES (?, ?)', (tvdb, name))
     db.commit()
     db.close()
@@ -34,6 +36,7 @@ def insertTV(tvdb, name):
 def insertMovie(tmdb, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('INSERT OR IGNORE INTO movies(tmdb_id, name) VALUES (?, ?)', (tmdb, name))
     db.commit()
     db.close()
@@ -45,6 +48,7 @@ def insertMovie(tmdb, name):
 def insertNotifier(id, telegram, media_id, media_type, frequency, desc):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('INSERT OR IGNORE INTO notifiers(watch_id, telegram_id, media_id, media_type, frequency, desc) VALUES (?, ?, ?, ?, ?, ?)', (id, telegram, media_id, media_type, frequency, desc))
     db.commit()
     db.close()
