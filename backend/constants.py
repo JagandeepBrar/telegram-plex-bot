@@ -180,9 +180,9 @@ NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 
 NOTIFIER_QUALITY_VERSIONS = ["None", "Standard Release", "PROPER Release"]
 
-NOTIFIER_IMMEDIATELY_HEADER = "_New or Updated Content Available_\n\n"
-NOTIFIER_DAILY_HEADER = "_Daily Content Update_\n\n"
-NOTIFIER_WEEKLY_HEADER = "_Weekly Content Update_\n\n"
+NOTIFIER_IMMEDIATELY_HEADER = "_New/Updated Content Available:_\n\n"
+NOTIFIER_DAILY_HEADER = "_Daily Content Report:_\n\n"
+NOTIFIER_WEEKLY_HEADER = "_Weekly Content Report:_\n\n"
 
 ##########################
 # ADMIN COMMANDS RELATED #
@@ -224,7 +224,7 @@ def hoursToSeconds(hours):
 def daysToSeconds(days):
     return days*DAY_IN_SECONDS
 
-def weekInSeconds(week):
+def weeksToSeconds(week):
     return week*WEEK_IN_SECONDS
 
 # Taken from https://www.geeksforgeeks.org/python-difference-two-lists/

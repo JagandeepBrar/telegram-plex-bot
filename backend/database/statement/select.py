@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 from backend import constants
 
 ###############
@@ -262,7 +263,7 @@ def getShowsWatchedSearch(id, text):
     db.close()
     return shows
 
-def getUsersImmediateUpdate(media_id):
+def getUsersImmediateUpdate(media_id, media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
@@ -270,7 +271,7 @@ def getUsersImmediateUpdate(media_id):
         media_id = ? AND
         media_type = ? AND
         frequency = ?
-    """, (media_id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, constants.NOTIFIER_FREQUENCY_IMMEDIATELY))
+    """, (media_id, media_type, constants.NOTIFIER_FREQUENCY_IMMEDIATELY))
     users = db_cursor.fetchall()
     db.close()
     return users
@@ -288,5 +289,31 @@ def getMetadata(id, media_type):
     else:
         db_cursor.execute("SELECT * FROM metadata_movies WHERE metadata_id = ?", (id,))
     metadata = db_cursor.fetchone()
+    db.close()
+    return metadata
+
+def getMetadataPastDay(media_type):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    utc_time = datetime.datetime.utcnow().timestamp()-constants.daysToSeconds(1)
+    if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
+        db_cursor.execute("SELECT * FROM metadata_television WHERE download_time > ?", (utc_time,))
+    else:
+        db_cursor.execute("SELECT * FROM metadata_movies WHERE download_time > ?", (utc_time,))
+    metadata = db_cursor.fetchall()
+    db.close()
+    return metadata
+
+def getMetadataPastWeek(media_type):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    utc_time = datetime.datetime.utcnow().timestamp()-constants.weeksToSeconds(1)
+    if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
+        db_cursor.execute("SELECT * FROM metadata_television WHERE download_time > ?", (utc_time,))
+    else:
+        db_cursor.execute("SELECT * FROM metadata_movies WHERE download_time > ?", (utc_time,))
+    metadata = db_cursor.fetchall()
     db.close()
     return metadata

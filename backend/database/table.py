@@ -42,7 +42,7 @@ def initialize():
             episode TEXT,
             quality TEXT,
             quality_version TEXT,
-            download_time TEXT,
+            download_time FLOAT,
             FOREIGN KEY(tvdb_id) REFERENCES television ON DELETE CASCADE
         )"""
     )
@@ -52,7 +52,7 @@ def initialize():
             movie_title TEXT,
             quality TEXT,
             quality_version TEXT,
-            download_time TEXT,
+            download_time FLOAT,
             FOREIGN KEY(tmdb_id) REFERENCES movies ON DELETE CASCADE
         )"""
     )

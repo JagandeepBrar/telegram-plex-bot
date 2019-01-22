@@ -16,8 +16,8 @@ tmdb_id = environ.get('radarr_movie_tmdbid')
 movie_title = environ.get('radarr_movie_title')
 quality = environ.get('radarr_moviefile_quality')
 quality_version = environ.get('radarr_moviefile_qualityversion')
-download_time = datetime.datetime.now()
-metadata_id = str(tmdb_id)+";"+str(constants.NOTIFIER_MEDIA_TYPE_MOVIE)+";"+str(download_time.time())
+download_time = datetime.datetime.utcnow().timestamp()
+metadata_id = str(tmdb_id)+";"+str(constants.NOTIFIER_MEDIA_TYPE_MOVIE)+";"+str(download_time)
 
 # Insert the data into the metadata_movies table in the database
 db_cursor.execute("""INSERT OR IGNORE INTO metadata_movies

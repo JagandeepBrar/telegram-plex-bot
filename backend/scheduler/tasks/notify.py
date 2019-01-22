@@ -1,5 +1,6 @@
 from backend import constants, logger
 from backend.database.statement import select
+from backend.scheduler.tasks import catalogue
 
 import telegram
 import datetime
@@ -12,9 +13,14 @@ def notifyImmediately(bot, job):
     except:
         logger.error(__name__, "notifyImmediately() failed to extract and process watch_id")
         return True
+    # If the media isn't in the database, refreshes the databases first
+    if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_MOVIE and select.getMovie(data[0]) == None):
+        catalogue.updateMovies(None, None)
+    elif(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION and select.getShow(data[0]) == None):
+        catalogue.updateTelevision(None, None)
     # Gets the metadata for the movie and the list of users who need notifications
     metadata = select.getMetadata(watch_id, data[1])
-    users = select.getUsersImmediateUpdate(data[0])
+    users = select.getUsersImmediateUpdate(data[0], data[1])
     # If there are no users watching this show, print a log and return
     if(len(users) == 0):
         logger.info(__name__, "New content ({}): Notified no users".format(metadata[2]), "INFO_GREEN")
@@ -51,11 +57,10 @@ def buildComplexTelevisionMessage(metadata):
     return "*{}*\nSeason {} Episode {}\n\"_{}_\"\n\n{} | {} | {}\n\n".format(metadata[2], metadata[5], metadata[6], metadata[4], metadata[3], metadata[7], constants.NOTIFIER_QUALITY_VERSIONS[int(metadata[8])])
 
 def buildSimpleMovieMessage(metadata):
-    return "simple"
+    return "*{}*".format(metadata[2])
 
 def buildComplexMovieMessage(metadata):
-    return "complex"
-
+    return "*{}*\n\n{} | {}".format(metadata[2], metadata[3], constants.NOTIFIER_QUALITY_VERSIONS[int(metadata[4])])
 
 # Calculates the amount of seconds until the time to send the daily notification
 # Will be off by -1 to -5 seconds, but it's close enough that it's negligible

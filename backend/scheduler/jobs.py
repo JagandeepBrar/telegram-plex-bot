@@ -23,7 +23,7 @@ def addDefaultJobs():
 
 # Creates a repeating job, which will call <func> every <delay> seconds, with the first execution happening after <first> seconds
 def addRepeatingJob(func, delay, first=0):
-    job_queue.run_repeating(func, interval=delay, first=0)
+    job_queue.run_repeating(func, interval=delay, first=first)
     logger.info(__name__, "Repeating job added to queue: {}, repeat delay: {}s, start delay: {}s".format(func.__name__, delay, first), "INFO_GREEN")
 
 # Creates a single job, that will execute after <delay> seconds
