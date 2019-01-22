@@ -1,8 +1,7 @@
 import telegram
-import logging
 import backend.api.telegram
 
-from backend import constants
+from backend import constants, logger
 from backend.scheduler.jobs import catalogue
 from backend.commands import checker
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
@@ -33,7 +32,7 @@ def watchMovieCallback(bot, update):
     desc = telegram_name + " watching " + movie_name
 
     insert.insertNotifier(watch_id, telegram_id, movie_id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, constants.NOTIFIER_FREQUENCY_IMMEDIATELY, desc)
-    logging.getLogger(__name__).info("{} started watching a movie: {}".format(telegram_name, movie_name))
+    logger.info(__name__, "{} started watching a movie: {}".format(telegram_name, movie_name))
     bot.edit_message_text(text=constants.MOVIES_WATCH_SUCCESS.format(movie_name),chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
 
 def unwatchMovie(bot, update, args):
@@ -56,5 +55,5 @@ def unwatchMovieCallback(bot, update):
     desc = telegram_name + " unwatched " + movie_name
 
     delete.deleteNotifier(watch_id)
-    logging.getLogger(__name__).info("{} unwatched a show: {}".format(telegram_name, movie_name))
+    logger.info(__name__, "{} unwatched a show: {}".format(telegram_name, movie_name))
     bot.edit_message_text(text=constants.MOVIES_UNWATCH_SUCCESS.format(movie_name), chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)

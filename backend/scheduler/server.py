@@ -1,9 +1,8 @@
 from threading import Thread
-from backend import constants
+from backend import constants, logger
 from backend.scheduler import jobs
 from backend.scheduler.tasks import notify
 import socket
-import logging
 
 server_socket = None
 
@@ -19,12 +18,12 @@ def startServer():
     # Starts the server on a seperate thread since it is an infinite loop waiting for connections
     server_thread = Thread(target=serverListen)
     server_thread.start()
-    logging.getLogger(__name__).info("Notification listener running")
+    logger.warning(__name__, "Notification listener running: {}:{}".format(constants.SOCKET_HOST, constants.SOCKET_PORT))
 
 def stopServer():
     if(server_socket is not None):
         server_socket.close()
-        logging.getLogger(__name__).info("Notification listener stopped")
+        logger.info(__name__, "Notification listener stopped")
 
 def serverListen():
     while True:

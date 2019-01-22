@@ -1,15 +1,14 @@
-import logging
 import backend.api.telegram as telegram
 from functools import wraps
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, ConversationHandler, RegexHandler, Filters
 from backend.commands.command import account, admin, movies, television, watcher
-from backend import constants
+from backend import constants, logger
 
 def initialize():
     conversationHandlers()
     commandHandlers()
     callbackQueryHandlers()
-    logging.getLogger(__name__).info("Telegram command handlers initialized")
+    logger.info(__name__, "Telegram command handlers initialized")
 
 def conversationHandlers():
     telegram.dispatcher.add_handler(ConversationHandler(

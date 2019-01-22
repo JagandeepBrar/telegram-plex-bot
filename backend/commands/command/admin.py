@@ -1,8 +1,7 @@
 import telegram
-import logging
 import backend.api.telegram
 
-from backend import constants
+from backend import constants, logger
 from backend.scheduler.jobs import catalogue
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
 from backend.database.statement import insert, select, update as update_db
@@ -44,7 +43,7 @@ def accessSetCallback(bot, update):
     msg = constants.ADMIN_ACCESS_SUCCESS.format(user[0], user[4], results[1].lower())
     update_db.updateUserStatus(user[0], status_code)
     bot.edit_message_text(text=msg, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
-    logging.getLogger(__name__).info(msg[1:-2])
+    logger.info(__name__, msg[1:-2], "INFO_BLUE")
     bot.send_message(chat_id=user[0], text=constants.ACCOUNT_STATUS_MSG[status_code], parse_mode=telegram.ParseMode.MARKDOWN)
 
 # Force update the database(s)

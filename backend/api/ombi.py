@@ -1,2 +1,1 @@
-logger = None
 enabled = False

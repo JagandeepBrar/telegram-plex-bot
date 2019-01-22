@@ -11,8 +11,6 @@ BOT_NAME = "Plex Assistant"
 NOTIFICATION_TIME = "15:00"
 NOTIFICATION_DAY = "Friday"
 
-LOGGING_COLOUR_ERROR = colored.bg('red')+colored.fg('white')
-
 ################
 # RESTRICTIONS #
 ################
@@ -20,6 +18,18 @@ LOGGING_COLOUR_ERROR = colored.bg('red')+colored.fg('white')
 RESTRICTED_NOTIFICATIONS = True
 RESTRICTED_WATCHER_WATCH = True
 RESTRICTED_WATCHER_UNWATCH = True
+
+###################
+# LOGGING RELATED #
+###################
+
+LOGGING_COLOURS = {
+    'INFO': colored.fg('white'), 
+    'INFO_GREEN': colored.fg('white')+colored.bg('dark_green'),
+    'INFO_BLUE': colored.fg('white')+colored.bg('deep_sky_blue_4c'),
+    'WARNING': colored.fg('white')+colored.bg('orange_red_1'),
+    'ERROR': colored.fg('white')+colored.bg('red'),
+}
 
 ##################
 # SOCKET RELATED #
@@ -46,7 +56,8 @@ RADARR_MOVIES_LOOKUP = "/api/movie/lookup/tmdb"
 ###########
 
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-HOUR_IN_SECONDS = 3600
+MINUTE_IN_SECONDS = 60
+HOUR_IN_SECONDS = MINUTE_IN_SECONDS*60
 DAY_IN_SECONDS = HOUR_IN_SECONDS*24
 WEEK_IN_SECONDS = DAY_IN_SECONDS*7
 
@@ -203,6 +214,9 @@ MOVIES_UNWATCH_CALLBACK = "movie_UNWATCHMOVIE_"
 ###########
 # METHODS #
 ###########
+
+def minutesToSeconds(minutes):
+    return minutes*MINUTE_IN_SECONDS
 
 def hoursToSeconds(hours):
     return hours*HOUR_IN_SECONDS

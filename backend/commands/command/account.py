@@ -1,9 +1,8 @@
 import telegram
-import logging
 import backend.api.telegram
 
 from telegram.ext import ConversationHandler
-from backend import constants
+from backend import constants, logger
 from backend.api import ombi
 from backend.commands import checker
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
@@ -47,7 +46,7 @@ def registerFinish(bot, update):
         status = constants.ACCOUNT_STATUS_VERIFIED
     update_db.updateUserStatus(update.message.chat_id, status)
     # Log the registration and reply with the appropriate message
-    logging.getLogger(__name__).info("User registered - {}: {}".format(update.message.chat_id, update.message.from_user.full_name))
+    logger.info(__name__, "User registered - {}: {}".format(update.message.chat_id, update.message.from_user.full_name), "INFO_BLUE")
     update.message.reply_text(constants.ACCOUNT_STATUS_MSG[status], parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return ConversationHandler.END
 

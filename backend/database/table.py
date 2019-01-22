@@ -1,6 +1,5 @@
 import sqlite3
-import logging
-from backend import constants
+from backend import constants, logger
 
 def initialize():
     db = sqlite3.connect(constants.DB_FILE) 
@@ -59,4 +58,4 @@ def initialize():
     )
     db.commit()
     db.close()
-    logging.getLogger(__name__).info("Database tables created/loaded")
+    logger.info(__name__, "Database tables created/loaded")

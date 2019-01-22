@@ -1,8 +1,7 @@
 import telegram
-import logging
 import backend.api.telegram
 
-from backend import constants
+from backend import constants, logger
 from backend.commands import checker
 from backend.commands.command import movies, television
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action

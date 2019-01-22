@@ -1,8 +1,5 @@
-import logging
-
-from colored import stylize
 from telegram.ext import Updater
-from backend import constants
+from backend import constants, logger
 
 admins = []
 auto_approve = False
@@ -17,7 +14,7 @@ def initialize():
         updater = Updater(token=api)
         dispatcher = updater.dispatcher
     except:
-        logging.getLogger(__name__).error(stylize("Failed to initialize Telegram's API: Please check config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Failed to initialize Telegram's API: Please check config.ini")
         exit()
 
 # Adds a telegram ID to the list of admins

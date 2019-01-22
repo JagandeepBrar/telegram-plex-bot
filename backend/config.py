@@ -1,25 +1,15 @@
 import configparser
 import sys
-import logging
 
 from colored import stylize
-from backend import constants
+from backend import constants, logger
 from backend.api import telegram, sonarr, radarr, ombi
 
-logger = None
 parser = None
 
 def initialize():
-    initLogger()
     initParser()
     parseConfig()
-
-# Initialize the logger
-def initLogger():
-    global logger
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-    logger = logging.getLogger(__name__)
-    logger.info("Logger initialized")
 
 # Initialize the configuration parser
 def initParser():
@@ -29,9 +19,9 @@ def initParser():
         parser.read(constants.CONFIG_FILE)
         if not(len(parser) > 1):
             raise Exception()
-        logger.info("Configparser initialized")
+        logger.info(__name__, "Configparser initialized")
     except:
-        logger.error(stylize("Failed to load config.ini: Please ensure that a valid config file is in the root directory", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Failed to load config.ini: Please ensure that a valid config file is in the root directory")
         exit()
 
 # Wrapper to parse all configuration data
@@ -48,11 +38,11 @@ def parseNotifications():
         if('NOTIFICATIONS' in parser):
             constants.NOTIFICATION_TIME = parser['NOTIFICATIONS']['TIME']
             constants.NOTIFICATION_DAY = parser['NOTIFICATIONS']['DAY']
-            logger.info("Notification times set: {} @ {}".format(constants.NOTIFICATION_DAY, constants.NOTIFICATION_TIME))
+            logger.warning(__name__, "Notification times set: {} @ {}".format(constants.NOTIFICATION_DAY, constants.NOTIFICATION_TIME))
         else:
             raise Exception()
     except:
-        logger.error(stylize("Failed to get notification times: Check your config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Failed to get notification times: Check your config.ini")
         exit()
 
 # Admin list parsing
@@ -61,11 +51,11 @@ def parseAdmins():
         if('TELEGRAM' in parser):
             for admin in parser['TELEGRAM']['AUTO_ADMINS'].split(','):
                 telegram.addAdmin(int(admin.strip()))
-                logger.info("Telegram admins parsed {}".format(telegram.admins))
+                logger.warning(__name__, "Telegram admins: {}".format(telegram.admins))
         else:
             raise Exception()
     except:
-        logger.error(stylize("Failed to get the admin user list: Check your config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Failed to get the admin user list: Check your config.ini")
         exit()
 
 # Sonarr API parsing
@@ -77,9 +67,9 @@ def parseSonarr():
             sonarr.host = parser['SONARR']['HOST']
             sonarr.update_frequency = int(parser['SONARR']['UPDATE_FREQ'])
             sonarr.initialize()
-            logger.info("Sonarr API parsed")
+            logger.info(__name__, "Sonarr API parsed")
     else:
-        logger.error(stylize("Could not read the Sonarr configuration values: Check your config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Could not read the Sonarr configuration values: Check your config.ini")
         exit()
 
 # Radarr API parsing
@@ -91,9 +81,9 @@ def parseRadarr():
             radarr.host = parser['RADARR']['HOST']
             radarr.update_frequency = int(parser['RADARR']['UPDATE_FREQ'])
             radarr.initialize()
-            logger.info("Radarr API parsed")
+            logger.info(__name__, "Radarr API parsed")
     else:
-        logger.error(stylize("Could not read the Radarr configuration values: Check your config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Could not read the Radarr configuration values: Check your config.ini")
         exit()
 
 # Ombi API parsing
@@ -101,9 +91,9 @@ def parseOmbi():
     if('OMBI' in parser):
         if(parser.getboolean('OMBI', 'ENABLED')):
             ombi.enabled = True
-            logger.info("Ombi API parsed")
+            logger.info(__name__, "Ombi API parsed")
     else:
-        logger.error(stylize("Failed to initialize Ombi's API: Check your config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Failed to initialize Ombi's API: Check your config.ini")
         exit()
     
 
@@ -113,7 +103,7 @@ def parseTelegram():
         telegram.api = parser['TELEGRAM']['BOT_TOKEN']
         telegram.auto_approve = parser.getboolean('TELEGRAM', 'AUTO_APPROVE')
         telegram.initialize()
-        logger.info("Telegram API initialized")
+        logger.info(__name__, "Telegram API initialized")
     else:
-        logger.error(stylize("Failed to initialize Telegram's API: Check your config.ini", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Failed to initialize Telegram's API: Check your config.ini")
         exit()

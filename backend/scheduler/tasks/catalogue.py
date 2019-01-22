@@ -1,12 +1,10 @@
 from backend.api import sonarr, radarr
 from backend.database.statement import insert, select, delete, update
-from backend import constants
-import logging
+from backend import constants, logger
 
 # Fetch all shows from Sonarr and update local database accordingly
 def updateTelevision(bot, job):
-    logger = logging.getLogger(__name__)
-    logger.info("Updating television database...")
+    logger.info(__name__, "Updating television database...")
     shows = sonarr.getAllShows()
     if(shows is not None):
         # Add any new TV series to the database
@@ -21,15 +19,14 @@ def updateTelevision(bot, job):
                     update.updateTV(show[0], show[1])
                 else:
                     delete.deleteTV(show[0])
-                logger.warning("Television series '{}' has been modified in the database.".format(show[1]))
-        logger.info("Finished updating television database.")
+                logger.warning(__name__, "Television series '{}' has been modified in the database".format(show[1]))
+        logger.info(__name__, "Finished updating television database")
     else:
-        logger.warning("Failed to update television database. Will try again at next scheduled run.")
+        logger.warning(__name__, "Failed to update television database. Will try again at next scheduled run")
 
 # Fetch all movies from Radarr and update local database accordingly
 def updateMovies(bot, job):
-    logger = logging.getLogger(__name__)
-    logger.info("Updating movies database...")
+    logger.info(__name__, "Updating movies database...")
     movies = radarr.getAllMovies()
     if(movies is not None):
         # Add any new movies to the database
@@ -44,7 +41,7 @@ def updateMovies(bot, job):
                     update.updateMovie(movie[0], movie[1])
                 else:
                     delete.deleteMovie(movie[0])
-                logger.warning("Movie '{}' has been modified the database.".format(movie[1]))
-        logger.info("Finished updating movie database.")
+                logger.warning(__name__, "Movie '{}' has been modified the database".format(movie[1]))
+        logger.info(__name__, "Finished updating movie database")
     else:
-        logger.warning("Failed to update movie database. Will try again at next scheduled run.")
+        logger.warning(__name__, "Failed to update movie database. Will try again at next scheduled run")

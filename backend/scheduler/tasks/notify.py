@@ -1,26 +1,23 @@
-from backend import constants
+from backend import constants, logger
 from backend.database.statement import select
-from colored import stylize
 
 import telegram
-import logging
 import datetime
 
 def notifyImmediately(bot, job):
     # Pulls the watch_id, and decodes the bytes back to the data
-    logger = logging.getLogger(__name__)
     try:
         watch_id = job.context.decode('utf-8')
         data = watch_id.split(";")
     except:
-        logger.error("notifyImmediately() failed to extract and process watch_id")
+        logger.error(__name__, "notifyImmediately() failed to extract and process watch_id")
         return True
     # Gets the metadata for the movie and the list of users who need notifications
     metadata = select.getMetadata(watch_id, data[1])
     users = select.getUsersImmediateUpdate(data[0])
     # If there are no users watching this show, print a log and return
     if(len(users) == 0):
-        logger.info("New content ({}): Notified no users".format(metadata[2]))
+        logger.info(__name__, "New content ({}): Notified no users".format(metadata[2]), "INFO_GREEN")
         return True
     # Build the messages
     if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
@@ -39,7 +36,7 @@ def notifyImmediately(bot, job):
                 bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
             else:
                 bot.send_message(chat_id=user_data[0], text=msg_complex, parse_mode=telegram.ParseMode.MARKDOWN)
-    logger.info("New content ({}): notified {} user(s)".format(metadata[2], len(users)))
+    logger.info(__name__, "New content ({}): notified {} user(s)".format(metadata[2], len(users)), "INFO_GREEN")
 
 def notifyDaily(bot, job):
     pass
@@ -72,7 +69,7 @@ def secondsToDaily():
         else:
             notification_time = datetime.datetime(now.year, now.month, now.day, int(time[0]), int(time[1]))
     except:
-        logging.getLogger(__name__).error(stylize("Invalid NOTIFICATION_TIME in backend/constants.py", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Invalid NOTIFICATION_TIME in backend/constants.py")
         exit()
     # Returns the total amount of seconds until the notification time
     return int(abs((now-notification_time).total_seconds()))
@@ -93,7 +90,7 @@ def secondsToWeekly():
         while notification_time.weekday() != day:
             notification_time += datetime.timedelta(days=1)
     except:
-        logging.getLogger(__name__).error(stylize("Invalid NOTIFICATION_TIME or NOTIFICATION_DAY in backend/constants.py", constants.LOGGING_COLOUR_ERROR))
+        logger.error(__name__, "Invalid NOTIFICATION_TIME or NOTIFICATION_DAY in backend/constants.py")
         exit()
     # Returns the total amount of seconds until the notification time
     return int(abs((now-notification_time).total_seconds()))
