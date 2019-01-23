@@ -4,8 +4,8 @@ import colored
 # APPLICATION CONFIGURATION #
 #############################
 
-CONFIG_FILE = "config.ini"
-DB_FILE = "database.db"
+CONFIG_FILE = "data/config.ini"
+DB_FILE = "data/database.db"
 BOT_NAME = ""
 
 NOTIFICATION_TIME = ""
