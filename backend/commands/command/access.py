@@ -6,7 +6,6 @@ from backend.api import radarr, sonarr
 from backend.scheduler.jobs import catalogue
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
 from backend.database.statement import insert, select, update as update_db
-from backend.commands.command import television, movies
 from backend.commands import checker
 
 @send_typing_action
@@ -46,22 +45,3 @@ def accessSetCallback(bot, update):
     bot.edit_message_text(text=msg, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
     logger.info(__name__, msg[1:-2], "INFO_BLUE")
     bot.send_message(chat_id=user[0], text=constants.ACCOUNT_STATUS_MSG[status_code], parse_mode=telegram.ParseMode.MARKDOWN)
-
-# Force update the database(s)
-@send_typing_action
-def forceUpdate(bot, update, args):
-    if(checker.checkAdminAllowed(update)):
-        if(len(args) == 1):
-            if(args[0].lower() in constants.WATCHER_WATCH_SHOW_SYNONYMS and sonarr.enabled):
-                television.forceUpdate(bot, update)
-            elif(args[0].lower() in constants.WATCHER_WATCH_MOVIE_SYNONYMS and radarr.enabled):
-                movies.forceUpdate(bot, update)
-            elif(args[0].lower() == "all"):
-                if(sonarr.enabled):
-                    television.forceUpdate(bot, update)
-                if(radarr.enabled):
-                    movies.forceUpdate(bot, update)
-            else:
-                update.message.reply_text(constants.ADMIN_FORCEUPDATE_FAILED_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)
-        else:
-            update.message.reply_text(constants.ADMIN_FORCEUPDATE_FAILED_ARGS, parse_mode=telegram.ParseMode.MARKDOWN)
