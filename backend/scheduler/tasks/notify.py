@@ -1,4 +1,5 @@
 from backend import constants, logger
+from backend.api import radarr, sonarr
 from backend.database.statement import select
 from backend.scheduler.tasks import catalogue
 
@@ -14,9 +15,9 @@ def notifyImmediately(bot, job):
         logger.error(__name__, "notifyImmediately() failed to extract and process watch_id")
         return True
     # If the media isn't in the database, refreshes the databases first
-    if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_MOVIE and select.getMovie(data[0]) == None):
+    if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_MOVIE and select.getMovie(data[0]) == None and radarr.enabled):
         catalogue.updateMovies(None, None)
-    elif(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION and select.getShow(data[0]) == None):
+    elif(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION and select.getShow(data[0]) == None and sonarr.enabled):
         catalogue.updateTelevision(None, None)
     # Gets the metadata for the movie and the list of users who need notifications
     metadata = select.getMetadata(watch_id, data[1])

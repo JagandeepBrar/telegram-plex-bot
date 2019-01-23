@@ -2,6 +2,7 @@ import telegram
 import backend.api.telegram
 
 from backend import constants, logger
+from backend.api import radarr, sonarr
 from backend.scheduler.jobs import catalogue
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
 from backend.database.statement import insert, select, update as update_db
@@ -51,13 +52,15 @@ def accessSetCallback(bot, update):
 def forceUpdate(bot, update, args):
     if(checker.checkAdminAllowed(update)):
         if(len(args) == 1):
-            if(args[0].lower() in constants.WATCHER_WATCH_SHOW_SYNONYMS):
+            if(args[0].lower() in constants.WATCHER_WATCH_SHOW_SYNONYMS and sonarr.enabled):
                 television.forceUpdate(bot, update)
-            elif(args[0].lower() in constants.WATCHER_WATCH_MOVIE_SYNONYMS):
+            elif(args[0].lower() in constants.WATCHER_WATCH_MOVIE_SYNONYMS and radarr.enabled):
                 movies.forceUpdate(bot, update)
             elif(args[0].lower() == "all"):
-                television.forceUpdate(bot, update)
-                movies.forceUpdate(bot, update)
+                if(sonarr.enabled):
+                    television.forceUpdate(bot, update)
+                if(radarr.enabled):
+                    movies.forceUpdate(bot, update)
             else:
                 update.message.reply_text(constants.ADMIN_FORCEUPDATE_FAILED_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)
         else:

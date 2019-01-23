@@ -103,6 +103,10 @@ def parseOmbi():
     if('OMBI' in parser):
         if(parser.getboolean('OMBI', 'ENABLED')):
             ombi.enabled = True
+            ombi.api = parser['OMBI']['API']
+            ombi.host = parser['OMBI']['HOST']
+            ombi.update_frequency = int(parser['OMBI']['UPDATE_FREQ'])
+            ombi.initialize()
             logger.info(__name__, "Ombi API parsed")
     else:
         logger.error(__name__, "Failed to initialize Ombi's API: Check your config.ini")
