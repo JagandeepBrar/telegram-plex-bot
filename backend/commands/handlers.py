@@ -47,6 +47,7 @@ def conversationHandlers():
     ))
 
 def commandHandlers():
+    telegram.dispatcher.add_handler(CommandHandler("help", help.help))
     # watch related
     telegram.dispatcher.add_handler(CommandHandler("watch", watch.watch, pass_args=True))
     telegram.dispatcher.add_handler(CommandHandler("unwatch", unwatch.unwatch, pass_args=True))

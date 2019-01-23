@@ -199,6 +199,17 @@ ADMIN_ACCESS_SUCCESS = "_{}: {}'s access level has been updated to {}._"
 ADMIN_FORCEUPDATE_FAILED_ARGS = "_/forceupdate usage:_\n\n/forceupdate <Database>"
 ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database._"
 
+################
+# HELP COMMAND #
+################
+
+HELP_ADMIN = "_Admin Commands_"
+HELP_UNVERIFIED = "_Your account is unverified._\n\nYour account must be verified before you can see the commands available."
+HELP_VERIFIED = "_Commands_"
+HELP_RESTRICTED = HELP_VERIFIED
+HELP_BANNED = "_Your account is banned._\n\nYou cannot run any commands."
+HELP_MESSAGES = [HELP_ADMIN, HELP_UNVERIFIED, HELP_VERIFIED, HELP_RESTRICTED, HELP_BANNED]
+
 ####################
 # HANDLER PREFIXES #
 ####################
