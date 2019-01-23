@@ -181,8 +181,9 @@ NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 NOTIFIER_QUALITY_VERSIONS = ["None", "Standard Release", "PROPER Release"]
 
 NOTIFIER_IMMEDIATELY_HEADER = "_New/Updated Content Available:_\n\n"
-NOTIFIER_DAILY_HEADER = "_Daily Content Report:_\n\n"
-NOTIFIER_WEEKLY_HEADER = "_Weekly Content Report:_\n\n"
+NOTIFIER_DAILY_HEADER = "_{} Daily Content Report:_\n\n"
+NOTIFIER_WEEKLY_HEADER = "_{} Weekly Content Report:_\n\n"
+NOTIFIER_NOTHING_TO_SEND = "DON'T SEND ANYTHING"
 
 ##########################
 # ADMIN COMMANDS RELATED #

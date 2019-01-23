@@ -113,6 +113,29 @@ def getShowsSearch(text):
     db.close()
     return shows
 
+def getShowsWatchedByUser(id):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute("""SELECT * FROM television WHERE 
+        tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?)
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION))
+    shows = db_cursor.fetchall()
+    db.close()
+    return shows
+
+def getShowsWatchedSearch(id, text):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute("""SELECT * FROM television WHERE 
+        tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?) AND
+        name LIKE ?
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, "%"+text+"%"))
+    shows = db_cursor.fetchall()
+    db.close()
+    return shows
+
 ################
 # MOVIES TABLE #
 ################
@@ -151,6 +174,29 @@ def getMoviesSearch(text):
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
     db_cursor.execute('SELECT * FROM movies WHERE name LIKE ?', ("%"+text+"%",))
+    movies = db_cursor.fetchall()
+    db.close()
+    return movies
+
+def getMoviesWatchedByUser(id):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute("""SELECT * FROM movies WHERE 
+        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE))
+    movies = db_cursor.fetchall()
+    db.close()
+    return movies
+
+def getMoviesWatchedSearch(id, text):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute("""SELECT * FROM movies WHERE 
+        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?) AND
+        name LIKE ?
+    """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, "%"+text+"%"))
     movies = db_cursor.fetchall()
     db.close()
     return movies
@@ -217,52 +263,6 @@ def getMoviesNotifiersForUser(id):
     db.close()
     return notifiers
 
-def getMoviesWatchedByUser(id):
-    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
-    db_cursor = db.cursor()
-    db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute("""SELECT * FROM movies WHERE 
-        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?)
-    """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE))
-    movies = db_cursor.fetchall()
-    db.close()
-    return movies
-
-def getMoviesWatchedSearch(id, text):
-    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
-    db_cursor = db.cursor()
-    db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute("""SELECT * FROM movies WHERE 
-        tmdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? and media_type = ?) AND
-        name LIKE ?
-    """, (id, constants.NOTIFIER_MEDIA_TYPE_MOVIE, "%"+text+"%"))
-    movies = db_cursor.fetchall()
-    db.close()
-    return movies
-
-def getShowsWatchedByUser(id):
-    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
-    db_cursor = db.cursor()
-    db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute("""SELECT * FROM television WHERE 
-        tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?)
-    """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION))
-    shows = db_cursor.fetchall()
-    db.close()
-    return shows
-
-def getShowsWatchedSearch(id, text):
-    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
-    db_cursor = db.cursor()
-    db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute("""SELECT * FROM television WHERE 
-        tvdb_id IN (SELECT media_id FROM notifiers WHERE telegram_id = ? AND media_type = ?) AND
-        name LIKE ?
-    """, (id, constants.NOTIFIER_MEDIA_TYPE_TELEVISION, "%"+text+"%"))
-    shows = db_cursor.fetchall()
-    db.close()
-    return shows
-
 def getUsersImmediateUpdate(media_id, media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
@@ -276,6 +276,32 @@ def getUsersImmediateUpdate(media_id, media_type):
     db.close()
     return users
 
+def getNotifiersForUserDaily(id, media_type):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute("""SELECT * FROM notifiers WHERE
+        telegram_id = ? AND
+        frequency = ? AND
+        media_type = ?
+    """, (id, constants.NOTIFIER_FREQUENCY_DAILY))
+    notifiers = db_cursor.fetchall()
+    db.close()
+    return notifiers
+
+def getNotifiersForUserWeekly(id, media_type):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute("""SELECT * FROM notifiers WHERE
+        telegram_id = ? AND
+        frequency = ? AND
+        media_type = ?
+    """, (id, constants.NOTIFIER_FREQUENCY_WEEKLY))
+    notifiers = db_cursor.fetchall()
+    db.close()
+    return notifiers
+
 ###################
 # METADATA TABLES #
 ###################
@@ -286,33 +312,52 @@ def getMetadata(id, media_type):
     db_cursor.execute("PRAGMA foreign_keys = ON")
     if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
         db_cursor.execute("SELECT * FROM metadata_television WHERE metadata_id = ?", (id,))
-    else:
+    elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
         db_cursor.execute("SELECT * FROM metadata_movies WHERE metadata_id = ?", (id,))
     metadata = db_cursor.fetchone()
     db.close()
     return metadata
 
-def getMetadataPastDay(media_type):
+def getMetadataAllPastDay(media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
     utc_time = datetime.datetime.utcnow().timestamp()-constants.daysToSeconds(1)
     if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
         db_cursor.execute("SELECT * FROM metadata_television WHERE download_time > ?", (utc_time,))
-    else:
+    elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
         db_cursor.execute("SELECT * FROM metadata_movies WHERE download_time > ?", (utc_time,))
     metadata = db_cursor.fetchall()
     db.close()
     return metadata
 
-def getMetadataPastWeek(media_type):
+def getMetadataPastDay(media_id, media_type):
+    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    utc_time = datetime.datetime.utcnow().timestamp()-constants.daysToSeconds(1)
+    if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
+        db_cursor.execute("""SELECT * FROM metadata_television WHERE
+            media_id = ? AND
+            download_time > ?
+        """, (media_id, utc_time))
+    elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
+        db_cursor.execute("""SELECT * FROM metadata_movies WHERE
+            media_id = ? AND
+            download_time > ?
+        """, (media_id, utc_time))
+    metadata = db_cursor.fetchall()
+    db.close()
+    return metadata
+
+def getMetadataAllPastWeek(media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
     utc_time = datetime.datetime.utcnow().timestamp()-constants.weeksToSeconds(1)
     if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
         db_cursor.execute("SELECT * FROM metadata_television WHERE download_time > ?", (utc_time,))
-    else:
+    elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
         db_cursor.execute("SELECT * FROM metadata_movies WHERE download_time > ?", (utc_time,))
     metadata = db_cursor.fetchall()
     db.close()
