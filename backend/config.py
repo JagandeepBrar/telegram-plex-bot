@@ -26,12 +26,24 @@ def initParser():
 
 # Wrapper to parse all configuration data
 def parseConfig():
+    parseGeneral()
     parseTelegram()
     parseOmbi()
     parseRadarr()
     parseSonarr()
     parseAdmins()
     parseNotifications()
+
+def parseGeneral():
+    try:
+        if('GENERAL' in parser):
+            constants.BOT_NAME = parser['GENERAL']['NAME']
+            logger.info(__name__, "Parsed general information")
+        else:
+            raise Exception()
+    except:
+        logger.error(__name__, "Failed to get general config information: Check your config.ini")
+        exit()
 
 def parseNotifications():
     try:

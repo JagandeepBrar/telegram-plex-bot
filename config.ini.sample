@@ -1,3 +1,6 @@
+[GENERAL]
+NAME = Plex Assistant
+
 [NOTIFICATIONS]
 TIME = 18:00
 DAY = Friday

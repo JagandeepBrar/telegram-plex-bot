@@ -6,10 +6,10 @@ import colored
 
 CONFIG_FILE = "config.ini"
 DB_FILE = "database.db"
-BOT_NAME = "Plex Assistant"
+BOT_NAME = ""
 
-NOTIFICATION_TIME = "15:00"
-NOTIFICATION_DAY = "Friday"
+NOTIFICATION_TIME = ""
+NOTIFICATION_DAY = ""
 
 ################
 # RESTRICTIONS #
@@ -92,7 +92,7 @@ ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by un
 ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL = range(2)
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
 ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your notifications?"
-ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n".format(BOT_NAME)+ACCOUNT_REGISTER_DETAIL
+ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n"+ACCOUNT_REGISTER_DETAIL
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
 

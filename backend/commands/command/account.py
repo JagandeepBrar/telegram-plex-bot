@@ -11,8 +11,9 @@ from backend.database.statement import insert, select, delete, update as update_
 # Start the registration process
 def register(bot, update):
     if(not select.isUserRegistered(update.message.chat_id)):
-        insert.insertUser(update.message.chat_id, None, None, None, update.message.from_user.full_name)
-        update.message.reply_text(constants.ACCOUNT_REGISTER_START, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
+        insert.insertUser(update.message.chat_id, constants.ACCOUNT_STATUS_UNVERIFIED, constants.ACCOUNT_DETAIL_SIMPLE, None, update.message.from_user.full_name)
+        update.message.reply_text(constants.ACCOUNT_REGISTER_START.format(constants.BOT_NAME), parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.ACCOUNT_DETAIL_REPLY_MARKUP, resize_keyboard=True))
+        logger.info(__name__, "User registered - {}: {}".format(update.message.chat_id, update.message.from_user.full_name), "INFO_BLUE")
         return constants.ACCOUNT_REGISTER_STATE_DETAIL
     else:
         update.message.reply_text(constants.ACCOUNT_REGISTER_FAIL_REGISTERED, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -46,7 +47,6 @@ def registerFinish(bot, update):
         status = constants.ACCOUNT_STATUS_VERIFIED
     update_db.updateUserStatus(update.message.chat_id, status)
     # Log the registration and reply with the appropriate message
-    logger.info(__name__, "User registered - {}: {}".format(update.message.chat_id, update.message.from_user.full_name), "INFO_BLUE")
     update.message.reply_text(constants.ACCOUNT_STATUS_MSG[status], parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return ConversationHandler.END
 
