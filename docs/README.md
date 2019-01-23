@@ -11,6 +11,8 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 ## Implemented Commands
 
+- General
+    - `/help`: Shows all commands available for the current user (based on their status)
 - Account-Related
     - `/register`: Registers a user to the bot's sqlite database
         - `/start` is also an alias, so it is automatically executed when any user starts a conversation with the bot
