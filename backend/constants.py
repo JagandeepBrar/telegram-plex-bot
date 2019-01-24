@@ -203,11 +203,21 @@ ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database.
 # HELP COMMAND #
 ################
 
-HELP_ADMIN = "_Admin Commands_"
 HELP_UNVERIFIED = "_Your account is unverified._\n\nYour account must be verified before you can see the commands available."
-HELP_VERIFIED = "_Commands_"
+HELP_VERIFIED = """_User Commands:_
+
+/account: View the status of your account, and update user preferences.
+/watch: Monitor some media for new content.
+/unwatch: Unmonitor some media to stop being notified of new content.
+"""
 HELP_RESTRICTED = HELP_VERIFIED
 HELP_BANNED = "_Your account is banned._\n\nYou cannot run any commands."
+HELP_ADMIN = """_Admin Commands:_
+
+/access: View and change user's status levels.
+/forceupdate: Forcibly update the database of media.
+
+"""+HELP_VERIFIED
 HELP_MESSAGES = [HELP_ADMIN, HELP_UNVERIFIED, HELP_VERIFIED, HELP_RESTRICTED, HELP_BANNED]
 
 ####################
