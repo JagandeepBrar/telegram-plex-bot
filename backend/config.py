@@ -21,7 +21,7 @@ def initParser():
             raise Exception()
         logger.info(__name__, "Configparser initialized")
     except:
-        logger.error(__name__, "Failed to load config.ini: Please ensure that a valid config file is in the root directory")
+        logger.error(__name__, "Failed to load config.ini: Please ensure that a valid config file is located at {}".format(constants.CONFIG_FILE))
         exit()
 
 # Wrapper to parse all configuration data

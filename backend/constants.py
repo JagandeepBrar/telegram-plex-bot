@@ -6,7 +6,7 @@ import colored
 
 CONFIG_FILE = "data/config.ini"
 DB_FILE = "data/database.db"
-BOT_NAME = ""
+BOT_NAME = "Plex Assistant"
 
 NOTIFICATION_TIME = ""
 NOTIFICATION_DAY = ""
@@ -27,7 +27,7 @@ LOGGING_COLOURS = {
     'INFO': colored.fg('white'), 
     'INFO_GREEN': colored.fg('white')+colored.bg('dark_green'),
     'INFO_BLUE': colored.fg('white')+colored.bg('deep_sky_blue_4c'),
-    'WARNING': colored.fg('white')+colored.bg('orange_red_1'),
+    'WARNING': colored.fg('white')+colored.bg('orange_3'),
     'ERROR': colored.fg('white')+colored.bg('red'),
 }
 
