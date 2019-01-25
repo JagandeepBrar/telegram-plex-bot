@@ -284,7 +284,7 @@ def getNotifiersForUserDaily(id, media_type):
         telegram_id = ? AND
         frequency = ? AND
         media_type = ?
-    """, (id, constants.NOTIFIER_FREQUENCY_DAILY))
+    """, (id, constants.NOTIFIER_FREQUENCY_DAILY, media_type))
     notifiers = db_cursor.fetchall()
     db.close()
     return notifiers
@@ -297,7 +297,7 @@ def getNotifiersForUserWeekly(id, media_type):
         telegram_id = ? AND
         frequency = ? AND
         media_type = ?
-    """, (id, constants.NOTIFIER_FREQUENCY_WEEKLY))
+    """, (id, constants.NOTIFIER_FREQUENCY_WEEKLY, media_type))
     notifiers = db_cursor.fetchall()
     db.close()
     return notifiers
@@ -318,7 +318,7 @@ def getMetadata(id, media_type):
     db.close()
     return metadata
 
-def getMetadataAllPastDay(media_type):
+def getMetadataPastDay(media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
@@ -331,26 +331,7 @@ def getMetadataAllPastDay(media_type):
     db.close()
     return metadata
 
-def getMetadataPastDay(media_id, media_type):
-    db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
-    db_cursor = db.cursor()
-    db_cursor.execute("PRAGMA foreign_keys = ON")
-    utc_time = datetime.datetime.utcnow().timestamp()-constants.daysToSeconds(1)
-    if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
-        db_cursor.execute("""SELECT * FROM metadata_television WHERE
-            media_id = ? AND
-            download_time > ?
-        """, (media_id, utc_time))
-    elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
-        db_cursor.execute("""SELECT * FROM metadata_movies WHERE
-            media_id = ? AND
-            download_time > ?
-        """, (media_id, utc_time))
-    metadata = db_cursor.fetchall()
-    db.close()
-    return metadata
-
-def getMetadataAllPastWeek(media_type):
+def getMetadataPastWeek(media_type):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")

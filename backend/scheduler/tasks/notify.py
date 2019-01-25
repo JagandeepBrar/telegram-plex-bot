@@ -22,7 +22,7 @@ def notifyImmediately(bot, job):
     # Gets the metadata for the movie and the list of users who need notifications
     metadata = select.getMetadata(watch_id, data[1])
     users = select.getUsersImmediateUpdate(data[0], data[1])
-    # If there are no users watching this show, print a log and return
+    # If there are no users watching this show or movie, print a log and return
     if(len(users) == 0):
         logger.info(__name__, "New content ({}): Notified no users".format(metadata[2]), "INFO_GREEN")
         return True
@@ -30,7 +30,7 @@ def notifyImmediately(bot, job):
     if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
         msg_simple = constants.NOTIFIER_IMMEDIATELY_HEADER + buildSimpleTelevisionMessage(metadata)
         msg_complex = constants.NOTIFIER_IMMEDIATELY_HEADER + buildComplexTelevisionMessage(metadata)
-    else:
+    elif(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
         msg_simple = constants.NOTIFIER_IMMEDIATELY_HEADER + buildSimpleMovieMessage(metadata)
         msg_complex = constants.NOTIFIER_IMMEDIATELY_HEADER + buildComplexMovieMessage(metadata)
     # Process user messages
@@ -41,53 +41,41 @@ def notifyImmediately(bot, job):
             # Gets the complexity and sends the appropriate message
             if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
                 bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
-            else:
+            elif(user_data[2]== constants.ACCOUNT_DETAIL_COMPLEX):
                 bot.send_message(chat_id=user_data[0], text=msg_complex, parse_mode=telegram.ParseMode.MARKDOWN)
     logger.info(__name__, "New content ({}): notified {} user(s)".format(metadata[2], len(users)), "INFO_GREEN")
 
 def notifyDaily(bot, job):
+    # Get the users, and the metadata
     users = select.getUsers()
+    metadata = select.getMetadataPastDay(constants.NOTIFIER_MEDIA_TYPE_TELEVISION)
+    # Process per user
     for user in users:
         # Gets the notifiers
-        notifiers_tv = select.getNotifiersForUserDaily(user[0], constants.NOTIFIER_MEDIA_TYPE_TELEVISION)
-        notifiers_movies = select.getNotifiersForUserDaily(user[0], constants.NOTIFIER_MEDIA_TYPE_MOVIE)
+        notifiers = select.getNotifiersForUserDaily(user[0], constants.NOTIFIER_MEDIA_TYPE_TELEVISION)
         # Makes sure the user has at least one TV notifier
-        if(len(notifiers_tv) != 0):
+        if(len(notifiers) != 0):
             # Builds the message
-            msg = buildTelevisionDailyMessage(notifiers_tv)
+            msg = buildTelevisionDailyMessage(metadata, notifiers)
             # Makes sure there is new content to notify the user about and send it if there is
             if(msg != constants.NOTIFIER_NOTHING_TO_SEND):
                 bot.send_message(chat_id=user[0], text=msg, parse_mode=telegram.ParseMode.MARKDOWN)
-        # Makes sure the user has at least one movie notifier
-        if(len(notifiers_movies) != 0):
-            # Builds the message
-            msg = buildMovieDailyMessage(notifiers_movies)
-            # Makes sure there is new content to notify the user about and send it if there is
-            if(msg != constants.NOTIFIER_NOTHING_TO_SEND):
-                bot.send_message(chat_id=user[0], text=msg, parse_mode=telegram.ParseMode.MARKDOWN)
-    logger.info(__name__, "Daily content report send to user(s)", "INFO_GREEN")
+    logger.info(__name__, "Daily content report sent to all applicable users", "INFO_GREEN")
 
 def notifyWeekly(bot, job):
     users = select.getUsers()
+    metadata = select.getMetadataPastWeek(constants.NOTIFIER_MEDIA_TYPE_TELEVISION)
     for user in users:
         # Gets the notifiers
-        notifiers_tv = select.getNotifiersForUserWeekly(user[0], constants.NOTIFIER_MEDIA_TYPE_TELEVISION)
-        notifiers_movies = select.getNotifiersForUserWeekly(user[0], constants.NOTIFIER_MEDIA_TYPE_MOVIE)
+        notifiers = select.getNotifiersForUserWeekly(user[0], constants.NOTIFIER_MEDIA_TYPE_TELEVISION)
         # Makes sure the user has at least one TV notifier
-        if(len(notifiers_tv) != 0):
+        if(len(notifiers) != 0):
             # Builds the message
-            msg = buildTelevisionWeeklyMessage(notifiers_tv)
+            msg = buildTelevisionWeeklyMessage(metadata, notifiers)
             # Makes sure there is new content to notify the user about and send it if there is
             if(msg != constants.NOTIFIER_NOTHING_TO_SEND):
                 bot.send_message(chat_id=user[0], text=msg, parse_mode=telegram.ParseMode.MARKDOWN)
-        # Makes sure the user has at least one movie notifier
-        if(len(notifiers_movies) != 0):
-            # Builds the message
-            msg = buildMovieWeeklyMessage(notifiers_movies)
-            # Makes sure there is new content to notify the user about and send it if there is
-            if(msg != constants.NOTIFIER_NOTHING_TO_SEND):
-                bot.send_message(chat_id=user[0], text=msg, parse_mode=telegram.ParseMode.MARKDOWN)
-    logger.info(__name__, "Weekly content report send to user(s)", "INFO_GREEN")
+    logger.info(__name__, "Weekly content report sent to all applicable users", "INFO_GREEN")
 
 # Returns a formatted string for some television metadata (simple format)
 def buildSimpleTelevisionMessage(metadata):
@@ -106,20 +94,14 @@ def buildComplexMovieMessage(metadata):
     return "*{}*\n\n{} | {}".format(metadata[2], metadata[3], constants.NOTIFIER_QUALITY_VERSIONS[int(metadata[4])])
 
 # Returns a formatted string for all new television for that day for a user's notifiers
-def buildTelevisionDailyMessage(notifiers):
-    msg = constants.NOTIFIER_DAILY_HEADER.format("Television")
+def buildTelevisionDailyMessage(metadata, notifiers):
+    msg = constants.NOTIFIER_DAILY_HEADER
+    return msg
 
 # Returns a formatted string for all new television for that week for a user's notifiers
-def buildTelevisionWeeklyMessage(notifiers):
-    msg = constants.NOTIFIER_WEEKLY_HEADER.format("Television")
-
-# Returns a formatted string for all new movies for that day for a user's notifiers
-def buildMovieDailyMessage(notifiers):
-    msg = constants.NOTIFIER_DAILY_HEADER.format("Movie")
-
-# Returns a formatted string for all new movies for that week for a user's notifiers
-def buildMovieWeeklyMessage(notifiers):
-    msg = constants.NOTIFIER_WEEKLY_HEADER.format("Movie")
+def buildTelevisionWeeklyMessage(metadata, notifiers):
+    msg = constants.NOTIFIER_WEEKLY_HEADER
+    return msg
 
 # Calculates the amount of seconds until the time to send the daily notification
 # Will be off by -1 to -5 seconds, but it's close enough that it's negligible

@@ -18,6 +18,7 @@ def addDefaultJobs():
         addRepeatingJob(catalogue.updateTelevision, constants.minutesToSeconds(sonarr.update_frequency))
     if(radarr.enabled):
         addRepeatingJob(catalogue.updateMovies, constants.minutesToSeconds(radarr.update_frequency))
+    #addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), 0)
     addRepeatingJob(notify.notifyDaily, constants.hoursToSeconds(24), notify.secondsToDaily())
     addRepeatingJob(notify.notifyWeekly, constants.daysToSeconds(7), notify.secondsToWeekly())
 

@@ -83,9 +83,9 @@ ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user informatio
 
 # ACCOUNT STATUS INCORRECT MESSAGES
 
-ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by admins/owners._"
+ACCOUNT_UNAUTHORIZED = "_Sorry, this command can only be run by the admin(s)._"
 ACCOUNT_UNREGISTERED = "_Sorry, you are not registered._\n\nUse /register to get started!"
-ACCOUNT_UNVERIFIED = "_Sorry, you are unverified._\n\nPlease wait for an admin/owner to verify your account."
+ACCOUNT_UNVERIFIED = "_Sorry, you are unverified._\n\nPlease wait for an admin to verify your account."
 ACCOUNT_RESTRICTED = "_Sorry, you are restricted._\n\nThis command can only be run by unrestricted accounts."
 ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by unbanned accounts."
 
@@ -93,7 +93,7 @@ ACCOUNT_BANNED = "_Sorry, you are banned._\n\nThis command can only be run by un
 
 ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL = range(2)
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
-ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your notifications?"
+ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your immediate notifications?\n\n_All daily and weekly content reports only contain basic information._"
 ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n"+ACCOUNT_REGISTER_DETAIL
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
@@ -122,11 +122,11 @@ for opt in range(len(ACCOUNT_STATUS)):
     ACCOUNT_STATUS_REPLY_MARKUP.append([ACCOUNT_STATUS[opt]])
 
 # USER STATUS MESSAGES
-ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin/owner!*\n\nYou have full access to all commands, use /help to see all available commands."
+ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin!*\n\nYou have full access to all commands, use /help to see all available commands."
 ACCOUNT_STATUS_PENDING_MSG = "*You are registered!*\n\nYour account is pending verification, you will be notified when verification is complete."
 ACCOUNT_STATUS_VERIFIED_MSG = "*You are registered and verified!*\n\nUse /help to see all available commands."
 ACCOUNT_STATUS_RESTRICTED_MSG = "*You are verifed but restricted!*\n\nYour account is active, but your access is restricted. Please inquire with the admin(s)."
-ACCOUNT_STATUS_BANNED_MSG = "*You are banned!*\n\nPlease inquire with the admins(s)."
+ACCOUNT_STATUS_BANNED_MSG = "*You are banned!*\n\nPlease inquire with the admin(s)."
 ACCOUNT_STATUS_MSG = [ACCOUNT_STATUS_ADMIN_MSG, ACCOUNT_STATUS_PENDING_MSG, ACCOUNT_STATUS_VERIFIED_MSG, ACCOUNT_STATUS_RESTRICTED_MSG, ACCOUNT_STATUS_BANNED_MSG]
 
 ACCOUNT_STATUS_FOOTER_MSG = "\n\nTap \"Exit\" or type /exit to exit account settings."
@@ -183,9 +183,9 @@ NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 NOTIFIER_QUALITY_VERSIONS = ["None", "Standard Release", "PROPER Release"]
 
 NOTIFIER_IMMEDIATELY_HEADER = "_New/Updated Content Available:_\n\n"
-NOTIFIER_DAILY_HEADER = "_{} Daily Content Report:_\n\n"
-NOTIFIER_WEEKLY_HEADER = "_{} Weekly Content Report:_\n\n"
-NOTIFIER_NOTHING_TO_SEND = "DON'T SEND ANYTHING"
+NOTIFIER_DAILY_HEADER = "_Daily Content Report:_\n\n"
+NOTIFIER_WEEKLY_HEADER = "_Weekly Content Report:_\n\n"
+NOTIFIER_NOTHING_TO_SEND = "--- DON'T SEND ANYTHING ---"
 
 ##########################
 # ADMIN COMMANDS RELATED #
@@ -199,26 +199,44 @@ ADMIN_ACCESS_SUCCESS = "_{}: {}'s access level has been updated to {}._"
 ADMIN_FORCEUPDATE_FAILED_ARGS = "_/forceupdate usage:_\n\n/forceupdate <Database>"
 ADMIN_FORCEUPDATE_FAILED_TYPE = "_The supplied database is not a valid database._"
 
-################
-# HELP COMMAND #
-################
+###$#############
+# /HELP COMMAND #
+####$############
 
-HELP_UNVERIFIED = "_Your account is unverified._\n\nYour account must be verified before you can see the commands available."
 HELP_VERIFIED = """_User Commands:_
 
 /account: View the status of your account, and update user preferences.
+/deleteaccount: Deletes all of your account data from the bot, including all watchers.
+
 /watch: Monitor some media for new content.
 /unwatch: Unmonitor some media to stop being notified of new content.
 """
-HELP_RESTRICTED = HELP_VERIFIED
-HELP_BANNED = "_Your account is banned._\n\nYou cannot run any commands."
 HELP_ADMIN = """_Admin Commands:_
 
 /access: View and change user's status levels.
 /forceupdate: Forcibly update the database of media.
 
 """+HELP_VERIFIED
+HELP_UNVERIFIED = "_Your account is unverified._\n\nYour account must be verified before you can see the commands available."
+HELP_RESTRICTED = HELP_VERIFIED
+HELP_BANNED = "_Your account is banned._\n\nYou cannot run any commands."
 HELP_MESSAGES = [HELP_ADMIN, HELP_UNVERIFIED, HELP_VERIFIED, HELP_RESTRICTED, HELP_BANNED]
+
+##########################
+# /DELETEACCOUNT COMMAND #
+##########################
+
+DELETEACCOUNT_STATE_OPTIONS = range(1)
+DELETEACCOUNT_UNAUTHORIZED = "_Looks like you are restricted or banned._\n\nIn order to reduce abuse, we do not let accounts with these status to delete their account. Please inquire with the admin(s)."
+DELETEACCOUNT_CONFIRM = "_Are you sure you want to delete your account?_\n\nThis will remove all of your watchers and account information from the bot. If you re-register, you will have to be verified again."
+DELETEACCOUNT_SUCCESS = "_Your account details and watchers have been deleted._"
+DELETEACCOUNT_CANCEL = "_Account deletion cancelled._"
+
+DELETEACCOUNT_OPTIONS = ["Delete Account", "Cancel"]
+DELETEACCOUNT_OPTIONS_REGEX = "^({}|{})$".format(DELETEACCOUNT_OPTIONS[0], DELETEACCOUNT_OPTIONS[1])
+DELETEACCOUNT_OPTIONS_MARKUP = []
+for opt in range(len(DELETEACCOUNT_OPTIONS)):
+    DELETEACCOUNT_OPTIONS_MARKUP.append([DELETEACCOUNT_OPTIONS[opt]])
 
 ####################
 # HANDLER PREFIXES #

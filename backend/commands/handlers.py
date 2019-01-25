@@ -45,6 +45,17 @@ def conversationHandlers():
             ]
         }
     ))
+    telegram.dispatcher.add_handler(ConversationHandler(
+        entry_points = [
+            CommandHandler("deleteaccount", deleteaccount.deleteaccount)
+        ],
+        fallbacks = [CommandHandler("cancel", deleteaccount.cancel)],
+        states = {
+            constants.DELETEACCOUNT_STATE_OPTIONS: [
+                RegexHandler(constants.DELETEACCOUNT_OPTIONS_REGEX, deleteaccount.options)
+            ]
+        }
+    ))
 
 def commandHandlers():
     telegram.dispatcher.add_handler(CommandHandler("help", help.help))
