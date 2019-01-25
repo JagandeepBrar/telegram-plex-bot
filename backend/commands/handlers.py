@@ -16,14 +16,14 @@ def conversationHandlers():
             CommandHandler("start", register.register),
             CommandHandler("register", register.register)
         ],
-        fallbacks = [CommandHandler("cancel", register.registerCancel)],
+        fallbacks = [CommandHandler("cancel", register.cancel)],
         states = {
             constants.ACCOUNT_REGISTER_STATE_DETAIL: [
-                RegexHandler(constants.ACCOUNT_DETAIL_REGEX, register.registerDetail)
+                RegexHandler(constants.ACCOUNT_DETAIL_REGEX, register.detail)
             ],
             constants.ACCOUNT_REGISTER_STATE_OMBI: [
-                MessageHandler(Filters.text, register.registerOmbi),
-                CommandHandler("skip", register.registerOmbiSkip)
+                MessageHandler(Filters.text, register.ombiRegister),
+                CommandHandler("skip", register.ombiSkip)
             ]
         }
     ))
@@ -31,17 +31,17 @@ def conversationHandlers():
         entry_points = [
             CommandHandler("account", account.account)
         ],
-        fallbacks = [CommandHandler("exit", account.accountExit)],
+        fallbacks = [CommandHandler("exit", account.cancel)],
         states = {
             constants.ACCOUNT_STATE_OPTIONS: [
-                RegexHandler(constants.ACCOUNT_OPTIONS_REGEX, account.accountOptions)
+                RegexHandler(constants.ACCOUNT_OPTIONS_REGEX, account.options)
             ],
             constants.ACCOUNT_STATE_OMBI: [
-                MessageHandler(Filters.text, account.accountUpdateOmbi),
-                CommandHandler("skip", account.accountUpdateOmbiSkip)
+                MessageHandler(Filters.text, account.ombiRegister),
+                CommandHandler("skip", account.ombiSkip)
             ],
             constants.ACCOUNT_STATE_DETAIL: [
-                RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.accountUpdateDetail)
+                RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.detail)
             ]
         }
     ))
@@ -67,13 +67,13 @@ def commandHandlers():
     telegram.dispatcher.add_handler(CommandHandler("forceupdate", forceupdate.forceupdate, pass_args=True))
 
 def callbackQueryHandlers():
-    telegram.dispatcher.add_handler(CallbackQueryHandler(access.getstatus, pattern="^"+constants.ACCESS_GETSTATUS_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(access.getStatus, pattern="^"+constants.ACCESS_GETSTATUS_CALLBACK))
     telegram.dispatcher.add_handler(CallbackQueryHandler(access.user, pattern="^"+constants.ACCESS_USER_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(access.setstatus, pattern="^"+constants.ACCESS_SETSTATUS_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(access.setStatus, pattern="^"+constants.ACCESS_SETSTATUS_CALLBACK))
 
-    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchShowCallback, pattern="^"+constants.WATCH_TELEVISION_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchShowFreqCallback, pattern="^"+constants.WATCH_TELEVISION_FREQ_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.unwatchShowCallback, pattern="^"+constants.UNWATCH_TELEVISION_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.showSearch, pattern="^"+constants.WATCH_TELEVISION_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.showFreq, pattern="^"+constants.WATCH_TELEVISION_FREQ_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.showSearch, pattern="^"+constants.UNWATCH_TELEVISION_CALLBACK))
     
-    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchMovieCallback, pattern="^"+constants.WATCH_MOVIE_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.unwatchMovieCallback, pattern="^"+constants.UNWATCH_MOVIE_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.movieSearch, pattern="^"+constants.WATCH_MOVIE_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.movieSearch, pattern="^"+constants.UNWATCH_MOVIE_CALLBACK))

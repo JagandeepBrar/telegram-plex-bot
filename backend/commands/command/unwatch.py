@@ -16,13 +16,13 @@ def unwatch(bot, update, args):
             return False
         media_type = args[0].lower()
         if(media_type in constants.SHOW_SYNONYMS and sonarr.enabled):
-            return unwatchShow(bot, update, args[1:])
+            return show(bot, update, args[1:])
         if(media_type in constants.MOVIE_SYNONYMS and radarr.enabled):
-            return unwatchMovie(bot, update, args[1:])
+            return movie(bot, update, args[1:])
         update.message.reply_text(constants.UNWATCH_INCORRECT_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)
 
 
-def unwatchShow(bot, update, args):
+def show(bot, update, args):
     show_search = select.getShowsWatchedSearch(update.message.chat_id, " ".join(args))
     if(len(show_search) == 0):
         update.message.reply_text(constants.WATCH_TELEVISION_EMPTY_SEARCH, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -33,7 +33,7 @@ def unwatchShow(bot, update, args):
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     update.message.reply_text(constants.WATCH_TELEVISION_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def unwatchShowCallback(bot, update):
+def showSearch(bot, update):
     show_name = update.callback_query.data[len(constants.UNWATCH_TELEVISION_CALLBACK):]
     show_id = select.getShowByName(show_name)[0]
     telegram_id = update.callback_query.message.chat_id
@@ -45,7 +45,7 @@ def unwatchShowCallback(bot, update):
     logger.info(__name__, "{} unwatched a show: {}".format(telegram_name, show_name))
     bot.edit_message_text(text=constants.UNWATCH_TELEVISION_SUCCESS.format(show_name), chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def unwatchMovie(bot, update, args):
+def movie(bot, update, args):
     movie_search = select.getMoviesWatchedSearch(update.message.chat_id, " ".join(args))
     if(len(movie_search) == 0):
         update.message.reply_text(constants.WATCH_MOVIES_EMPTY_SEARCH, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -56,7 +56,7 @@ def unwatchMovie(bot, update, args):
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     update.message.reply_text(constants.WATCH_MOVIES_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def unwatchMovieCallback(bot, update):
+def movieSearch(bot, update):
     movie_name = update.callback_query.data[len(constants.UNWATCH_MOVIE_CALLBACK):]
     movie_id = select.getMovieByName(movie_name)[0]
     telegram_id = update.callback_query.message.chat_id

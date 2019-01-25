@@ -16,13 +16,13 @@ def watch(bot, update, args):
             return False
         media_type = args[0].lower()
         if(media_type in constants.SHOW_SYNONYMS and sonarr.enabled):
-            return watchShow(bot, update, args[1:])
+            return show(bot, update, args[1:])
         if(media_type in constants.MOVIE_SYNONYMS and radarr.enabled):
-            return watchMovie(bot, update, args[1:])
+            return movie(bot, update, args[1:])
         update.message.reply_text(constants.WATCH_INCORRECT_TYPE, parse_mode=telegram.ParseMode.MARKDOWN)
 
 
-def watchShow(bot, update, args):
+def show(bot, update, args):
     show_search = select.getShowsSearch(" ".join(args))
     if(len(show_search) == 0):
         update.message.reply_text(constants.WATCH_TELEVISION_EMPTY_SEARCH, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -33,7 +33,7 @@ def watchShow(bot, update, args):
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     update.message.reply_text(constants.WATCH_TELEVISION_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def watchShowCallback(bot, update):
+def showSearch(bot, update):
     show_name = update.callback_query.data[len(constants.WATCH_TELEVISION_CALLBACK):]
     show_id = select.getShowByName(show_name)[0]
     telegram_id = update.callback_query.message.chat_id
@@ -50,14 +50,14 @@ def watchShowCallback(bot, update):
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     bot.edit_message_text(text=constants.WATCH_TELEVISION_FREQUENCY, reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def watchShowFreqCallback(bot, update):
+def showFreq(bot, update):
     results =  update.callback_query.data[len(constants.WATCH_TELEVISION_FREQ_CALLBACK):].split(",")
     frequency = constants.NOTIFIER_FREQUENCY[int(results[1])].lower()
     show_name = select.getShow(select.getNotifier(results[0])[2])[1]
     update_db.updateNotifierFrequency(results[0], results[1])
     bot.edit_message_text(text=constants.WATCH_TELEVISION_SUCCESS.format(show_name, frequency), chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def watchMovie(bot, update, args):
+def movie(bot, update, args):
     movie_search = select.getMoviesSearch(" ".join(args))
     if(len(movie_search) == 0):
         update.message.reply_text(constants.WATCH_MOVIES_EMPTY_SEARCH, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -68,7 +68,7 @@ def watchMovie(bot, update, args):
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     update.message.reply_text(constants.WATCH_MOVIES_FIRST_TEN, reply_markup=reply_markup, pass_chat_data=True, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def watchMovieCallback(bot, update):
+def movieSearch(bot, update):
     movie_name = update.callback_query.data[len(constants.WATCH_MOVIE_CALLBACK):]
     movie_id = select.getMovieByName(movie_name)[0]
     telegram_id = update.callback_query.message.chat_id

@@ -20,25 +20,25 @@ def register(bot, update):
         return ConversationHandler.END
 
 # Register the user's detail notification preference
-def registerDetail(bot, update):
+def detail(bot, update):
     update_db.updateUserDetail(update.message.chat_id, constants.ACCOUNT_DETAIL.index(update.message.text))
     if(ombi.enabled):
         update.message.reply_text(constants.ACCOUNT_REGISTER_OMBI, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return constants.ACCOUNT_REGISTER_STATE_OMBI
     else:
-        return registerFinish(bot, update)
+        return finish(bot, update)
 
 # Register the user's ombi ID if they enter one
-def registerOmbi(bot, update):
+def ombiRegister(bot, update):
     update_db.updateUserOmbi(update.message.chat_id, update.message.text)
-    return registerFinish(bot, update)
+    return finish(bot, update)
 
 # If the user skips the Ombi ID registration
-def registerOmbiSkip(bot, update):
-    return registerFinish(bot, update)
+def ombiSkip(bot, update):
+    return finish(bot, update)
 
 # Finishes the registration process by logging and sending a message to the user
-def registerFinish(bot, update):
+def finish(bot, update):
     # Set the status
     status = constants.ACCOUNT_STATUS_UNVERIFIED
     if(backend.api.telegram.isAdmin(update.message.chat_id)):
@@ -51,7 +51,7 @@ def registerFinish(bot, update):
     return ConversationHandler.END
 
 # Registration cancelled: Delete the in-progress database user entry and message user on how to re-register
-def registerCancel(bot, update):
+def cancel(bot, update):
     delete.deleteUser(update.message.chat_id)
     update.message.reply_text(constants.ACCOUNT_REGISTER_FAIL_CANCELLED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
     return ConversationHandler.END

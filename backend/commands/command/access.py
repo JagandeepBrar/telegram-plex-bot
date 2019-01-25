@@ -17,7 +17,7 @@ def access(bot, update):
         reply_markup = telegram.InlineKeyboardMarkup(keyboard)
         update.message.reply_text(constants.ACCESS_START_MSG, reply_markup=reply_markup, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def getstatus(bot, update):
+def getStatus(bot, update):
     status = update.callback_query.data[len(constants.ACCESS_GETSTATUS_CALLBACK):]
     status_code = constants.ACCOUNT_STATUS.index(status)
     users = select.getUsersWithStatus(status_code)
@@ -36,7 +36,7 @@ def user(bot, update):
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     bot.edit_message_text(text=constants.ACCESS_SET_MSG, reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
     
-def setstatus(bot, update):
+def setStatus(bot, update):
     results =  update.callback_query.data[len(constants.ACCESS_SETSTATUS_CALLBACK):].split(",")
     status_code = constants.ACCOUNT_STATUS.index(results[1])
     user = select.getUser(results[0])
