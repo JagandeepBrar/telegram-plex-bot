@@ -5,35 +5,35 @@ from backend.database.statement import select
 # Checks if the supplied update is from a registered user
 def checkRegistered(update):
     if(not select.isUserRegistered(update.message.chat_id)):
-        update.message.reply_text(constants.ACCOUNT_UNREGISTERED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+        update.message.reply_text(constants.CHECKER_UNREGISTERED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return False
     return True
 
 # Checks if the supplied update is from an admin user
 def checkAdmin(update):
     if(not select.isUserStatus(update.message.chat_id, constants.ACCOUNT_STATUS_ADMIN)):
-        update.message.reply_text(constants.ACCOUNT_UNAUTHORIZED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+        update.message.reply_text(constants.CHECKER_UNAUTHORIZED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return False
     return True
 
 # Checks if the supplied update is from an unverified user
 def checkUnverified(update):
     if(select.isUserStatus(update.message.chat_id, constants.ACCOUNT_STATUS_UNVERIFIED)):
-        update.message.reply_text(constants.ACCOUNT_UNVERIFIED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+        update.message.reply_text(constants.CHECKER_UNVERIFIED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return True
     return False
 
 # Checks if the supplied update is from a banned user
 def checkBanned(update):
     if(select.isUserStatus(update.message.chat_id, constants.ACCOUNT_STATUS_BANNED)):
-        update.message.reply_text(constants.ACCOUNT_BANNED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+        update.message.reply_text(constants.CHECKER_BANNED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
         return True
     return False
 
 # Check if the supplied update is from a restricted user
 def checkRestricted(update, command):
     if(select.isUserStatus(update.message.chat_id, constants.ACCOUNT_STATUS_RESTRICTED)):
-            update.message.reply_text(constants.ACCOUNT_RESTRICTED, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+            update.message.reply_text(constants.CHECKER_RESTRICTED_MSG, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
             return True
     return False
 

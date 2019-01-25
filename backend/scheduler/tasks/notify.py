@@ -37,7 +37,7 @@ def notifyImmediately(bot, job):
     for user in users:
         user_data = select.getUser(user[0])
         # Checks if the user is banned or restricted
-        if((not constants.RESTRICTED_NOTIFICATIONS or user_data[1] != constants.ACCOUNT_RESTRICTED) and user_data[1] != constants.ACCOUNT_BANNED):
+        if((not constants.RESTRICTED_NOTIFICATIONS or user_data[1] != constants.ACCOUNT_STATUS_RESTRICTED) and user_data[1] != constants.ACCOUNT_STATUS_BANNED):
             # Gets the complexity and sends the appropriate message
             if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
                 bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)

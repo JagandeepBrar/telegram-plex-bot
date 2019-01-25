@@ -67,13 +67,13 @@ def commandHandlers():
     telegram.dispatcher.add_handler(CommandHandler("forceupdate", forceupdate.forceupdate, pass_args=True))
 
 def callbackQueryHandlers():
-    telegram.dispatcher.add_handler(CallbackQueryHandler(access.accessTypeCallback, pattern="^"+constants.ADMIN_ACCESS_TYPE_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(access.accessUserCallback, pattern="^"+constants.ADMIN_ACCESS_USER_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(access.accessSetCallback, pattern="^"+constants.ADMIN_ACCESS_SET_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(access.getstatus, pattern="^"+constants.ACCESS_GETSTATUS_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(access.user, pattern="^"+constants.ACCESS_USER_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(access.setstatus, pattern="^"+constants.ACCESS_SETSTATUS_CALLBACK))
 
-    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchShowCallback, pattern="^"+constants.TELEVISION_WATCH_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchShowFreqCallback, pattern="^"+constants.TELEVISION_WATCH_FREQ_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.unwatchShowCallback, pattern="^"+constants.TELEVISION_UNWATCH_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchShowCallback, pattern="^"+constants.WATCH_TELEVISION_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchShowFreqCallback, pattern="^"+constants.WATCH_TELEVISION_FREQ_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.unwatchShowCallback, pattern="^"+constants.UNWATCH_TELEVISION_CALLBACK))
     
-    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchMovieCallback, pattern="^"+constants.MOVIES_WATCH_CALLBACK))
-    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.unwatchMovieCallback, pattern="^"+constants.MOVIES_UNWATCH_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(watch.watchMovieCallback, pattern="^"+constants.WATCH_MOVIE_CALLBACK))
+    telegram.dispatcher.add_handler(CallbackQueryHandler(unwatch.unwatchMovieCallback, pattern="^"+constants.UNWATCH_MOVIE_CALLBACK))

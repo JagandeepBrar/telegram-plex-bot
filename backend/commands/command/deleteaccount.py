@@ -9,7 +9,7 @@ from backend.commands import checker
 def deleteaccount(bot, update):
     if(checker.checkRegistered(update)):
         status = select.getUser(update.message.chat_id)[1]
-        if(int(status) == constants.ACCOUNT_BANNED or int(status) == constants.ACCOUNT_RESTRICTED):
+        if(int(status) == constants.ACCOUNT_STATUS_BANNED or int(status) == constants.ACCOUNT_STATUS_RESTRICTED):
             update.message.reply_text(constants.DELETEACCOUNT_UNAUTHORIZED, parse_mode=telegram.ParseMode.MARKDOWN)
         else:
             update.message.reply_text(constants.DELETEACCOUNT_CONFIRM, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardMarkup(constants.DELETEACCOUNT_OPTIONS_MARKUP, resize_keyboard=True))

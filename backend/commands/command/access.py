@@ -13,34 +13,34 @@ def access(bot, update):
     if(checker.checkAdminAllowed(update)):
         keyboard = []
         for status in range(len(constants.ACCOUNT_STATUS)):
-            keyboard.append([telegram.InlineKeyboardButton(constants.ACCOUNT_STATUS[status], callback_data=constants.ADMIN_ACCESS_TYPE_CALLBACK+constants.ACCOUNT_STATUS[status])])
+            keyboard.append([telegram.InlineKeyboardButton(constants.ACCOUNT_STATUS[status], callback_data=constants.ACCESS_GETSTATUS_CALLBACK+constants.ACCOUNT_STATUS[status])])
         reply_markup = telegram.InlineKeyboardMarkup(keyboard)
-        update.message.reply_text(constants.ADMIN_ACCESS_START_MSG, reply_markup=reply_markup, parse_mode=telegram.ParseMode.MARKDOWN)
+        update.message.reply_text(constants.ACCESS_START_MSG, reply_markup=reply_markup, parse_mode=telegram.ParseMode.MARKDOWN)
 
-def accessTypeCallback(bot, update):
-    status = update.callback_query.data[len(constants.ADMIN_ACCESS_TYPE_CALLBACK):]
+def getstatus(bot, update):
+    status = update.callback_query.data[len(constants.ACCESS_GETSTATUS_CALLBACK):]
     status_code = constants.ACCOUNT_STATUS.index(status)
     users = select.getUsersWithStatus(status_code)
     keyboard = []
     for user in users:
         text = str(user[0])+": "+user[4]
-        keyboard.append([telegram.InlineKeyboardButton(text, callback_data=constants.ADMIN_ACCESS_USER_CALLBACK+str(user[0]))])
+        keyboard.append([telegram.InlineKeyboardButton(text, callback_data=constants.ACCESS_USER_CALLBACK+str(user[0]))])
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
-    bot.edit_message_text(text=constants.ADMIN_ACCESS_USERS_MSG.format(status.lower()), reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.edit_message_text(text=constants.ACCESS_USERS_MSG.format(status.lower()), reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
     
-def accessUserCallback(bot, update):
-    telegram_id = update.callback_query.data[len(constants.ADMIN_ACCESS_TYPE_CALLBACK):]
+def user(bot, update):
+    telegram_id = update.callback_query.data[len(constants.ACCESS_USER_CALLBACK):]
     keyboard = []
     for status in constants.ACCOUNT_STATUS:
-        keyboard.append([telegram.InlineKeyboardButton(status, callback_data=constants.ADMIN_ACCESS_SET_CALLBACK+str(telegram_id)+","+status)])
+        keyboard.append([telegram.InlineKeyboardButton(status, callback_data=constants.ACCESS_SETSTATUS_CALLBACK+str(telegram_id)+","+status)])
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
-    bot.edit_message_text(text=constants.ADMIN_ACCESS_SET_MSG, reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.edit_message_text(text=constants.ACCESS_SET_MSG, reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
     
-def accessSetCallback(bot, update):
-    results =  update.callback_query.data[len(constants.ADMIN_ACCESS_SET_CALLBACK):].split(",")
+def setstatus(bot, update):
+    results =  update.callback_query.data[len(constants.ACCESS_SETSTATUS_CALLBACK):].split(",")
     status_code = constants.ACCOUNT_STATUS.index(results[1])
     user = select.getUser(results[0])
-    msg = constants.ADMIN_ACCESS_SUCCESS.format(user[0], user[4], results[1].lower())
+    msg = constants.ACCESS_SUCCESS.format(user[0], user[4], results[1].lower())
     update_db.updateUserStatus(user[0], status_code)
     bot.edit_message_text(text=msg, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
     logger.info(__name__, msg[1:-2], "INFO_BLUE")
