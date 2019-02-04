@@ -40,7 +40,7 @@ I wrote a quick installation guide (focused for Linux/Mac) on my blog, [availabl
     - `/unwatch`: Unwatch a show or movie to stop notifications for new content
     - `/watching`: Get a list of the content you are currently watching
 - System-Related **[ADMIN ONLY]**
-    - `/access`: View or update the access level of a user (table below for different options)
+    - `/access`: View or update the access level of a user (table in the wiki for different options)
     - `/forceupdate`: Forcibly update the databases before the regular job interval time
 
 
