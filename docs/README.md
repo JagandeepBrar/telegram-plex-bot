@@ -6,7 +6,20 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 ## To-Do List
 
+### Critical
+
 - Comment code
+
+### Planned
+
+- ~~Sonarr/Radarr notifications~~
+- Sonarr/Radarr calendars
+- Connect to Ombi for automatic notifications
+- Add new shows/movies to Sonarr/Radarr
+
+### Potential
+
+- SABnzbd/NZBget implementations
 
 ## Implemented Commands
 
@@ -26,15 +39,4 @@ A bot to notify, control, manage (and more) Plex integration applications like S
     - `/access`: View or update the access level of a user (table below for different options)
     - `/forceupdate`: Forcibly update the databases before the regular job interval time
 
-## Features
 
-### Planned
-
-- ~~Sonarr/Radarr notifications~~
-- Sonarr/Radarr calendars
-- Connect to Ombi for automatic notifications
-- Add new shows/movies to Sonarr/Radarr
-
-### Potential
-
-- SABnzbd/NZBget implementations
