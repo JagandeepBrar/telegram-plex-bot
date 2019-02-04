@@ -4,6 +4,10 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 *Implemention of more applications and features will occur overtime*
 
+## Installation
+
+I wrote a quick installation guide (focused for Linux/Mac) on my blog, [available here](https://www.jdot.io/blog/plex-assistant-linux-mac/)! Windows installation should also be possible with small deviations from the guide.
+
 ## To-Do List
 
 ### Critical
