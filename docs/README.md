@@ -7,7 +7,6 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 ## To-Do List
 
 - Comment code
-- Add message building code for daily and weekly notifications, currently sends "movie" and "television" but no other information
 
 ## Implemented Commands
 
@@ -20,8 +19,9 @@ A bot to notify, control, manage (and more) Plex integration applications like S
         - Add/change Ombi ID
         - Change notification complexity
 - Notification-Related
-    - `/watch`: Monitor a show or movie to be notified for new content
-    - `/unwatch`: Unmonitor a show or movie to stop notifications for new content
+    - `/watch`: Watch a show or movie to be notified for new content
+    - `/unwatch`: Unwatch a show or movie to stop notifications for new content
+    - `/watching`: Get a list of the content you are currently watching
 - System-Related **[ADMIN ONLY]**
     - `/access`: View or update the access level of a user (table below for different options)
     - `/forceupdate`: Forcibly update the databases before the regular job interval time
