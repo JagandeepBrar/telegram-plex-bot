@@ -7,11 +7,11 @@ from backend import constants
 ###############
 
 # Insert a new user into the database
-def insertUser(telegram, status, detail, ombi, name):
+def insertUser(telegram, status, detail, upgrade, ombi, name):
     db = sqlite3.connect(constants.DB_FILE)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, detail, ombi_id, name) VALUES (?, ?, ?, ?, ?)', (telegram, status, detail, ombi, name))
+    db_cursor.execute('INSERT OR IGNORE INTO users(telegram_id, status, detail, upgrade, ombi_id, name) VALUES (?, ?, ?, ?, ?, ?)', (telegram, status, detail, upgrade, ombi, name))
     db.commit()
     db.close()
 

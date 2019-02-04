@@ -42,6 +42,14 @@ def updateUserOmbi(telegram, ombi):
     db.commit()
     db.close()
 
+def updateUserUpgrade(telegram, upgrade):
+    db = sqlite3.connect(constants.DB_FILE)
+    db_cursor = db.cursor()
+    db_cursor.execute("PRAGMA foreign_keys = ON")
+    db_cursor.execute('UPDATE users SET upgrade = ? WHERE telegram_id = ?', (constants.ACCOUNT_UPGRADE.index(upgrade), telegram))
+    db.commit()
+    db.close()
+
 ###############
 # SHOWS TABLE #
 ###############

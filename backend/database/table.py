@@ -8,6 +8,7 @@ def initialize():
             telegram_id INTEGER PRIMARY KEY,
             status INTEGER,
             detail INTEGER,
+            upgrade INTEGER,
             ombi_id TEXT,
             name TEXT
         )"""
@@ -42,6 +43,7 @@ def initialize():
             episode TEXT,
             quality TEXT,
             quality_version TEXT,
+            is_upgrade INTEGER,
             download_time FLOAT,
             FOREIGN KEY(tvdb_id) REFERENCES television ON DELETE CASCADE
         )"""
@@ -52,6 +54,7 @@ def initialize():
             movie_title TEXT,
             quality TEXT,
             quality_version TEXT,
+            is_upgrade INTEGER,
             download_time FLOAT,
             FOREIGN KEY(tmdb_id) REFERENCES movies ON DELETE CASCADE
         )"""

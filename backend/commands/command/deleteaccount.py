@@ -1,7 +1,7 @@
 import telegram
 
 from telegram.ext import ConversationHandler
-from backend import constants
+from backend import constants, logger
 from backend.database.statement import select, delete
 from backend.commands.wrapper import send_typing_action, send_upload_photo_action, send_upload_video_action
 from backend.commands import checker
@@ -30,4 +30,5 @@ def options(bot, update):
 def confirm(bot, update):
     delete.deleteUser(update.message.chat_id)
     update.message.reply_text(constants.DELETEACCOUNT_SUCCESS, parse_mode=telegram.ParseMode.MARKDOWN, reply_markup=telegram.ReplyKeyboardRemove())
+    logger.info(__name__, "User deleted - {}: {}".format(update.message.chat_id, update.message.from_user.full_name), "INFO_BLUE")
     return ConversationHandler.END

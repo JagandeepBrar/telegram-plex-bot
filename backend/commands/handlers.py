@@ -24,6 +24,9 @@ def conversationHandlers():
             constants.ACCOUNT_REGISTER_STATE_OMBI: [
                 MessageHandler(Filters.text, register.ombiRegister),
                 CommandHandler("skip", register.ombiSkip)
+            ],
+            constants.ACCOUNT_REGISTER_STATE_UPGRADE: [
+                RegexHandler(constants.ACCOUNT_UPGRADE_REGEX, register.upgrade)
             ]
         }
     ))
@@ -42,6 +45,9 @@ def conversationHandlers():
             ],
             constants.ACCOUNT_STATE_DETAIL: [
                 RegexHandler(constants.ACCOUNT_DETAIL_REGEX, account.detail)
+            ],
+            constants.ACCOUNT_STATE_UPGRADE: [
+                RegexHandler(constants.ACCOUNT_UPGRADE_REGEX, account.upgrade)
             ]
         }
     ))

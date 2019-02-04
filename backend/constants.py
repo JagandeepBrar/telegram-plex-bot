@@ -89,6 +89,12 @@ ACCOUNT_STATUS_RESTRICTED = 3
 ACCOUNT_STATUS_BANNED = 4
 ACCOUNT_STATUS = ["Admin", "Unverified", "Verified", "Restricted", "Banned"]
 ACCOUNT_STATUS_REPLY_MARKUP = []
+ACCOUNT_UPGRADE_NO = 0
+ACCOUNT_UPGRADE_YES = 1
+ACCOUNT_UPGRADE = ["No", "Yes"]
+ACCOUNT_UPGRADE_REGEX = "^({}|{})$".format(ACCOUNT_UPGRADE[0], ACCOUNT_UPGRADE[1])
+ACCOUNT_UPGRADE_REPLY_MARKUP = []
+
 
 ####################
 # /ACCOUNT COMMAND #
@@ -96,10 +102,11 @@ ACCOUNT_STATUS_REPLY_MARKUP = []
 
 ACCOUNT_DETAIL_UPDATED_MSG = "_Notification detail has been updated._"
 ACCOUNT_OMBI_UPDATED_MSG = "_Ombi ID has been updated._"
-ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Notification Detail*: {}\n*Ombi ID:* {}\n*Name:* {}\n"
-ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_DETAIL = range(3)
-ACCOUNT_OPTIONS = ["Update Ombi ID", "Update Notification Detail", "Exit"]
-ACCOUNT_OPTIONS_REGEX = "^({}|{}|{})$".format(ACCOUNT_OPTIONS[0], ACCOUNT_OPTIONS[1], ACCOUNT_OPTIONS[2])
+ACCOUNT_UPGRADE_UPDATED_MSG = "_Upgrade preference has been updated._"
+ACCOUNT_CLOSED_MSG = "_Account settings have been saved. Updated user information:_\n\n*Telegram ID:* {}\n*Status:* {}\n*Notification Detail*: {}\n*Upgrade Notifications:* {}\n*Ombi ID:* {}\n*Name:* {}\n"
+ACCOUNT_STATE_OPTIONS, ACCOUNT_STATE_OMBI, ACCOUNT_STATE_DETAIL, ACCOUNT_STATE_UPGRADE = range(4)
+ACCOUNT_OPTIONS = ["Update Ombi ID", "Update Notification Detail", "Update Upgrade Preference", "Exit"]
+ACCOUNT_OPTIONS_REGEX = "^({}|{}|{}|{})$".format(ACCOUNT_OPTIONS[0], ACCOUNT_OPTIONS[1], ACCOUNT_OPTIONS[2], ACCOUNT_OPTIONS[3])
 ACCOUNT_OPTIONS_REPLY_MARKUP = []
 ACCOUNT_STATUS_ADMIN_MSG = "*You are registered as an admin!*\n\nYou have full access to all commands, use /help to see all available commands."
 ACCOUNT_STATUS_PENDING_MSG = "*You are registered!*\n\nYour account is pending verification, you will be notified when verification is complete."
@@ -170,9 +177,10 @@ HELP_MESSAGES = [HELP_ADMIN, HELP_UNVERIFIED, HELP_VERIFIED, HELP_RESTRICTED, HE
 # /REGISTER COMMAND #
 #####################
 
-ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL = range(2)
+ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL, ACCOUNT_REGISTER_STATE_UPGRADE = range(3)
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
 ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your immediate notifications?\n\n_All daily and weekly content reports only contain basic information._"
+ACCOUNT_REGISTER_UPGRADE = "Do you want to be notified when content you watch is upgraded?\n\nFor example, if the content is upgraded to a higher resolution, fixed, etc."
 ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n"+ACCOUNT_REGISTER_DETAIL
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
@@ -216,8 +224,8 @@ NOTIFIER_FREQUENCY_IMMEDIATELY = 0
 NOTIFIER_FREQUENCY_DAILY = 1
 NOTIFIER_FREQUENCY_WEEKLY = 2
 NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
-NOTIFIER_QUALITY_VERSIONS = ["None", "Standard Release", "PROPER Release"]
-NOTIFIER_IMMEDIATELY_HEADER = "_New/Updated Content Available:_\n\n"
+NOTIFIER_QUALITY_VERSIONS = ["None", "Regular Release", "PROPER Release"]
+NOTIFIER_IMMEDIATELY_HEADER = "_Content Now Available:_\n\n"
 NOTIFIER_DAILY_HEADER = "_Daily Content Report:_\n\n"
 NOTIFIER_WEEKLY_HEADER = "_Weekly Content Report:_\n\n"
 NOTIFIER_NOTHING_TO_SEND = "--- DON'T SEND ANYTHING ---"
@@ -257,3 +265,6 @@ for opt in range(len(ACCOUNT_STATUS)):
 
 for opt in range(len(ACCOUNT_DETAIL)):
     ACCOUNT_DETAIL_REPLY_MARKUP.append([ACCOUNT_DETAIL[opt]])
+
+for opt in range(len(ACCOUNT_UPGRADE)):
+    ACCOUNT_UPGRADE_REPLY_MARKUP.append([ACCOUNT_UPGRADE[opt]])

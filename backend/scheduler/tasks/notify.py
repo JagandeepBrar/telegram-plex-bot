@@ -24,26 +24,40 @@ def notifyImmediately(bot, job):
     users = select.getUsersImmediateUpdate(data[0], data[1])
     # If there are no users watching this show or movie, print a log and return
     if(len(users) == 0):
-        logger.info(__name__, "New content ({}): Notified no users".format(metadata[2]), "INFO_GREEN")
+        logger.info(__name__, "New content ({}): Notified no users".format(metadata[2]))
         return True
     # Build the messages
     if(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
         msg_simple = constants.NOTIFIER_IMMEDIATELY_HEADER + buildSimpleTelevisionMessage(metadata)
         msg_complex = constants.NOTIFIER_IMMEDIATELY_HEADER + buildComplexTelevisionMessage(metadata)
+        is_upgrade = metadata[9]
     elif(int(data[1]) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
         msg_simple = constants.NOTIFIER_IMMEDIATELY_HEADER + buildSimpleMovieMessage(metadata)
         msg_complex = constants.NOTIFIER_IMMEDIATELY_HEADER + buildComplexMovieMessage(metadata)
+        is_upgrade = metadata[5]
     # Process user messages
+    notifications_counter = 0
     for user in users:
         user_data = select.getUser(user[0])
         # Checks if the user is banned or restricted
         if((not constants.RESTRICTED_NOTIFICATIONS or user_data[1] != constants.ACCOUNT_STATUS_RESTRICTED) and user_data[1] != constants.ACCOUNT_STATUS_BANNED):
-            # Gets the complexity and sends the appropriate message
-            if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
-                bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
-            elif(user_data[2]== constants.ACCOUNT_DETAIL_COMPLEX):
-                bot.send_message(chat_id=user_data[0], text=msg_complex, parse_mode=telegram.ParseMode.MARKDOWN)
-    logger.info(__name__, "New content ({}): notified {} user(s)".format(metadata[2], len(users)), "INFO_GREEN")
+            # Checks if the media was an upgrade
+            if(is_upgrade == 1):
+                if(user_data[3] == constants.ACCOUNT_UPGRADE_YES):
+                    # Gets the complexity and sends the appropriate message
+                    if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
+                        bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
+                    elif(user_data[2]== constants.ACCOUNT_DETAIL_COMPLEX):
+                        bot.send_message(chat_id=user_data[0], text=msg_complex, parse_mode=telegram.ParseMode.MARKDOWN)
+                    notifications_counter += 1
+            else:
+                # Gets the complexity and sends the appropriate message
+                if(user_data[2] == constants.ACCOUNT_DETAIL_SIMPLE):
+                    bot.send_message(chat_id=user_data[0], text=msg_simple, parse_mode=telegram.ParseMode.MARKDOWN)
+                elif(user_data[2]== constants.ACCOUNT_DETAIL_COMPLEX):
+                    bot.send_message(chat_id=user_data[0], text=msg_complex, parse_mode=telegram.ParseMode.MARKDOWN)
+                notifications_counter += 1
+    logger.info(__name__, "New content ({}): notified {} user(s)".format(metadata[2], notifications_counter))
 
 def notifyDaily(bot, job):
     # Get the users, and the metadata

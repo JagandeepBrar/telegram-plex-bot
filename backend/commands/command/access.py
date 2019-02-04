@@ -23,7 +23,7 @@ def getStatus(bot, update):
     users = select.getUsersWithStatus(status_code)
     keyboard = []
     for user in users:
-        text = str(user[0])+": "+user[4]
+        text = str(user[0])+": "+user[5]
         keyboard.append([telegram.InlineKeyboardButton(text, callback_data=constants.ACCESS_USER_CALLBACK+str(user[0]))])
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     bot.edit_message_text(text=constants.ACCESS_USERS_MSG.format(status.lower()), reply_markup=reply_markup, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
@@ -40,7 +40,7 @@ def setStatus(bot, update):
     results =  update.callback_query.data[len(constants.ACCESS_SETSTATUS_CALLBACK):].split(",")
     status_code = constants.ACCOUNT_STATUS.index(results[1])
     user = select.getUser(results[0])
-    msg = constants.ACCESS_SUCCESS.format(user[0], user[4], results[1].lower())
+    msg = constants.ACCESS_SUCCESS.format(user[0], user[5], results[1].lower())
     update_db.updateUserStatus(user[0], status_code)
     bot.edit_message_text(text=msg, chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, parse_mode=telegram.ParseMode.MARKDOWN)
     logger.info(__name__, msg[1:-2], "INFO_BLUE")
