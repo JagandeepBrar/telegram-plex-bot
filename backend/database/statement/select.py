@@ -318,28 +318,44 @@ def getMetadata(id, media_type):
     db.close()
     return metadata
 
-def getMetadataPastDay(media_type):
+def getMetadataPastDay(media_type, media_id, upgrade):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
     utc_time = datetime.datetime.utcnow().timestamp()-constants.daysToSeconds(1)
     if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
-        db_cursor.execute("SELECT * FROM metadata_television WHERE download_time > ?", (utc_time,))
+        db_cursor.execute("""SELECT * FROM metadata_television WHERE
+            download_time > ? AND
+            tvdb_id = ? AND
+            is_upgrade = ?
+        """, (utc_time, media_id, upgrade))
     elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
-        db_cursor.execute("SELECT * FROM metadata_movies WHERE download_time > ?", (utc_time,))
+        db_cursor.execute("""SELECT * FROM metadata_movies WHERE
+            download_time > ? AND
+            tmdb_id = ? AND
+            is_upgrade = ?
+        """, (utc_time, media_id, upgrade))
     metadata = db_cursor.fetchall()
     db.close()
     return metadata
 
-def getMetadataPastWeek(media_type):
+def getMetadataPastWeek(media_type, media_id, upgrade):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
     utc_time = datetime.datetime.utcnow().timestamp()-constants.weeksToSeconds(1)
     if(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_TELEVISION):
-        db_cursor.execute("SELECT * FROM metadata_television WHERE download_time > ?", (utc_time,))
+        db_cursor.execute("""SELECT * FROM metadata_television WHERE
+            download_time > ? AND
+            tvdb_id = ? AND
+            is_upgrade = ?
+        """, (utc_time, media_id, upgrade))
     elif(int(media_type) == constants.NOTIFIER_MEDIA_TYPE_MOVIE):
-        db_cursor.execute("SELECT * FROM metadata_movies WHERE download_time > ?", (utc_time,))
+        db_cursor.execute("""SELECT * FROM metadata_movies WHERE
+            download_time > ? AND
+            tmdb_id = ? AND
+            is_upgrade = ?
+        """, (utc_time, media_id, upgrade))
     metadata = db_cursor.fetchall()
     db.close()
     return metadata

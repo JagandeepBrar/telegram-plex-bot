@@ -226,9 +226,8 @@ NOTIFIER_FREQUENCY_WEEKLY = 2
 NOTIFIER_FREQUENCY = ["Immediately", "Daily", "Weekly"]
 NOTIFIER_QUALITY_VERSIONS = ["None", "Regular Release", "PROPER Release"]
 NOTIFIER_IMMEDIATELY_HEADER = "_Content Now Available:_\n\n"
-NOTIFIER_DAILY_HEADER = "_Daily Content Report:_\n\n"
-NOTIFIER_WEEKLY_HEADER = "_Weekly Content Report:_\n\n"
-NOTIFIER_NOTHING_TO_SEND = "--- DON'T SEND ANYTHING ---"
+NOTIFIER_DAILY_HEADER = "_Daily Content Report:_\n"
+NOTIFIER_WEEKLY_HEADER = "_Weekly Content Report:_\n"
 
 ###########
 # METHODS #
