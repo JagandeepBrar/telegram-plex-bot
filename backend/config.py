@@ -105,7 +105,6 @@ def parseOmbi():
             ombi.enabled = True
             ombi.api = parser['OMBI']['API']
             ombi.host = parser['OMBI']['HOST']
-            ombi.update_frequency = int(parser['OMBI']['UPDATE_FREQ'])
             ombi.initialize()
             logger.info(__name__, "Ombi API parsed")
     else:

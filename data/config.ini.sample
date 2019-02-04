@@ -12,18 +12,17 @@ AUTO_APPROVE = no
 
 [SONARR]
 ENABLED = no
-HOST = 
+HOST = http://localhost:8989
 API = 
-UPDATE_FREQ = 
+UPDATE_FREQ = 15
 
 [RADARR]
 ENABLED = no
-HOST = 
+HOST = http://localhost:7878
 API = 
-UPDATE_FREQ = 
+UPDATE_FREQ = 15
 
 [OMBI]
 ENABLED = no
-HOST = 
+HOST = http://localhost:5000
 API = 
-UPDATE_FREQ = 

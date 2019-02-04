@@ -5,7 +5,6 @@ import json
 enabled = False
 api = ""
 host = ""
-update_frequency = 0
 
 def initialize():
     try:
