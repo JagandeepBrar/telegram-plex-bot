@@ -249,7 +249,7 @@ def getTelevisionNotifiersForUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ?, telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_TELEVISION, id))
+    db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ? AND telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_TELEVISION, id))
     notifiers = db_cursor.fetchall()
     db.close()
     return notifiers
@@ -258,7 +258,7 @@ def getMoviesNotifiersForUser(id):
     db = sqlite3.connect(constants.DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
     db_cursor = db.cursor()
     db_cursor.execute("PRAGMA foreign_keys = ON")
-    db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ?, telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_MOVIE, id))
+    db_cursor.execute('SELECT * FROM notifiers WHERE media_type = ? AND telegram_id = ?', (constants.NOTIFIER_MEDIA_TYPE_MOVIE, id))
     notifiers = db_cursor.fetchall()
     db.close()
     return notifiers

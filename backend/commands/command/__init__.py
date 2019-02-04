@@ -1,1 +1,1 @@
-__all__ = ['access', 'account', 'deleteaccount', 'forceupdate', 'help', 'register', 'unwatch', 'watch']
+__all__ = ['access', 'account', 'deleteaccount', 'forceupdate', 'help', 'register', 'unwatch', 'watch', 'watching']

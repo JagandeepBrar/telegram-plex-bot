@@ -68,6 +68,7 @@ def commandHandlers():
     # watch related
     telegram.dispatcher.add_handler(CommandHandler("watch", watch.watch, pass_args=True))
     telegram.dispatcher.add_handler(CommandHandler("unwatch", unwatch.unwatch, pass_args=True))
+    telegram.dispatcher.add_handler(CommandHandler("watching", watching.watching))
     #Admin-Only
     telegram.dispatcher.add_handler(CommandHandler("access", access.access))
     telegram.dispatcher.add_handler(CommandHandler("forceupdate", forceupdate.forceupdate, pass_args=True))

@@ -7,6 +7,7 @@ import colored
 RESTRICTED_NOTIFICATIONS = True
 RESTRICTED_WATCHER_WATCH = True
 RESTRICTED_WATCHER_UNWATCH = True
+RESTRICTED_WATCHER_WATCHING = True
 
 ###########
 # GENERAL #
@@ -133,7 +134,7 @@ ACCESS_SETSTATUS_CALLBACK = "access_SETSTATUS_"
 ##########################
 
 DELETEACCOUNT_STATE_OPTIONS = range(1)
-DELETEACCOUNT_UNAUTHORIZED = "_Looks like you are restricted or banned._\n\nIn order to reduce abuse, we do not let accounts with these status to delete their account. Please inquire with the admin(s)."
+DELETEACCOUNT_UNAUTHORIZED = "_Looks like you are restricted or banned._\n\nIn order to reduce abuse, we do not let an account with one of these statuses delete their account. Please inquire with the admin(s)."
 DELETEACCOUNT_CONFIRM = "_Are you sure you want to delete your account?_\n\nThis will remove all of your watchers and account information from the bot. If you re-register, you will have to be verified again."
 DELETEACCOUNT_SUCCESS = "_Your account details and watchers have been deleted._"
 DELETEACCOUNT_CANCEL = "_Account deletion cancelled._"
@@ -159,8 +160,9 @@ HELP_VERIFIED = """_User Commands:_
 /account: View the status of your account, and update user preferences.
 /deleteaccount: Deletes all of your account data from the bot, including all watchers.
 
-/watch: Monitor some media for new content.
-/unwatch: Unmonitor some media to stop being notified of new content.
+/watch: Watch some media for new content.
+/unwatch: Unwatch some media to stop being notified of new content.
+/watching: Get a list of the content you are currently watching.
 """
 HELP_ADMIN = """_Admin Commands:_
 
@@ -180,7 +182,7 @@ HELP_MESSAGES = [HELP_ADMIN, HELP_UNVERIFIED, HELP_VERIFIED, HELP_RESTRICTED, HE
 ACCOUNT_REGISTER_STATE_OMBI, ACCOUNT_REGISTER_STATE_DETAIL, ACCOUNT_REGISTER_STATE_UPGRADE = range(3)
 ACCOUNT_REGISTER_OMBI = "What is your Ombi ID? If you do not use Ombi, or can't remember, type /skip."
 ACCOUNT_REGISTER_DETAIL = "How much detail do you want in your immediate notifications?\n\n_All daily and weekly content reports only contain basic information._"
-ACCOUNT_REGISTER_UPGRADE = "Do you want to be notified when content you watch is upgraded?\n\nFor example, if the content is upgraded to a higher resolution, fixed, etc."
+ACCOUNT_REGISTER_UPGRADE = "Do you want to be notified when content you watch is upgraded?\n\nFor example, if the content is upgraded to a higher resolution."
 ACCOUNT_REGISTER_START = "Welcome to {}, let's get you registered so you can start using me!\n\n"+ACCOUNT_REGISTER_DETAIL
 ACCOUNT_REGISTER_FAIL_REGISTERED = "_Looks like you're already registered!_\n\nUse /account to get the current status of your account."
 ACCOUNT_REGISTER_FAIL_CANCELLED = "_Registration has been cancelled._\n\nUse /register to start the registration process again."
@@ -212,6 +214,14 @@ WATCH_MOVIES_SUCCESS = "_You are now watching_ *{}!*\n\nYou will be notified whe
 WATCH_TELEVISION_CALLBACK = "watch_SHOW_"
 WATCH_TELEVISION_FREQ_CALLBACK = "watch_FREQ_SHOW_"
 WATCH_MOVIE_CALLBACK = "watch_MOVIE_"
+
+#####################
+# /WATCHING COMMAND #
+#####################
+
+WATCHING_TELEVISION_HEADER = "_Watched Television Content:_\n\n"
+WATCHING_MOVIE_HEADER = "_Watched Movie Content:_\n\n"
+WATCHING_NO_CONTENT = "_You are currently watching no content!_\n\nUse /watch to start watching for new content!"
 
 ####################
 # NOTIFIER RELATED #
