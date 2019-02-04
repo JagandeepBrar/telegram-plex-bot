@@ -35,6 +35,7 @@ I wrote a quick installation guide (focused for Linux/Mac) on my blog, [availabl
     - `/account`: Account settings & information
         - Add/change Ombi ID
         - Change notification complexity
+        - Change upgrade notification preference
 - Notification-Related
     - `/watch`: Watch a show or movie to be notified for new content
     - `/unwatch`: Unwatch a show or movie to stop notifications for new content
