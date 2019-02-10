@@ -1,4 +1,4 @@
-import colored
+import colored, os
 
 ################################
 # COMMAND RESTRICTION SETTINGS #
@@ -49,8 +49,14 @@ LOGGING_COLOURS = {
 ##################
 
 SOCKET_MAX_MSG_LENGTH = 256
-SOCKET_HOST = "0.0.0.0"
+if(os.name == 'nt'):
+    # Windows does not support 0.0.0.0 by default
+    SOCKET_HOST = "127.0.0.1"
+else:
+    # More versatile to use 0.0.0.0, works on Mac & Linux
+    SOCKET_HOST = "0.0.0.0"
 SOCKET_PORT = "25535"
+
 
 #################
 # API ENDPOINTS #
