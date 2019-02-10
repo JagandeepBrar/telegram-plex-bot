@@ -1,4 +1,4 @@
-import logging
+import logging, os
 from colored import stylize, fg
 from backend import constants
 
@@ -7,10 +7,20 @@ def initialize():
     info(__name__, "Logging initialized")
 
 def info(name, msg, colour="INFO"):
-    logging.getLogger(name).info(stylize(msg, constants.LOGGING_COLOURS.get(colour)))
+    if(os.name == 'nt'):
+        logging.getLogger(name).info(msg)
+    else:
+        logging.getLogger(name).info(stylize(msg, constants.LOGGING_COLOURS.get(colour)))
+
 
 def error(name, msg):
-    logging.getLogger(name).error(stylize(msg, constants.LOGGING_COLOURS.get("ERROR")))
+    if(os.name == 'nt'):
+        logging.getLogger(name).error(msg)
+    else:
+        logging.getLogger(name).error(stylize(msg, constants.LOGGING_COLOURS.get("ERROR")))
 
 def warning(name, msg):
-    logging.getLogger(name).warning(stylize(msg, constants.LOGGING_COLOURS.get("WARNING")))
+    if(os.name == 'nt'):
+        logging.getLogger(name).warning(msg)
+    else:
+        logging.getLogger(name).warning(stylize(msg, constants.LOGGING_COLOURS.get("WARNING")))
