@@ -1,3 +1,5 @@
+> This project is no longer being developed, and as such is being archived.
+
 # Plex Assistant Bot
 
 A bot to notify, control, manage (and more) Plex integration applications like Sonarr, Radarr, Ombi, etc.
@@ -6,24 +8,8 @@ A bot to notify, control, manage (and more) Plex integration applications like S
 
 ## Installation
 
-I wrote a quick installation guide on my blog, [available here](https://www.jdot.io/blog/plex-assistant-guide/)! Windows installation should also be possible with small deviations from the guide.
+I wrote a quick installation guide on my blog, [available here](https://www.jagandeepbrar.io/blog/plex-assistant-guide/)! Windows installation should also be possible with small deviations from the guide.
 
-## To-Do List
-
-### Critical
-
-- Comment code
-
-### Planned
-
-- ~~Sonarr/Radarr notifications~~
-- Sonarr/Radarr calendars
-- Connect to Ombi for automatic notifications
-- Add new shows/movies to Sonarr/Radarr
-
-### Potential
-
-- SABnzbd/NZBget implementations
 
 ## Implemented Commands
 
