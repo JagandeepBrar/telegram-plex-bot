@@ -1,15 +1,10 @@
 > This project is no longer being developed, and as such is being archived.
 
-# Plex Assistant Bot
+# Telegram Plex Bot
 
 A bot to notify, control, manage (and more) Plex integration applications like Sonarr, Radarr, Ombi, etc.
 
-*Implemention of more applications and features will occur overtime*
-
-## Installation
-
-I wrote a quick installation guide on my blog, [available here](https://www.jagandeepbrar.io/blog/plex-assistant-guide/)! Windows installation should also be possible with small deviations from the guide.
-
+*Implementation of more applications and features will occur overtime*
 
 ## Implemented Commands
 
@@ -30,5 +25,3 @@ I wrote a quick installation guide on my blog, [available here](https://www.jaga
 - System-Related **[ADMIN ONLY]**
     - `/access`: View or update the access level of a user (table in the wiki for different options)
     - `/forceupdate`: Forcibly update the databases before the regular job interval time
-
-
